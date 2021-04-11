@@ -8,7 +8,7 @@ from app.router import web, app
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
 
-app = FastAPI(title='Efetiva Saude')
+app = FastAPI(title='Efetiva Saúde')
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,7 +28,7 @@ def custom_openapi():
         return app.openapi_schema
 
     openapi_schema = get_openapi(
-        title="Efetiva Saude",
+        title="Efetiva Saúde",
         version="2.5.0",
         description="",
         routes=app.routes,

@@ -5,7 +5,7 @@ from pydantic import BaseModel, ValidationError, validator
 class AtendimentoPresencialModel(BaseModel):
     IdAtendimentoPresencial: int
     Endereco: str
-    Numero: datetime
+    Numero: int
     Conjunto: str
     Bairro:str
     Cidade:str

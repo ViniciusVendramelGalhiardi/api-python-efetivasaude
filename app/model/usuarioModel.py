@@ -8,9 +8,12 @@ from .formacaoAcademiaModel import FormacaoAcademicaModel
 from .idiomasAtendidosModel import IdiomasAtendidosModel
 from typing import List
 from .atendimentoPresencialModel import AtendimentoPresencialModel
+from .planodeSaudeEmpresaUsuario import PlanodeSaudeEmpresaUsuario
+from .perfilUsuarioModel import PerfilUsuarioModel
+
 
 class UsuarioModel(BaseModel):
-    IdUsuario: int
+    IdUsuario: Optional[int] = 0
     Nome: str
     Telefone:str
     Email: str
@@ -18,52 +21,53 @@ class UsuarioModel(BaseModel):
     Estado:str
     IdConheceu:int
     Senha:str
-    Senha_Confirmar:str
+    Senha_Confirmar:Optional[str] 
     TermosCondicoes:bool = False
     PoliticaPrivacidade:bool  = False
     Apelido: str
-    EstadoCivil: str
-    PossuiFilhosQtd: int
-    IdHobbie: int
-    DataNascimento:datetime
-    Genero:str
-    IdProfissao:int
-    Cpf: str
-    Dependente: bool = False
-    IdHorarioTrabalho: int
-    IdTipoUsuario: int
-    IdUsarPlataformaProfissionais: int
-    IdConselhoRegional: int
-    PossuiCNPJ: bool = False
-    TrabalharComCNPJ: bool = False
-    CartaApresentacao: str
-    IdAbordagem: int
-    HorasPorSemana: str
-    FimDesemana: str
-    DuracaoAtendimento:str
-    AtendePlanoDeSaude:bool = False
-    ReciboReembolsavel: bool = False
-    AtendimentoPresencial: bool = False
-    PrimeiroClienteCobra: bool
-    PrimeiroClienteValorFixo: bool
-    EmpresasParceirasDesconto: bool
-    ValorPorSessao: float
-    NomeEmpresa: str
-    TelefoneCorporativo: str
-    EmailCorporativo: str
-    Site: str
-    CnPj: str
-    Linkedin: str
-    Instagram: str
-    CargoFuncao: str
-    NumeroColaboradores: int
-    ContasCorrente: List[ContaCorrenteModel]
-    ExperienciasPratica: List[ExperienciaPraticaModel]
-    Formacoes: List[FormacaoAcademicaModel]
-    IdiomasAtendidos: List[IdiomasAtendidosModel]
-    Dependentes: List[DependenteModel]
-    AtendimentoPresencial: AtendimentoPresencialModel
     
+    EstadoCivil: Optional[str]
+    PossuiFilhosQtd: Optional[int] 
+    IdHobbie: Optional[int]
+    DataNascimento:Optional[str]
+    Genero:Optional[str]
+    IdProfissao:Optional[int]
+    Cpf: Optional[str]
+    Dependente: bool = False
+    Dependentes: Optional[List[DependenteModel]]
+    IdHorarioTrabalhoProf: Optional[int] 
+    IdUsarPlataformaProf: Optional[int]
+    IdConselhoRegionalProf: Optional[int] 
+    PossuiCNPJProf: Optional[bool] 
+    TrabalharComCNPJProf: Optional[bool] 
+    CnPj: Optional[str] 
+    CartaApresentacaoProf: Optional[str] 
+    IdAbordagemProf: Optional[int] 
+    DuracaoAtendimentoProf:Optional[str] = ''
+    AtendePlanoDeSaudeProf:Optional[bool] = False
+    ReciboReembolsavelProf: Optional[bool] = False
+    AtendePresencialmenteProf: Optional[bool] = False
+    PrimeiroClienteCobraProf: Optional[bool] = True
+    PrimeiroClienteValorFixoProf: Optional[bool] = True
+    EmpresasParceirasDescontoProf: Optional[bool] = True
+    ValorPorSessaoProf: Optional[float] = 0.00
+
+    ExperienciasPraticaProf: Optional[List[ExperienciaPraticaModel]]
+    FormacoesProf:  Optional[List[FormacaoAcademicaModel]]
+    IdiomasAtendidosProf: Optional[List[IdiomasAtendidosModel]]
+    AtendimentoPresencialProf:  Optional[List[AtendimentoPresencialModel]] 
+
+    NomeEmpresaEmp: Optional[str] 
+    TelefoneCorporativoEmp: Optional[str] 
+    EmailCorporativoEmp: Optional[str] 
+    SiteEmpr: Optional[str] 
+    LinkedinEmpr: Optional[str] 
+    InstagramEmp: Optional[str] 
+    CargoFuncaoEmp: Optional[str] 
+    NumeroColaboradoresEmp: Optional[int] 
+    PlanodeSaudeEmpresa: Optional[List[PlanodeSaudeEmpresaUsuario]]  
+    ContasCorrente: Optional[List[ContaCorrenteModel]]
+
     @validator('Senha_Confirmar')
     def passwords_match(cls, v, values, **kwargs):
         if 'Senha' in values and v != values['Senha']:

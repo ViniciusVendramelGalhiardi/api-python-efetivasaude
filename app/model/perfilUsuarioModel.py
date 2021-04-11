@@ -3,6 +3,6 @@ from typing import List, Optional
 from pydantic import BaseModel, ValidationError, validator
 
 class PerfilUsuarioModel(BaseModel):
-    Id: int
-    IdUsuario:int
-    IdTipoUsuario:int
+    Id: Optional[int]
+    IdUsuario:Optional[int]
+    IdPerfil:int

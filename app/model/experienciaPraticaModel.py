@@ -7,5 +7,5 @@ class ExperienciaPraticaModel(BaseModel):
    TipoExperiencia: str
    AtividadePrincipal: str
    Descricao: str
-   DataInicio: datetime
-   DataTermino: datetime
+   DataInicio: str
+   DataTermino: str

@@ -4,13 +4,8 @@ import json
 from cacheout import Cache
 from fastapi.exceptions import HTTPException
 from fastapi import logger
-from app.data.perfisData import buscaPerfis, buscaAbordagem, buscaHobbie, buscaCRP, buscaHorarioTrabalho, buscaIdiomas, buscaNosConheceu, buscaPlanos, buscaProfissao, buscaSintomas, buscaUsarPlataforma 
+from app.data.ListagemData import buscaPerfis, buscaAbordagem, buscaHobbie, buscaCRP, buscaHorarioTrabalho, buscaIdiomas, buscaNosConheceu, buscaPlanos, buscaProfissao, buscaSintomas, buscaUsarPlataforma
 from app.model.usuarioModel import UsuarioModel
-
-
-def CadastrarUsuario(request: UsuarioModel):
-    return ''
-
 
 def listaPerfil():
     return buscaPerfis()
@@ -20,7 +15,6 @@ def listaAbordagem():
 
 def listaHobbies():
     return buscaHobbie()
-
 
 def listaCRP():
     return buscaCRP()
@@ -42,7 +36,6 @@ def listaProfissao():
 
 def listaSintomas():
     return buscaSintomas()
-
 
 def listaUsarPlataforma():
     return buscaUsarPlataforma()

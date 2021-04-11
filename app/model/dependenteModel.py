@@ -5,7 +5,7 @@ from pydantic import BaseModel, ValidationError, validator
 class DependenteModel(BaseModel):
     Nome: str
     Apelido: str
-    DataNascimento: datetime
+    DataNascimento: str
     Genero: str
     Telefone:str
     Email:str

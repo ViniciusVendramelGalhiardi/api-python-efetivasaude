@@ -3,20 +3,20 @@ from typing import Optional
 from pydantic import BaseModel  
 import json
 from app.model.response import getResponse
-from app.service.efetivaSaudeWebService import listaPerfil, listaAbordagem, listaHobbies, listaCRP, listaHorarioTrabalho, listaIdiomas, listaNosConheceu, listaPlanos, listaProfissao, listaSintomas, listaUsarPlataforma, CadastrarUsuario
+from app.service.ListagemService import listaPerfil, listaAbordagem, listaHobbies, listaCRP, listaHorarioTrabalho, listaIdiomas, listaNosConheceu, listaPlanos, listaProfissao, listaSintomas, listaUsarPlataforma
 from app.model.usuarioModel import UsuarioModel
 from fastapi.responses import JSONResponse
+from app.service.usuarioService import CadastrarUsuario
 
 router_web = APIRouter(
     prefix="/web",
     tags=["web"]
 )
 
-@router_web.post("/cadastrarUsuario/")
-async def cadastrarUsuario(UsuarioModel: UsuarioModel):
-    response = CadastrarUsuario(UsuarioModel)
-    return JSONResponse(status_code = response.status, 
-                        content = response.__dict__)   
+@router_web.post("/cadastrarUsuario/{IdPerfil}")
+async def cadastrar(IdPerfil:int, UsuarioModel: UsuarioModel):
+    response = CadastrarUsuario(IdPerfil, UsuarioModel)
+    return response
 
 @router_web.get("/ListarPerfis/")
 def ListarPerfil():
