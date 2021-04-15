@@ -3,12 +3,12 @@ from typing import List, Optional
 from pydantic import BaseModel, ValidationError, validator
 
 class AtendimentoPresencialModel(BaseModel):
-    IdAtendimentoPresencial: int
-    Endereco: str
-    Numero: int
-    Conjunto: str
-    Bairro:str
-    Cidade:str
-    Estado:str
-    Cep:str
-    IdUsuario: int
+    IdAtendimentoPresencial:Optional[int]
+    Endereco: Optional[str]
+    Numero: Optional[int]
+    Conjunto: Optional[str]
+    Bairro:Optional[str]
+    Cidade:Optional[str]
+    Estado:Optional[str]
+    Cep:Optional[str]
+    IdUsuario: Optional[int]

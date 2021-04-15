@@ -3,4 +3,4 @@ from typing import List, Optional
 from pydantic import BaseModel, ValidationError, validator
 
 class IdiomasAtendidosModel(BaseModel):
-    Ididioma: list
+    Ididioma: int

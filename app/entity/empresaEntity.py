@@ -21,5 +21,6 @@ class EmpresaEntity(BaseModel):
     InstagramEmp: Optional[str] 
     CargoFuncaoEmp: Optional[str] 
     NumeroColaboradoresEmp:  Optional[int] 
+    
     PlanodeSaudeEmpresa: Optional[List]  
     ContasCorrente: Optional[List]  

@@ -7,4 +7,4 @@ class ContaCorrenteModel(BaseModel):
     Agencia: int
     ContaCorrente: int
     DigitoVerificador: int
-    IdUsuario: int
+    IdUsuario: Optional[int]

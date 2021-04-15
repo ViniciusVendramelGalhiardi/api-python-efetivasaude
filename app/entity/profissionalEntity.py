@@ -20,8 +20,6 @@ class ProfissionalEntity(BaseModel):
     Genero: str
     IdProfissao: int
     Cpf: str
-    Dependente:bool
-    Dependentes: List #lista
     IdHorarioTrabalhoProf: Optional[int] 
     IdUsarPlataformaProf: Optional[int]
     IdConselhoRegionalProf: Optional[int] 
@@ -29,7 +27,7 @@ class ProfissionalEntity(BaseModel):
     TrabalharComCNPJProf: Optional[bool] 
     CnPj: Optional[str] 
     CartaApresentacaoProf: Optional[str] 
-    IdAbordagemProf: Optional[int] 
+    IdAbordagemProf: Optional[int]
     DuracaoAtendimentoProf:Optional[str] = ''
     AtendePlanoDeSaudeProf:Optional[bool] = False
     ReciboReembolsavelProf: Optional[bool] = False
@@ -38,7 +36,8 @@ class ProfissionalEntity(BaseModel):
     PrimeiroClienteValorFixoProf: Optional[bool] = True
     EmpresasParceirasDescontoProf: Optional[bool] = True
     ValorPorSessaoProf: Optional[float] = 0.00
-
+    Dependente:bool
+    Dependentes: Optional[List] #lista
     ExperienciasPraticaProf: Optional[List]
     FormacoesProf:  Optional[List]
     IdiomasAtendidosProf: Optional[List]
