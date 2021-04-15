@@ -19,10 +19,10 @@ def CadastrarUsuario(IdPerfil, User: UsuarioModel):
     elif IdPerfil is 2:
         pEntity = UsuarioFactory.ProfissionalModelToEntity(User)
           #TODO: SALVAR NO BANCO O PROFISSIONAL TRATADA
-        CadastraProfissional(User,IdPerfil)
+        CadastraProfissional(pEntity,IdPerfil)
         return eEntity
     else:
        eEntity = UsuarioFactory.EmpresaModelToEntity(User)
        #TODO: SALVAR NO BANCO O EMPRESA TRATADA
-       CadastraEmpresa(User,IdPerfil)
+       CadastraEmpresa(eEntity,IdPerfil)
        return eEntity

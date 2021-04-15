@@ -7,6 +7,8 @@ from app.service.ListagemService import listaPerfil, listaAbordagem, listaHobbie
 from app.model.usuarioModel import UsuarioModel
 from fastapi.responses import JSONResponse
 from app.service.usuarioService import CadastrarUsuario
+from app.service.frontend import CadastrarU
+
 
 router_web = APIRouter(
     prefix="/web",
@@ -22,6 +24,10 @@ async def cadastrar(IdPerfil:int, UsuarioModel: UsuarioModel):
 def ListarPerfil():
     return listaPerfil()
 
+# @router_web.post("/ExemploDudu/{Nome}")
+# async def ListarDudu(Nome: str, Idade: str):
+#     recebevalor = CadastrarU(Nome,Idade)
+#     return recebevalor
 
 @router_web.get("/ListarAbordagem/")
 def ListaAbordagem():

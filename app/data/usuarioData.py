@@ -67,7 +67,7 @@ def CadastraProfissional(pEntity: ProfissionalEntity, IdPerfil: int):
 
         if pEntity.ContasCorrente is not None:
             for item in pEntity.ContasCorrente:
-                cursor.execute('INSERT INTO ContaCorrente (Banco,Agencia,ContaCorrente,DigitoVerificador,IdUsuario) VALUES (?, ?,?,?,?)',
+                cursor.execute('INSERT INTO ContaCorrente (Banco,Agencia,ContaCorrente,DigitoVerificador,IdUsuario) VALUES (?,?,?,?,?)',
                 (item.Banco,item.Agencia,item.ContaCorrente,item.DigitoVerificador, idUsuario))
                 cursor.commit()
 
@@ -77,7 +77,29 @@ def CadastraProfissional(pEntity: ProfissionalEntity, IdPerfil: int):
     return lista
 
 def CadastraEmpresa(eEntity: EmpresaEntity, IdPerfil: int):
-    conn = pyodbc.connect(CONNECTION_STRING_DB)
-    cursor = conn.cursor()
-    lista = cursor.execute("select * from Perfis")
+
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO [dbo].[usuario] (Nome, Telefone, Email, Cidade, Estado, IdConheceu, Senha, TermosCondicoes, PoliticaPrivacidade, Apelido, NomeEmpresaEmp, TelefoneCorporativoEmp, EmailCorporativoEmp,SiteEmpr,LinkedinEmpr, InstagramEmp,CargoFuncaoEmp,NumeroColaboradoresEmp) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                    (eEntity.Nome, eEntity.Telefone, eEntity.Email, eEntity.Cidade, eEntity.Estado, eEntity.IdConheceu, eEntity.Senha, eEntity.TermosCondicoes, eEntity.PoliticaPrivacidade, eEntity.Apelido, eEntity.NomeEmpresaEmp, eEntity.TelefoneCorporativoEmp, eEntity.EmailCorporativoEmp,eEntity.SiteEmpr,eEntity.LinkedinEmpr, eEntity.InstagramEmp,eEntity.CargoFuncaoEmp,eEntity.NumeroColaboradoresEmp))    
+        cursor.commit()
+        cursor.execute("SELECT @@IDENTITY AS ID;")
+        idUsuario = cursor.fetchone()[0]
+
+        if eEntity.PlanodeSaudeEmpresa is not None:
+            for item in eEntity.PlanodeSaudeEmpresa:
+                cursor.execute('INSERT INTO planodeSaudeEmpresaUsuario (IdPlanoCredenciado, IdUsuario) VALUES (?,?)',
+                    (item.IdPlanoCredenciado, idUsuario))
+                cursor.commit()
+
+        if eEntity.ContasCorrente is not None:
+            for item in eEntity.ContasCorrente:
+                cursor.execute('INSERT INTO ContaCorrente (Banco,Agencia,ContaCorrente,DigitoVerificador,IdUsuario) VALUES (?,?,?,?,?)',
+                (item.Banco,item.Agencia,item.ContaCorrente,item.DigitoVerificador, idUsuario))
+                cursor.commit()
+
+    except Exception as mensagemErro:
+            return mensagemErro
+
     return lista
