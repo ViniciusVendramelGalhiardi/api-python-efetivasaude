@@ -16,12 +16,22 @@ def CadastraUsuario(uEntity: UsuarioEntity, IdPerfil: int):
                  (uEntity.Nome, uEntity.Telefone, uEntity.Email,uEntity.Cidade,uEntity.Estado,uEntity.IdConheceu,uEntity.Senha,uEntity.TermosCondicoes,
                  uEntity.PoliticaPrivacidade, uEntity.Apelido, uEntity.EstadoCivil, uEntity.PossuiFilhosQtd, uEntity.IdHobbie, uEntity.DataNascimento,
                  uEntity.Genero, uEntity.IdConheceu, uEntity.Cpf, uEntity.Dependente))
-
-        #commit the transaction
         cursor.commit()
+        cursor.execute("SELECT @@IDENTITY AS ID;")
+        idUsuario = cursor.fetchone()[0]
+
+        if uEntity.Dependente and uEntity.Dependentes is not None:
+            for item in uEntity.Dependentes:
+                cursor.execute('INSERT INTO Dependente (Nome, Apelido, DataNascimento, Genero, Telefone, Email, CPF, IdUsuario) VALUES(?,?,?,?,?,?,?,?)',
+                (item.Nome, item.Apelido,item.DataNascimento,item.Genero,item.Telefone, item.Email, item.Cpf, idUsuario))
+                cursor.commit()
+        
+        uEntity.idUsuario = idUsuario
+
+
     except Exception as mensagemErro: 
          return mensagemErro
-    return lista
+    return uEntity
 
 def CadastraProfissional(pEntity: ProfissionalEntity, IdPerfil: int):
     
@@ -71,10 +81,12 @@ def CadastraProfissional(pEntity: ProfissionalEntity, IdPerfil: int):
                 (item.Banco,item.Agencia,item.ContaCorrente,item.DigitoVerificador, idUsuario))
                 cursor.commit()
 
+        pEntity.idUsuario = idUsuario
+
     except Exception as mensagemErro: 
         return mensagemErro
 
-    return lista
+    return pEntity
 
 def CadastraEmpresa(eEntity: EmpresaEntity, IdPerfil: int):
 
@@ -102,4 +114,4 @@ def CadastraEmpresa(eEntity: EmpresaEntity, IdPerfil: int):
     except Exception as mensagemErro:
             return mensagemErro
 
-    return lista
+    return eEntity

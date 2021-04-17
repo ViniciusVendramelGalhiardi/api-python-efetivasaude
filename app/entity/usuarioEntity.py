@@ -21,3 +21,5 @@ class UsuarioEntity(BaseModel):
     IdProfissao: int
     Cpf: str
     Dependente:bool
+    idUsuario: Optional[int]
+    Dependentes: Optional[List]

@@ -11,18 +11,18 @@ from app.data.usuarioData import CadastraUsuario
 
 
 def CadastrarUsuario(IdPerfil, User: UsuarioModel):
-    if IdPerfil is 1:
+    if IdPerfil == 1:
         uEntity = UsuarioFactory.UsuarioModelToEntity(User)
         #TODO: SALVAR NO BANCO O USUARIO TRATADO
-        CadastraUsuario(User, IdPerfil)
-        return uEntity
-    elif IdPerfil is 2:
+        response = CadastraUsuario(uEntity, IdPerfil)
+        return response
+    elif IdPerfil == 2:
         pEntity = UsuarioFactory.ProfissionalModelToEntity(User)
           #TODO: SALVAR NO BANCO O PROFISSIONAL TRATADA
-        CadastraProfissional(pEntity,IdPerfil)
-        return eEntity
+        response = CadastraProfissional(pEntity,IdPerfil)
+        return response
     else:
        eEntity = UsuarioFactory.EmpresaModelToEntity(User)
        #TODO: SALVAR NO BANCO O EMPRESA TRATADA
-       CadastraEmpresa(eEntity,IdPerfil)
-       return eEntity
+       response = CadastraEmpresa(eEntity,IdPerfil)
+       return response

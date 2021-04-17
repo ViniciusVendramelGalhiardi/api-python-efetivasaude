@@ -18,6 +18,7 @@ router_web = APIRouter(
 @router_web.post("/cadastrarUsuario/{IdPerfil}")
 async def cadastrar(IdPerfil:int, UsuarioModel: UsuarioModel):
     response = CadastrarUsuario(IdPerfil, UsuarioModel)
+    tt = response
     return response
 
 @router_web.get("/ListarPerfis/")

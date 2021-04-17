@@ -43,5 +43,6 @@ class ProfissionalEntity(BaseModel):
     IdiomasAtendidosProf: Optional[List]
     AtendimentoPresencialProf: Optional[List]
     ContasCorrente: Optional[List]
+    idUsuario: Optional[int]
 
     

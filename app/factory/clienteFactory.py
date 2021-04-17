@@ -25,7 +25,8 @@ class UsuarioFactory():
             Genero=uModel.Genero,
             IdProfissao=uModel.IdProfissao,
             Cpf=uModel.Cpf,
-            Dependente=uModel.Dependente
+            Dependente=uModel.Dependente,
+            Dependentes = uModel.Dependentes
         )
 
         return user
