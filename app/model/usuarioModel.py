@@ -40,7 +40,7 @@ class UsuarioModel(BaseModel):
     IdConselhoRegionalProf: Optional[int] 
     PossuiCNPJProf: Optional[bool] 
     TrabalharComCNPJProf: Optional[bool] 
-    CnPj: Optional[str] 
+    Cnpj: Optional[str] 
     CartaApresentacaoProf: Optional[str] 
     IdAbordagemProf: Optional[int] 
     DuracaoAtendimentoProf:Optional[str] = ''

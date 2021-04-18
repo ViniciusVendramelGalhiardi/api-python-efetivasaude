@@ -4,7 +4,7 @@ from pydantic import BaseModel
 import requests
 import json
 from fastapi.openapi.utils import get_openapi 
-from app.router import web, app
+from app.router import web
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
 

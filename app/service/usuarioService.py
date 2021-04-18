@@ -5,7 +5,7 @@ from cacheout import Cache
 from fastapi.exceptions import HTTPException
 from fastapi import logger
 from app.model.usuarioModel import UsuarioModel
-from app.data.usuarioData import CadastraUsuario, CadastraProfissional, CadastraEmpresa
+from app.data.usuarioData import CadastraUsuario, CadastraProfissional, CadastraEmpresa, BuscarUsuarioData, BuscarProfissionalData, BuscarEmpresaData
 from app.factory.clienteFactory import UsuarioFactory
 from app.data.usuarioData import CadastraUsuario
 
@@ -26,3 +26,11 @@ def CadastrarUsuario(IdPerfil, User: UsuarioModel):
        #TODO: SALVAR NO BANCO O EMPRESA TRATADA
        response = CadastraEmpresa(eEntity,IdPerfil)
        return response
+
+def BuscaUsuarioService(idUsuario, IdPerfil):
+      if IdPerfil == 1:
+        return BuscarUsuarioData(idUsuario)
+      elif IdPerfil == 2:
+        return BuscarProfissionalData(idUsuario)
+      else:
+       return BuscarEmpresaData(idUsuario)

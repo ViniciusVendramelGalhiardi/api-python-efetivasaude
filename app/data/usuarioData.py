@@ -1,9 +1,11 @@
-import pyodbc 
+import pyodbc
 from settings import CONNECTION_STRING_DB
 from app.model.perfisModel import PerfisModel
 from app.entity.usuarioEntity import UsuarioEntity
 from app.entity.profissionalEntity import ProfissionalEntity
 from app.entity.empresaEntity import EmpresaEntity
+from app.factory.clienteFactory import UsuarioFactory
+from app.entity.usuarioEntity import UsuarioEntity
 
 
 def CadastraUsuario(uEntity: UsuarioEntity, IdPerfil: int):
@@ -13,9 +15,9 @@ def CadastraUsuario(uEntity: UsuarioEntity, IdPerfil: int):
         cursor = conn.cursor()
 
         cursor.execute('INSERT INTO usuario (Nome, Telefone,Email,Cidade, Estado, IdConheceu, Senha, TermosCondicoes,PoliticaPrivacidade, Apelido, EstadoCivil, PossuiFilhosQtd, IdHobbie,DataNascimento, Genero, IdProfissao,Cpf , Dependente) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? )',
-                 (uEntity.Nome, uEntity.Telefone, uEntity.Email,uEntity.Cidade,uEntity.Estado,uEntity.IdConheceu,uEntity.Senha,uEntity.TermosCondicoes,
-                 uEntity.PoliticaPrivacidade, uEntity.Apelido, uEntity.EstadoCivil, uEntity.PossuiFilhosQtd, uEntity.IdHobbie, uEntity.DataNascimento,
-                 uEntity.Genero, uEntity.IdConheceu, uEntity.Cpf, uEntity.Dependente))
+                       (uEntity.Nome, uEntity.Telefone, uEntity.Email, uEntity.Cidade, uEntity.Estado, uEntity.IdConheceu, uEntity.Senha, uEntity.TermosCondicoes,
+                        uEntity.PoliticaPrivacidade, uEntity.Apelido, uEntity.EstadoCivil, uEntity.PossuiFilhosQtd, uEntity.IdHobbie, uEntity.DataNascimento,
+                        uEntity.Genero, uEntity.IdConheceu, uEntity.Cpf, uEntity.Dependente))
         cursor.commit()
         cursor.execute("SELECT @@IDENTITY AS ID;")
         idUsuario = cursor.fetchone()[0]
@@ -23,24 +25,24 @@ def CadastraUsuario(uEntity: UsuarioEntity, IdPerfil: int):
         if uEntity.Dependente and uEntity.Dependentes is not None:
             for item in uEntity.Dependentes:
                 cursor.execute('INSERT INTO Dependente (Nome, Apelido, DataNascimento, Genero, Telefone, Email, CPF, IdUsuario) VALUES(?,?,?,?,?,?,?,?)',
-                (item.Nome, item.Apelido,item.DataNascimento,item.Genero,item.Telefone, item.Email, item.Cpf, idUsuario))
+                               (item.Nome, item.Apelido, item.DataNascimento, item.Genero, item.Telefone, item.Email, item.Cpf, idUsuario))
                 cursor.commit()
-        
+
         uEntity.idUsuario = idUsuario
 
-
-    except Exception as mensagemErro: 
-         return mensagemErro
+    except Exception as mensagemErro:
+        return mensagemErro
     return uEntity
 
+
 def CadastraProfissional(pEntity: ProfissionalEntity, IdPerfil: int):
-    
+
     try:
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO usuario (Nome, Telefone,Email,Cidade, Estado, IdConheceu, Senha, TermosCondicoes,PoliticaPrivacidade, Apelido, EstadoCivil, PossuiFilhosQtd, IdHobbie,DataNascimento, Genero, IdProfissao,Cpf , Dependente,IdHorarioTrabalhoProf,IdUsarPlataformaProf,IdConselhoRegionalProf,PossuiCNPJProf,TrabalharComCNPJProf,CnPj,CartaApresentacaoProf,IdAbordagemProf,DuracaoAtendimentoProf, AtendePlanoDeSaudeProf,ReciboReembolsavelProf,AtendePresencialmenteProf,PrimeiroClienteCobraProf,PrimeiroClienteValorFixoProf,EmpresasParceirasDescontoProf,ValorPorSessaoProf) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-        (pEntity.Nome, pEntity.Telefone,pEntity.Email,pEntity.Cidade,pEntity.Estado, pEntity.IdConheceu, pEntity.Senha, pEntity.TermosCondicoes,pEntity.PoliticaPrivacidade,
-        pEntity.Apelido, pEntity.EstadoCivil, pEntity.PossuiFilhosQtd, pEntity.IdHobbie,pEntity.DataNascimento, pEntity.Genero, pEntity.IdProfissao,pEntity.Cpf , pEntity.Dependente,pEntity.IdHorarioTrabalhoProf,pEntity.IdUsarPlataformaProf,pEntity.IdConselhoRegionalProf,pEntity.PossuiCNPJProf,pEntity.TrabalharComCNPJProf,pEntity.CnPj,pEntity.CartaApresentacaoProf,pEntity.IdAbordagemProf,pEntity.DuracaoAtendimentoProf, pEntity.AtendePlanoDeSaudeProf,pEntity.ReciboReembolsavelProf,pEntity.AtendePresencialmenteProf,pEntity.PrimeiroClienteCobraProf,pEntity.PrimeiroClienteValorFixoProf,pEntity.EmpresasParceirasDescontoProf,pEntity.ValorPorSessaoProf))
+        cursor.execute('INSERT INTO usuario (Nome, Telefone,Email,Cidade, Estado, IdConheceu, Senha, TermosCondicoes,PoliticaPrivacidade, Apelido, EstadoCivil, PossuiFilhosQtd, IdHobbie,DataNascimento, Genero, IdProfissao,Cpf , Dependente,IdHorarioTrabalhoProf,IdUsarPlataformaProf,IdConselhoRegionalProf,PossuiCNPJProf,TrabalharComCNPJProf,Cnpj,CartaApresentacaoProf,IdAbordagemProf,DuracaoAtendimentoProf, AtendePlanoDeSaudeProf,ReciboReembolsavelProf,AtendePresencialmenteProf,PrimeiroClienteCobraProf,PrimeiroClienteValorFixoProf,EmpresasParceirasDescontoProf,ValorPorSessaoProf) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                       (pEntity.Nome, pEntity.Telefone, pEntity.Email, pEntity.Cidade, pEntity.Estado, pEntity.IdConheceu, pEntity.Senha, pEntity.TermosCondicoes, pEntity.PoliticaPrivacidade,
+                        pEntity.Apelido, pEntity.EstadoCivil, pEntity.PossuiFilhosQtd, pEntity.IdHobbie, pEntity.DataNascimento, pEntity.Genero, pEntity.IdProfissao, pEntity.Cpf, pEntity.Dependente, pEntity.IdHorarioTrabalhoProf, pEntity.IdUsarPlataformaProf, pEntity.IdConselhoRegionalProf, pEntity.PossuiCNPJProf, pEntity.TrabalharComCNPJProf, pEntity.Cnpj, pEntity.CartaApresentacaoProf, pEntity.IdAbordagemProf, pEntity.DuracaoAtendimentoProf, pEntity.AtendePlanoDeSaudeProf, pEntity.ReciboReembolsavelProf, pEntity.AtendePresencialmenteProf, pEntity.PrimeiroClienteCobraProf, pEntity.PrimeiroClienteValorFixoProf, pEntity.EmpresasParceirasDescontoProf, pEntity.ValorPorSessaoProf))
         cursor.commit()
         cursor.execute("SELECT @@IDENTITY AS ID;")
         idUsuario = cursor.fetchone()[0]
@@ -48,53 +50,54 @@ def CadastraProfissional(pEntity: ProfissionalEntity, IdPerfil: int):
         if pEntity.Dependentes is not None:
             for item in pEntity.Dependentes:
                 cursor.execute('INSERT INTO Dependente (Nome, Apelido, DataNascimento, Genero, Telefone, Email, CPF, IdUsuario) VALUES(?,?,?,?,?,?,?,?)',
-                (item.Nome, item.Apelido,item.DataNascimento,item.Genero,item.Telefone, item.Email, item.Cpf, idUsuario))
+                               (item.Nome, item.Apelido, item.DataNascimento, item.Genero, item.Telefone, item.Email, item.Cpf, idUsuario))
                 cursor.commit()
 
         if pEntity.FormacoesProf is not None:
             for item in pEntity.FormacoesProf:
                 cursor.execute('INSERT INTO formacaoAcademica (IdUsuario, InstituicaoEnsino, NomeCurso,NivelAcademico,AnoInicio,AnoTermino,DescricaoCurso,Anexo) VALUES (?,?, ?, ?, ?, ?, ?, ?)',
-                (idUsuario, item.InstituicaoEnsino,item.NomeCurso,item.NivelAcademico,item.AnoInicio, item.AnoTermino, item.DescricaoCurso, item.Anexo))
+                               (idUsuario, item.InstituicaoEnsino, item.NomeCurso, item.NivelAcademico, item.AnoInicio, item.AnoTermino, item.DescricaoCurso, item.Anexo))
                 cursor.commit()
 
         if pEntity.ExperienciasPraticaProf is not None:
             for item in pEntity.ExperienciasPraticaProf:
                 cursor.execute('INSERT INTO experienciaPratica (IdUsuario, TipoExperiencia, AtividadePrincipal, Descricao, DataInicio, DataTermino) VALUES (?,?,?,?,?,?)',
-                (idUsuario, item.TipoExperiencia, item.AtividadePrincipal, item.Descricao, item.DataInicio, item.DataTermino))
+                               (idUsuario, item.TipoExperiencia, item.AtividadePrincipal, item.Descricao, item.DataInicio, item.DataTermino))
                 cursor.commit()
 
         if pEntity.IdiomasAtendidosProf is not None:
             for item in pEntity.IdiomasAtendidosProf:
                 cursor.execute('INSERT INTO idiomasAtendidos (Ididioma,IdUsuario) VALUES (?,?)',
-                (item.Ididioma, idUsuario))
+                               (item.Ididioma, idUsuario))
                 cursor.commit()
-        
+
         if pEntity.AtendimentoPresencialProf is not None:
             for item in pEntity.AtendimentoPresencialProf:
                 cursor.execute('INSERT INTO atendimentoPresencial (Endereco,Numero,Conjunto,Bairro,Cidade,Estado,Cep,IdUsuario) VALUES (?, ?,?,?,?,?,?,?)',
-                (item.Endereco,item.Numero,item.Conjunto,item.Bairro,item.Cidade,item.Estado,item.Cep, idUsuario))
+                               (item.Endereco, item.Numero, item.Conjunto, item.Bairro, item.Cidade, item.Estado, item.Cep, idUsuario))
                 cursor.commit()
 
         if pEntity.ContasCorrente is not None:
             for item in pEntity.ContasCorrente:
                 cursor.execute('INSERT INTO ContaCorrente (Banco,Agencia,ContaCorrente,DigitoVerificador,IdUsuario) VALUES (?,?,?,?,?)',
-                (item.Banco,item.Agencia,item.ContaCorrente,item.DigitoVerificador, idUsuario))
+                               (item.Banco, item.Agencia, item.ContaCorrente, item.DigitoVerificador, idUsuario))
                 cursor.commit()
 
         pEntity.idUsuario = idUsuario
 
-    except Exception as mensagemErro: 
+    except Exception as mensagemErro:
         return mensagemErro
 
     return pEntity
+
 
 def CadastraEmpresa(eEntity: EmpresaEntity, IdPerfil: int):
 
     try:
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO [dbo].[usuario] (Nome, Telefone, Email, Cidade, Estado, IdConheceu, Senha, TermosCondicoes, PoliticaPrivacidade, Apelido, NomeEmpresaEmp, TelefoneCorporativoEmp, EmailCorporativoEmp,SiteEmpr,LinkedinEmpr, InstagramEmp,CargoFuncaoEmp,NumeroColaboradoresEmp) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                    (eEntity.Nome, eEntity.Telefone, eEntity.Email, eEntity.Cidade, eEntity.Estado, eEntity.IdConheceu, eEntity.Senha, eEntity.TermosCondicoes, eEntity.PoliticaPrivacidade, eEntity.Apelido, eEntity.NomeEmpresaEmp, eEntity.TelefoneCorporativoEmp, eEntity.EmailCorporativoEmp,eEntity.SiteEmpr,eEntity.LinkedinEmpr, eEntity.InstagramEmp,eEntity.CargoFuncaoEmp,eEntity.NumeroColaboradoresEmp))    
+        cursor.execute('INSERT INTO [dbo].[usuario] (Nome, Telefone, Email, Cidade, Estado, IdConheceu, Senha, TermosCondicoes, PoliticaPrivacidade, Apelido, NomeEmpresaEmp, TelefoneCorporativoEmp, EmailCorporativoEmp,SiteEmpr,LinkedinEmpr, InstagramEmp,CargoFuncaoEmp,NumeroColaboradoresEmp,Cnpj) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                       (eEntity.Nome, eEntity.Telefone, eEntity.Email, eEntity.Cidade, eEntity.Estado, eEntity.IdConheceu, eEntity.Senha, eEntity.TermosCondicoes, eEntity.PoliticaPrivacidade, eEntity.Apelido, eEntity.NomeEmpresaEmp, eEntity.TelefoneCorporativoEmp, eEntity.EmailCorporativoEmp, eEntity.SiteEmpr, eEntity.LinkedinEmpr, eEntity.InstagramEmp, eEntity.CargoFuncaoEmp, eEntity.NumeroColaboradoresEmp, eEntity.Cnpj))
         cursor.commit()
         cursor.execute("SELECT @@IDENTITY AS ID;")
         idUsuario = cursor.fetchone()[0]
@@ -102,16 +105,207 @@ def CadastraEmpresa(eEntity: EmpresaEntity, IdPerfil: int):
         if eEntity.PlanodeSaudeEmpresa is not None:
             for item in eEntity.PlanodeSaudeEmpresa:
                 cursor.execute('INSERT INTO planodeSaudeEmpresaUsuario (IdPlanoCredenciado, IdUsuario) VALUES (?,?)',
-                    (item.IdPlanoCredenciado, idUsuario))
+                               (item.IdPlanoCredenciado, idUsuario))
                 cursor.commit()
 
         if eEntity.ContasCorrente is not None:
             for item in eEntity.ContasCorrente:
                 cursor.execute('INSERT INTO ContaCorrente (Banco,Agencia,ContaCorrente,DigitoVerificador,IdUsuario) VALUES (?,?,?,?,?)',
-                (item.Banco,item.Agencia,item.ContaCorrente,item.DigitoVerificador, idUsuario))
+                               (item.Banco, item.Agencia, item.ContaCorrente, item.DigitoVerificador, idUsuario))
                 cursor.commit()
 
+        eEntity.idUsuario = idUsuario
+
     except Exception as mensagemErro:
+        return mensagemErro
+    return eEntity
+
+
+def BuscarUsuarioData(idUsuario: int):
+
+    try:
+
+        vlrconexao = CONNECTION_STRING_DB
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+
+        cursor.execute('''SELECT  
+                            Nome,
+                            Telefone, 
+                            Email, 
+                            Cidade, 
+                            Estado, 
+                            IdConheceu, 
+                            TermosCondicoes, 
+                            PoliticaPrivacidade, 
+                            Apelido, 
+                            EstadoCivil, 
+                            PossuiFilhosQtd, 
+                            IdHobbie, 
+                            DataNascimento, 
+                            Genero, 
+                            IdProfissao,
+                            Cpf,
+                            idUsuario, 
+                            Dependente
+                        FROM usuario WHERE idUsuario = ?''', (idUsuario))
+        records = cursor.fetchall()
+
+        listdep = []
+        if records[0][17] == True:
+            cursor.execute('''SELECT IdDependente,Nome,Apelido,DataNascimento,Genero, Telefone, Email, Cpf, IdUsuario
+                            FROM dependente WHERE idUsuario = ?''', (idUsuario))
+            dependentes = cursor.fetchall()
+            
+            if len(dependentes) > 0:
+                listdep = UsuarioFactory.DependenteEntityToModel(dependentes)
+
+        entity = UsuarioFactory.UsuarioEntityToModel(records, listdep)
+
+
+    except Exception as mensagemErro: 
             return mensagemErro
 
-    return eEntity
+    return entity
+
+
+def BuscarProfissionalData(idUsuario: int):
+    vlrconexao = CONNECTION_STRING_DB
+    conn = pyodbc.connect(CONNECTION_STRING_DB)
+    cursor = conn.cursor()
+
+    cursor.execute('''SELECT 
+                        Nome, 
+                        Telefone, 
+                        Email, 
+                        Cidade, 
+                        Estado, 
+                        IdConheceu, 
+                        TermosCondicoes, 
+                        PoliticaPrivacidade, 
+                        Apelido, 
+                        EstadoCivil, 
+                        PossuiFilhosQtd, 
+                        IdHobbie, 
+                        DataNascimento, 
+                        Genero, 
+                        IdProfissao, 
+                        Cpf,
+                        IdHorarioTrabalhoProf, 
+                        IdUsarPlataformaProf, 
+                        IdConselhoRegionalProf, 
+                        PossuiCNPJProf, 
+                        TrabalharComCNPJProf, 
+                        Cnpj, 
+                        CartaApresentacaoProf, 
+                        IdAbordagemProf, 
+                        DuracaoAtendimentoProf, 
+                        AtendePlanoDeSaudeProf,
+                        ReciboReembolsavelProf, 
+                        AtendePresencialmenteProf, 
+                        PrimeiroClienteCobraProf, 
+                        PrimeiroClienteValorFixoProf, 
+                        EmpresasParceirasDescontoProf, 
+                        ValorPorSessaoProf, 
+                        idUsuario
+                        FROM usuario WHERE idUsuario = ?''', (idUsuario))
+
+    records = cursor.fetchall()
+
+    #Experiencias
+    cursor.execute(''' SELECT IdExperiencia, IdUsuario, TipoExperiencia, AtividadePrincipal, Descricao,DataInicio,DataTermino FROM experienciaPratica
+                       WHERE idUsuario = ?''', (idUsuario))
+    experiencias = cursor.fetchall()
+
+    listexperiencias = []
+    if len(experiencias) > 0:
+        listexperiencias = UsuarioFactory.ExperienciasEntityToModel(experiencias)
+
+    #Conta Corrente
+    cursor.execute(''' SELECT IdContaBancaria, Banco, Agencia, ContaCorrente, DigitoVerificador, IdUsuario FROM [dbo].[ContaCorrente]
+                       WHERE idUsuario = ?''', (idUsuario))
+    cc = cursor.fetchall()
+    
+    listCC = []
+    if len(cc) > 0:
+        listCC = UsuarioFactory.ContaCorrenteEntityToModel(cc)
+
+    #Atendimento Presencial
+    cursor.execute(''' SELECT IdAtendimentoPresencial, Endereco, Numero, Conjunto, Bairro, Cidade, Estado,Cep,IdUsuario FROM atendimentoPresencial
+                       WHERE idUsuario = ?''', (idUsuario))
+    atp = cursor.fetchall()
+    
+    listAtp = []
+    if len(atp) > 0:
+        listAtp = UsuarioFactory.AtendimentoEntityToModel(atp)
+
+    #Idiomas
+    cursor.execute(''' SELECT Ididioma, idUsuario FROM idiomasAtendidos
+                       WHERE idUsuario = ?''', (idUsuario))
+    idiomas = cursor.fetchall()
+    
+    listIdiomas = []
+    if len(idiomas) > 0:
+        listIdiomas = UsuarioFactory.IdiomasEntityToModel(idiomas)
+
+    #Formacao Academica
+    cursor.execute(''' SELECT IdFormacao,IdUsuario,InstituicaoEnsino,NomeCurso,NivelAcademico,AnoInicio,AnoTermino,DescricaoCurso,Anexo FROM formacaoAcademica
+                       WHERE idUsuario = ?''', (idUsuario))
+    formacoes = cursor.fetchall()
+    
+    listFormacoes = []
+    if len(formacoes) > 0:
+        listFormacoes = UsuarioFactory.FormacoesEntityToModel(formacoes)
+
+    #Objeto completo
+    entity = UsuarioFactory.ProfEntityToModel(
+         records, listCC, listAtp, listIdiomas, listFormacoes, listexperiencias)
+
+    return entity
+
+def BuscarEmpresaData(idUsuario: int):
+    vlrconexao = CONNECTION_STRING_DB
+    conn = pyodbc.connect(CONNECTION_STRING_DB)
+    cursor = conn.cursor()
+
+    cursor.execute('''SELECT Nome,
+                        Telefone,
+                        Email,
+                        Cidade,
+                        Estado,
+                        IdConheceu,
+                        TermosCondicoes,
+                        PoliticaPrivacidade,
+                        Apelido,
+                        NomeEmpresaEmp,
+                        TelefoneCorporativoEmp,
+                        EmailCorporativoEmp,
+                        SiteEmpr,
+                        LinkedinEmpr,
+                        InstagramEmp,
+                        CargoFuncaoEmp,
+                        NumeroColaboradoresEmp,
+                        Cnpj,
+                        idUsuario
+                    FROM usuario WHERE idUsuario = ?''', (idUsuario))
+    records = cursor.fetchall()
+
+    listplanos = []
+    cursor.execute('''SELECT Id, IdPlanoCredenciado, IdUsuario  
+                        FROM planodeSaudeEmpresaUsuario WHERE idUsuario = ?''', (idUsuario))
+    planos = cursor.fetchall()
+    if len(planos) > 0:
+            listplanos = UsuarioFactory.PlanosEntityToModel(planos)
+
+    #Conta Corrente
+    cursor.execute(''' SELECT IdContaBancaria, Banco, Agencia, ContaCorrente, DigitoVerificador, IdUsuario FROM [dbo].[ContaCorrente]
+                    WHERE idUsuario = ?''', (idUsuario))
+    cc = cursor.fetchall()
+
+    listCC = []
+    if len(cc) > 0:
+        listCC = UsuarioFactory.ContaCorrenteEntityToModel(cc)
+
+    entity = UsuarioFactory.EmpresaEntityToModel(records,listplanos, listCC)
+    
+    return entity

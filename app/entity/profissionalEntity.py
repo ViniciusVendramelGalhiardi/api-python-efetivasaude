@@ -9,7 +9,7 @@ class ProfissionalEntity(BaseModel):
     Cidade: str
     Estado: str
     IdConheceu: int
-    Senha: str
+    Senha: Optional[str]
     TermosCondicoes: bool
     PoliticaPrivacidade: bool
     Apelido: str
@@ -25,7 +25,7 @@ class ProfissionalEntity(BaseModel):
     IdConselhoRegionalProf: Optional[int] 
     PossuiCNPJProf: Optional[bool] 
     TrabalharComCNPJProf: Optional[bool] 
-    CnPj: Optional[str] 
+    Cnpj: Optional[str] 
     CartaApresentacaoProf: Optional[str] 
     IdAbordagemProf: Optional[int]
     DuracaoAtendimentoProf:Optional[str] = ''
@@ -36,7 +36,8 @@ class ProfissionalEntity(BaseModel):
     PrimeiroClienteValorFixoProf: Optional[bool] = True
     EmpresasParceirasDescontoProf: Optional[bool] = True
     ValorPorSessaoProf: Optional[float] = 0.00
-    Dependente:bool
+    Dependente:Optional[bool] = False
+    
     Dependentes: Optional[List] #lista
     ExperienciasPraticaProf: Optional[List]
     FormacoesProf:  Optional[List]
