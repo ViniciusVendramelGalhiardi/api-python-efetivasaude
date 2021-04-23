@@ -34,7 +34,6 @@ def CadastraUsuario(uEntity: UsuarioEntity, IdPerfil: int):
         return mensagemErro
     return uEntity
 
-
 def CadastraProfissional(pEntity: ProfissionalEntity, IdPerfil: int):
 
     try:
@@ -90,7 +89,6 @@ def CadastraProfissional(pEntity: ProfissionalEntity, IdPerfil: int):
 
     return pEntity
 
-
 def CadastraEmpresa(eEntity: EmpresaEntity, IdPerfil: int):
 
     try:
@@ -119,7 +117,6 @@ def CadastraEmpresa(eEntity: EmpresaEntity, IdPerfil: int):
     except Exception as mensagemErro:
         return mensagemErro
     return eEntity
-
 
 def BuscarUsuarioData(idUsuario: int):
 
@@ -167,7 +164,6 @@ def BuscarUsuarioData(idUsuario: int):
             return mensagemErro
 
     return entity
-
 
 def BuscarProfissionalData(idUsuario: int):
     vlrconexao = CONNECTION_STRING_DB
@@ -264,6 +260,7 @@ def BuscarProfissionalData(idUsuario: int):
     return entity
 
 def BuscarEmpresaData(idUsuario: int):
+
     vlrconexao = CONNECTION_STRING_DB
     conn = pyodbc.connect(CONNECTION_STRING_DB)
     cursor = conn.cursor()
@@ -286,7 +283,8 @@ def BuscarEmpresaData(idUsuario: int):
                         CargoFuncaoEmp,
                         NumeroColaboradoresEmp,
                         Cnpj,
-                        idUsuario
+                        idUsuario,
+                        IdUsuarioIugu
                     FROM usuario WHERE idUsuario = ?''', (idUsuario))
     records = cursor.fetchall()
 
@@ -305,7 +303,15 @@ def BuscarEmpresaData(idUsuario: int):
     listCC = []
     if len(cc) > 0:
         listCC = UsuarioFactory.ContaCorrenteEntityToModel(cc)
-
     entity = UsuarioFactory.EmpresaEntityToModel(records,listplanos, listCC)
     
     return entity
+
+
+def AtualizaIdUsuarioIugu(IdUsuarioIugu, IdUsuario):
+    conn = pyodbc.connect(CONNECTION_STRING_DB)
+    cursor = conn.cursor()
+
+    cursor.execute('UPDATE usuario SET IdUsuarioIugu = ? WHERE IdUsuario = ?',
+                       (IdUsuarioIugu, IdUsuario))
+    cursor.commit()

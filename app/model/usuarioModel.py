@@ -68,6 +68,11 @@ class UsuarioModel(BaseModel):
     PlanodeSaudeEmpresa: Optional[List[PlanodeSaudeEmpresaUsuario]]  
     ContasCorrente: Optional[List[ContaCorrenteModel]]
 
+
+    #iugu
+    IdUsuarioIugu: Optional[str]
+
+
     @validator('Senha_Confirmar')
     def passwords_match(cls, v, values, **kwargs):
         if 'Senha' in values and v != values['Senha']:

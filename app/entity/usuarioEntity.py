@@ -23,3 +23,6 @@ class UsuarioEntity(BaseModel):
     Dependente:Optional[bool]
     idUsuario: Optional[int]
     Dependentes: Optional[List]
+    
+    #iugu
+    IdUsuarioIugu: Optional[str]

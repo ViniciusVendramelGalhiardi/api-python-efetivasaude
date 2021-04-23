@@ -86,6 +86,7 @@ class UsuarioFactory():
             NumeroColaboradoresEmp=records[0][16],
             Cnpj=records[0][17],
             idUsuario = records[0][18],
+            IdUsuarioIugu = records[0][19], 
             PlanodeSaudeEmpresa=_planos,
             ContasCorrente=_contacorrente
         )
@@ -204,7 +205,7 @@ class UsuarioFactory():
         return listdep
 
     def ProfissionalModelToEntity(uModel: UsuarioModel):
-
+        
         try:
             prof = ProfissionalEntity(
                 Nome=uModel.Nome,

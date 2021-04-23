@@ -57,7 +57,6 @@ def ListaHorarioTrabalho():
 def ListaIdiomas():
     return listaIdiomas()
 
-
 @router_web.get("/ListaNosConheceu/")
 def ListaNosConheceu():
     return listaNosConheceu()
@@ -65,7 +64,6 @@ def ListaNosConheceu():
 @router_web.get("/ListaPlanos/")
 def ListaPlanos():
     return listaPlanos()
-
 
 @router_web.get("/ListaProfissao/")
 def ListaProfissao():
@@ -79,29 +77,4 @@ def ListaSintomas():
 def ListaUsarPlataforma():
     return listaUsarPlataforma()
 
-# @router_web.get("/paymentmethods/{merchantAccount}", summary="Get Methods Web Payments")
-# async def paymentMethods(merchantAccount: str): 
-#     try:
-#         response = adyen_payment_methods(merchantAccount)
-#         return response
-#     except Exception as e:
-#         logger.debug(e)
-#         return getResponse(400, "Request error.", "")          
 
-# @router_web.post("/payment/", summary="Create new Payment Web")
-# async def payment(paymentsWebModel: PaymentsWebModel):
-#     try:
-#         response = adyen_payments(paymentsWebModel)
-#         return response
-#     except Exception as e:
-#         logger.debug(e)
-#         return getResponse(400, "Request error.", "")          
-
-# @router_web.post("/cancelorrefundpayment/", summary="Cancel Payment Web")
-# async def payment(cancelPaymentsModel: CancelPaymentsModel):
-#     try:
-#         response = adyen_payment_cancel_refund(cancelPaymentsModel)
-#         return response
-#     except Exception as e:
-#         logger.debug(e)
-#         return getResponse(400, "Request error.", "")
