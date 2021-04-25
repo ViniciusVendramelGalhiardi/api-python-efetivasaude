@@ -8,7 +8,7 @@ from datetime import datetime
 from app.model.subContaResponseModel import SubContaResponseModel
 from app.entity.subContaEntity import SubContaEntity
 from app.model.verificacaoContaModel import VerificacaoContaModel
-
+from app.model.pedidosaqueModel import PedidoSaqueModel
 
 def CadastraFormaPgtoUsuario(pgto: FormaPagamentoModel):
     try:
@@ -229,6 +229,30 @@ def GravaVerificacaoContaRetorno(response: VerificacaoContaModel):
                             ,[IdUsuarioIugu])
                             VALUES (?,?,?,?,?,?)''',
                        (response.IdSubConta, response.IdPerfil,response.TokenSubContaPrd, response.RetornoJson, response.IdUsuario, response.IdPerfil))
+        cursor.commit()
+        cursor.execute("SELECT @@IDENTITY AS ID;")
+        Id = cursor.fetchone()[0]
+
+    except Exception as mensagemErro:
+        return mensagemErro
+    return Id
+
+
+def GravaSolicitacaoSaque(response: PedidoSaqueModel):
+    try:
+        vlrconexao = CONNECTION_STRING_DB
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+
+        cursor.execute('''INSERT INTO [dbo].[pedidosaque]
+                                ([IdSubConta]
+                                ,[ValorSaque]
+                                ,[IdUsuario]
+                                ,[DataSolicitacao]
+                                ,[IdRetorno])
+                            VALUES (?,?,?,?,?)''',
+                       (response.IdSubConta, response.ValorSaque,response.IdUsuario, response.DataSolicitacao,
+                        response.IdRetorno))
         cursor.commit()
         cursor.execute("SELECT @@IDENTITY AS ID;")
         Id = cursor.fetchone()[0]

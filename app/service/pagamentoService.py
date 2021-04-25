@@ -8,13 +8,15 @@ import requests
 from settings import API_TOKEN_IUGU, URL_API_IUGU_CUSTOMERS, URL_API_PAGAMENTO, URL_CRIAR_SUB_CONTA,URL_ENVIA_CONTA_VERIFICACAO
 from app.model.formadePagamentoiugu import FormaDePagamentoIugu
 from app.model.formapgtoModel import FormaPagamentoModel
-from app.data.pagamentosData import CadastraFormaPgtoUsuario, BuscarFormasPagamento, GravaTransacaoAutorizadaDb,GravaDadosSubContaProfissional, BuscarSubConta,GravaVerificacaoContaRetorno
+from app.data.pagamentosData import CadastraFormaPgtoUsuario, BuscarFormasPagamento, GravaTransacaoAutorizadaDb,GravaDadosSubContaProfissional, BuscarSubConta,GravaVerificacaoContaRetorno,GravaSolicitacaoSaque
 from app.model.requestPagamentoModel import RequestPagamentoModel
 from app.model.responsePagamentoModel import ResponsePagamentoModel
 from app.model.subContaRequestModel import SubContaRequestModel
 from app.model.subContaResponseModel import SubContaResponseModel
 from app.data.usuarioData import BuscarProfissionalData, BuscarEmpresaData
 from app.model.verificacaoContaModel import VerificacaoContaModel
+from app.model.pedidosaqueModel import PedidoSaqueModel
+from datetime import datetime  
 
 def CriarFormaPagamentoService(formapgto: FormaDePagamentoIugu):
     url = URL_API_IUGU_CUSTOMERS + "/" + formapgto.idClienteIugu + "/payment_methods"
@@ -177,5 +179,22 @@ def EnviaVerificacaoSubConta(IdUsuario:int,IdSubConta:str,TokenSubContaPrd:str, 
 
     #cadastra response verificacao conta:
     GravaVerificacaoContaRetorno(result)
+
+    return response.json()
+
+
+def SolicitaSaqueSubConta(TokenSubContaPrd:str,IdSubConta:str, ValorSaque:str, IdUsuario:int):
+    
+    url = URL_ENVIA_CONTA_VERIFICACAO + IdSubConta + "/request_withdraw" #idSubConta
+    querystring = {"api_token":TokenSubContaPrd} #Token da subconta de produção
+    payload = {"amount": ValorSaque.replace(',', '').replace('.', '')}
+    headers = {"Content-Type": "application/json"}
+    response = requests.request("POST", url, json=payload, headers=headers, params=querystring)
+
+    if response.status_code == 200:
+        result = PedidoSaqueModel(0,IdSubConta, ValorSaque.replace('.', '').replace(',', ''), 
+                                    IdUsuario, datetime.now(), response.json()['id'])
+        GravaSolicitacaoSaque(result)
+        return response.json()
 
     return response.json()

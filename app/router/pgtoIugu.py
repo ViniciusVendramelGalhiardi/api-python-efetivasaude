@@ -7,7 +7,7 @@ import json
 from app.auth.auth_bearer import JWTBearer
 from app.auth.auth_handler import signJWT
 from app.model.formadePagamentoiugu import FormaDePagamentoIugu
-from app.service.pagamentoService import CriarFormaPagamentoService, BuscarFormasPagamentoService, EfetuarPagamentoService, CriarSubContaService,BuscarSubContaService, EnviaVerificacaoSubConta
+from app.service.pagamentoService import CriarFormaPagamentoService, BuscarFormasPagamentoService, EfetuarPagamentoService, CriarSubContaService,BuscarSubContaService, EnviaVerificacaoSubConta, SolicitaSaqueSubConta
 from app.model.requestPagamentoModel import RequestPagamentoModel
 from app.model.subContaRequestModel import SubContaRequestModel
 
@@ -15,7 +15,6 @@ router_pgto = APIRouter(
     prefix="/pgtoIugu",
     tags=["pgtoIugu"]
 )
-
 
 @router_pgto.post("/criarformaPagamento/")
 async def cadastrarCartao(formapgto: FormaDePagamentoIugu):
@@ -46,7 +45,6 @@ def BuscarSubConta(idUsuarioIugu: str):
     except Exception as mensagemErro: 
             return mensagemErro  
 
-    
 @router_pgto.get("/EnviaVerificacaoConta/{idUsuario}/{IdSubConta}/{TokenSubContaPrd}/{IdPerfil}")
 def EnviaVerificacaoContaParaIugu(idUsuario: int, IdSubConta: str, TokenSubContaPrd: str, IdPerfil: int):
     try:
@@ -54,3 +52,10 @@ def EnviaVerificacaoContaParaIugu(idUsuario: int, IdSubConta: str, TokenSubConta
     except Exception as mensagemErro: 
             return mensagemErro    
 
+
+@router_pgto.get("/SolicitaSaqueSubConta/{TokenSubContaPrd}/{IdSubConta}/{ValorSaque}")
+def PedidoDeSaqueMonetario(TokenSubContaPrd:str,IdSubConta:str, ValorSaque:str, IdUsuario:int):
+    try:
+      return  SolicitaSaqueSubConta(TokenSubContaPrd,IdSubConta, ValorSaque,IdUsuario)
+    except Exception as mensagemErro: 
+            return mensagemErro    
