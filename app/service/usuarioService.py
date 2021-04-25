@@ -12,7 +12,6 @@ from app.factory.clienteFactory import UsuarioFactory
 from app.data.usuarioData import CadastraUsuario
 
 
-
 def CadastrarUsuario(IdPerfil, User: UsuarioModel):
     if IdPerfil == 1:
         uEntity = UsuarioFactory.UsuarioModelToEntity(User)
@@ -31,7 +30,9 @@ def CadastrarUsuario(IdPerfil, User: UsuarioModel):
        eEntity = UsuarioFactory.EmpresaModelToEntity(User)
        #TODO: SALVAR NO BANCO O EMPRESA TRATADA
        response = CadastraEmpresa(eEntity,IdPerfil)
-       CadastraUsuarioIugu(response, 3)
+       response.idUsuarioIugu = CadastraUsuarioIugu(response, 3)
+       AtualizaIdUsuarioIugu(response.idUsuarioIugu, response.idUsuario)
+       response.idUsuario = IdPerfil
        return response
 
 def BuscaUsuarioService(idUsuario, IdPerfil):

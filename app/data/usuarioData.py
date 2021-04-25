@@ -14,10 +14,10 @@ def CadastraUsuario(uEntity: UsuarioEntity, IdPerfil: int):
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
 
-        cursor.execute('INSERT INTO usuario (Nome, Telefone,Email,Cidade, Estado, IdConheceu, Senha, TermosCondicoes,PoliticaPrivacidade, Apelido, EstadoCivil, PossuiFilhosQtd, IdHobbie,DataNascimento, Genero, IdProfissao,Cpf , Dependente) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? )',
-                       (uEntity.Nome, uEntity.Telefone, uEntity.Email, uEntity.Cidade, uEntity.Estado, uEntity.IdConheceu, uEntity.Senha, uEntity.TermosCondicoes,
+        cursor.execute('INSERT INTO usuario (Nome, Telefone,Email,Cidade, Estado, Cep, Endereco, IdConheceu, Senha, TermosCondicoes,PoliticaPrivacidade, Apelido, EstadoCivil, PossuiFilhosQtd, IdHobbie,DataNascimento, Genero, IdProfissao,Cpf , Dependente, IdPerfil) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                       (uEntity.Nome, uEntity.Telefone, uEntity.Email, uEntity.Cidade, uEntity.Estado, uEntity.Cep, uEntity.Endereco, uEntity.IdConheceu, uEntity.Senha, uEntity.TermosCondicoes,
                         uEntity.PoliticaPrivacidade, uEntity.Apelido, uEntity.EstadoCivil, uEntity.PossuiFilhosQtd, uEntity.IdHobbie, uEntity.DataNascimento,
-                        uEntity.Genero, uEntity.IdConheceu, uEntity.Cpf, uEntity.Dependente))
+                        uEntity.Genero, uEntity.IdConheceu, uEntity.Cpf, uEntity.Dependente, IdPerfil))
         cursor.commit()
         cursor.execute("SELECT @@IDENTITY AS ID;")
         idUsuario = cursor.fetchone()[0]
@@ -39,9 +39,11 @@ def CadastraProfissional(pEntity: ProfissionalEntity, IdPerfil: int):
     try:
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO usuario (Nome, Telefone,Email,Cidade, Estado, IdConheceu, Senha, TermosCondicoes,PoliticaPrivacidade, Apelido, EstadoCivil, PossuiFilhosQtd, IdHobbie,DataNascimento, Genero, IdProfissao,Cpf , Dependente,IdHorarioTrabalhoProf,IdUsarPlataformaProf,IdConselhoRegionalProf,PossuiCNPJProf,TrabalharComCNPJProf,Cnpj,CartaApresentacaoProf,IdAbordagemProf,DuracaoAtendimentoProf, AtendePlanoDeSaudeProf,ReciboReembolsavelProf,AtendePresencialmenteProf,PrimeiroClienteCobraProf,PrimeiroClienteValorFixoProf,EmpresasParceirasDescontoProf,ValorPorSessaoProf) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                       (pEntity.Nome, pEntity.Telefone, pEntity.Email, pEntity.Cidade, pEntity.Estado, pEntity.IdConheceu, pEntity.Senha, pEntity.TermosCondicoes, pEntity.PoliticaPrivacidade,
-                        pEntity.Apelido, pEntity.EstadoCivil, pEntity.PossuiFilhosQtd, pEntity.IdHobbie, pEntity.DataNascimento, pEntity.Genero, pEntity.IdProfissao, pEntity.Cpf, pEntity.Dependente, pEntity.IdHorarioTrabalhoProf, pEntity.IdUsarPlataformaProf, pEntity.IdConselhoRegionalProf, pEntity.PossuiCNPJProf, pEntity.TrabalharComCNPJProf, pEntity.Cnpj, pEntity.CartaApresentacaoProf, pEntity.IdAbordagemProf, pEntity.DuracaoAtendimentoProf, pEntity.AtendePlanoDeSaudeProf, pEntity.ReciboReembolsavelProf, pEntity.AtendePresencialmenteProf, pEntity.PrimeiroClienteCobraProf, pEntity.PrimeiroClienteValorFixoProf, pEntity.EmpresasParceirasDescontoProf, pEntity.ValorPorSessaoProf))
+        cursor.execute('INSERT INTO usuario (Nome, Telefone,Email,Cidade, Estado, Cep, Endereco, IdConheceu, Senha, TermosCondicoes,PoliticaPrivacidade, Apelido, EstadoCivil, PossuiFilhosQtd, IdHobbie,DataNascimento, Genero, IdProfissao,Cpf , Dependente,IdHorarioTrabalhoProf,IdUsarPlataformaProf,IdConselhoRegionalProf,PossuiCNPJProf,TrabalharComCNPJProf,Cnpj,CartaApresentacaoProf,IdAbordagemProf,DuracaoAtendimentoProf, AtendePlanoDeSaudeProf,ReciboReembolsavelProf,AtendePresencialmenteProf,PrimeiroClienteCobraProf,PrimeiroClienteValorFixoProf,EmpresasParceirasDescontoProf,ValorPorSessaoProf, IdPerfil) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                       (pEntity.Nome, pEntity.Telefone, pEntity.Email, pEntity.Cidade, pEntity.Estado, pEntity.Cep, pEntity.Endereco, pEntity.IdConheceu, pEntity.Senha, pEntity.TermosCondicoes, pEntity.PoliticaPrivacidade,
+                        pEntity.Apelido, pEntity.EstadoCivil, pEntity.PossuiFilhosQtd, pEntity.IdHobbie, pEntity.DataNascimento, pEntity.Genero, pEntity.IdProfissao, pEntity.Cpf, pEntity.Dependente, pEntity.IdHorarioTrabalhoProf,
+                        pEntity.IdUsarPlataformaProf, pEntity.IdConselhoRegionalProf, pEntity.PossuiCNPJProf, pEntity.TrabalharComCNPJProf, pEntity.Cnpj, pEntity.CartaApresentacaoProf, pEntity.IdAbordagemProf, pEntity.DuracaoAtendimentoProf,
+                        pEntity.AtendePlanoDeSaudeProf, pEntity.ReciboReembolsavelProf, pEntity.AtendePresencialmenteProf, pEntity.PrimeiroClienteCobraProf, pEntity.PrimeiroClienteValorFixoProf, pEntity.EmpresasParceirasDescontoProf, pEntity.ValorPorSessaoProf, IdPerfil))
         cursor.commit()
         cursor.execute("SELECT @@IDENTITY AS ID;")
         idUsuario = cursor.fetchone()[0]
@@ -94,8 +96,8 @@ def CadastraEmpresa(eEntity: EmpresaEntity, IdPerfil: int):
     try:
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO [dbo].[usuario] (Nome, Telefone, Email, Cidade, Estado, IdConheceu, Senha, TermosCondicoes, PoliticaPrivacidade, Apelido, NomeEmpresaEmp, TelefoneCorporativoEmp, EmailCorporativoEmp,SiteEmpr,LinkedinEmpr, InstagramEmp,CargoFuncaoEmp,NumeroColaboradoresEmp,Cnpj) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                       (eEntity.Nome, eEntity.Telefone, eEntity.Email, eEntity.Cidade, eEntity.Estado, eEntity.IdConheceu, eEntity.Senha, eEntity.TermosCondicoes, eEntity.PoliticaPrivacidade, eEntity.Apelido, eEntity.NomeEmpresaEmp, eEntity.TelefoneCorporativoEmp, eEntity.EmailCorporativoEmp, eEntity.SiteEmpr, eEntity.LinkedinEmpr, eEntity.InstagramEmp, eEntity.CargoFuncaoEmp, eEntity.NumeroColaboradoresEmp, eEntity.Cnpj))
+        cursor.execute('INSERT INTO [dbo].[usuario] (Nome, Telefone, Email, Cidade, Estado, Cep, Endereco, IdConheceu, Senha, TermosCondicoes, PoliticaPrivacidade, Apelido, NomeEmpresaEmp, TelefoneCorporativoEmp, EmailCorporativoEmp,SiteEmpr,LinkedinEmpr, InstagramEmp,CargoFuncaoEmp,NumeroColaboradoresEmp,Cnpj, IdPerfil) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                       (eEntity.Nome, eEntity.Telefone, eEntity.Email, eEntity.Cidade, eEntity.Estado, eEntity.Cep, eEntity.Endereco, eEntity.IdConheceu, eEntity.Senha, eEntity.TermosCondicoes, eEntity.PoliticaPrivacidade, eEntity.Apelido, eEntity.NomeEmpresaEmp, eEntity.TelefoneCorporativoEmp, eEntity.EmailCorporativoEmp, eEntity.SiteEmpr, eEntity.LinkedinEmpr, eEntity.InstagramEmp, eEntity.CargoFuncaoEmp, eEntity.NumeroColaboradoresEmp, eEntity.Cnpj, IdPerfil))
         cursor.commit()
         cursor.execute("SELECT @@IDENTITY AS ID;")
         idUsuario = cursor.fetchone()[0]
@@ -144,7 +146,11 @@ def BuscarUsuarioData(idUsuario: int):
                             IdProfissao,
                             Cpf,
                             idUsuario, 
-                            Dependente
+                            Dependente,
+                           	Cep, 
+							Endereco,
+							IdUsuarioIugu,
+							IdPerfil
                         FROM usuario WHERE idUsuario = ?''', (idUsuario))
         records = cursor.fetchall()
 
@@ -203,7 +209,11 @@ def BuscarProfissionalData(idUsuario: int):
                         PrimeiroClienteValorFixoProf, 
                         EmpresasParceirasDescontoProf, 
                         ValorPorSessaoProf, 
-                        idUsuario
+                        idUsuario,
+                        Cep, 
+						Endereco,
+						IdUsuarioIugu,
+						IdPerfil
                         FROM usuario WHERE idUsuario = ?''', (idUsuario))
 
     records = cursor.fetchall()
@@ -284,7 +294,9 @@ def BuscarEmpresaData(idUsuario: int):
                         NumeroColaboradoresEmp,
                         Cnpj,
                         idUsuario,
-                        IdUsuarioIugu
+                        IdUsuarioIugu,
+                        Cep,
+                        Endereco
                     FROM usuario WHERE idUsuario = ?''', (idUsuario))
     records = cursor.fetchall()
 

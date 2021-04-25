@@ -8,6 +8,8 @@ class UsuarioEntity(BaseModel):
     Email: Optional[str]
     Cidade: Optional[str]
     Estado: Optional[str]
+    Cep:Optional[str]
+    Endereco:Optional[str]
     IdConheceu: Optional[int]
     Senha: Optional[str]
     TermosCondicoes: Optional[bool]
@@ -26,3 +28,5 @@ class UsuarioEntity(BaseModel):
     
     #iugu
     IdUsuarioIugu: Optional[str]
+    IdPerfil: Optional[str]
+

@@ -8,6 +8,8 @@ class ProfissionalEntity(BaseModel):
     Email: str
     Cidade: str
     Estado: str
+    Cep:Optional[str]
+    Endereco:Optional[str]
     IdConheceu: int
     Senha: Optional[str]
     TermosCondicoes: bool
@@ -45,5 +47,7 @@ class ProfissionalEntity(BaseModel):
     AtendimentoPresencialProf: Optional[List]
     ContasCorrente: Optional[List]
     idUsuario: Optional[int]
+    
     idUsuarioIugu:Optional[str]
+    IdPerfil: Optional[str]
     

@@ -8,6 +8,8 @@ class EmpresaEntity(BaseModel):
     Email: Optional[str] 
     Cidade: Optional[str] 
     Estado: Optional[str] 
+    Cep:Optional[str]
+    Endereco:Optional[str]
     IdConheceu: Optional[int] 
     Senha: Optional[str]
     TermosCondicoes: Optional[bool] 
@@ -26,3 +28,6 @@ class EmpresaEntity(BaseModel):
     PlanodeSaudeEmpresa: Optional[List]  
     ContasCorrente: Optional[List]  
     idUsuario: Optional[int]
+
+    idUsuarioIugu:Optional[str]
+    IdPerfil: Optional[str]

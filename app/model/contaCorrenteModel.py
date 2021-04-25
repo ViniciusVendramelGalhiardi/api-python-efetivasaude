@@ -4,7 +4,7 @@ from pydantic import BaseModel, ValidationError, validator
 
 class ContaCorrenteModel(BaseModel):
     Banco: str
-    Agencia: int
+    Agencia: str
     ContaCorrente: int
-    DigitoVerificador: int
+    DigitoVerificador: str
     IdUsuario: Optional[int]

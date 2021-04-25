@@ -19,6 +19,8 @@ class UsuarioModel(BaseModel):
     Email: str
     Cidade:str
     Estado:str
+    Cep:str
+    Endereco:Optional[str]
     IdConheceu:int
     Senha:str
     Senha_Confirmar:Optional[str] 

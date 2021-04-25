@@ -20,6 +20,8 @@ class UsuarioFactory():
             Email=uModel.Email,
             Cidade=uModel.Cidade,
             Estado=uModel.Estado,
+            Cep=uModel.Cep,
+            Endereco=uModel.Endereco,
             IdConheceu=uModel.IdConheceu,
             Senha=uModel.Senha,
             TermosCondicoes=uModel.TermosCondicoes,
@@ -58,7 +60,11 @@ class UsuarioFactory():
             Cpf=records[0][15],
             idUsuario=records[0][16],
             Dependente=records[0][17],
-            Dependentes=_dependentes
+            Dependentes=_dependentes,
+            Cep=records[0][18], 
+			Endereco=records[0][19],
+			IdUsuarioIugu=records[0][20],
+			IdPerfil=records[0][21]
         )
 
         return user
@@ -86,7 +92,9 @@ class UsuarioFactory():
             NumeroColaboradoresEmp=records[0][16],
             Cnpj=records[0][17],
             idUsuario = records[0][18],
-            IdUsuarioIugu = records[0][19], 
+            idUsuarioIugu = records[0][19],
+            Cep = records[0][20],
+            Endereco=records[0][21], 
             PlanodeSaudeEmpresa=_planos,
             ContasCorrente=_contacorrente
         )
@@ -213,6 +221,8 @@ class UsuarioFactory():
                 Email=uModel.Email,
                 Cidade=uModel.Cidade,
                 Estado=uModel.Estado,
+                Cep=uModel.Cep,
+                Endereco=uModel.Endereco,
                 IdConheceu=uModel.IdConheceu,
                 Senha=uModel.Senha,
                 TermosCondicoes=uModel.TermosCondicoes,
@@ -295,6 +305,10 @@ class UsuarioFactory():
                 EmpresasParceirasDescontoProf=records[0][30],
                 ValorPorSessaoProf=records[0][31],
                 idUsuario=records[0][32],
+                Cep=records[0][33], 
+				Endereco=records[0][34],
+				idUsuarioIugu=records[0][35],
+				IdPerfil=records[0][36],
 
                 ExperienciasPraticaProf=_experienciasPraticaProf,
                 FormacoesProf=_formacoesProf,
@@ -317,6 +331,8 @@ class UsuarioFactory():
                 Email=uModel.Email,
                 Cidade=uModel.Cidade,
                 Estado=uModel.Estado,
+                Cep=uModel.Cep,
+                Endereco=uModel.Endereco,
                 IdConheceu=uModel.IdConheceu,
                 Senha=uModel.Senha,
                 TermosCondicoes=uModel.TermosCondicoes,
