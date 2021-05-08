@@ -7,9 +7,11 @@ import json
 from app.auth.auth_bearer import JWTBearer
 from app.auth.auth_handler import signJWT
 from app.model.formadePagamentoiugu import FormaDePagamentoIugu
-from app.service.pagamentoService import CriarFormaPagamentoService, BuscarFormasPagamentoService, EfetuarPagamentoService, CriarSubContaService,BuscarSubContaService, EnviaVerificacaoSubConta, SolicitaSaqueSubConta
+from app.service.pagamentoService import CriarFormaPagamentoService, BuscarFormasPagamentoService, EfetuarPagamentoService, CriarSubContaService,BuscarSubContaService, EnviaVerificacaoSubConta, SolicitaSaqueSubConta,VincularASubConta
 from app.model.requestPagamentoModel import RequestPagamentoModel
 from app.model.subContaRequestModel import SubContaRequestModel
+from app.service.usuarioService import VincularUsuarioSubConta
+from app.model.vincularCustomerSubConta import UsuarioVinculadoSubConta
 
 router_pgto = APIRouter(
     prefix="/pgtoIugu",
@@ -59,3 +61,19 @@ def PedidoDeSaqueMonetario(TokenSubContaPrd:str,IdSubConta:str, ValorSaque:str, 
       return  SolicitaSaqueSubConta(TokenSubContaPrd,IdSubConta, ValorSaque,IdUsuario)
     except Exception as mensagemErro: 
             return mensagemErro    
+
+
+@router_pgto.post("/CadastrarUsuarioNaSubConta/{IdUsuario}/{IdPerfil}/{TokenSubContaPrd}")
+def VincularUsuarioASubConta(IdUsuario:int,IdPerfil:int, UserTokenSubContaPrd:str):
+    try:
+      return  VincularUsuarioSubConta(IdUsuario,IdPerfil, UserTokenSubContaPrd)
+    except Exception as mensagemErro:
+            return mensagemErro
+
+
+@router_pgto.post("/VincularClienteSubConta")
+def disponibilizaFormaPagamentoEntreContas(IdUsuarioSubConta:str,IdUsuarioContaMaster:str, UserTokenDaSubConta:str):
+    try:
+      return  VincularASubConta(IdUsuarioSubConta,IdUsuarioContaMaster, UserTokenDaSubConta)
+    except Exception as mensagemErro:
+            return mensagemErro

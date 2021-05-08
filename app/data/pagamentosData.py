@@ -31,7 +31,7 @@ def CadastraFormaPgtoUsuario(pgto: FormaPagamentoModel):
                             ,[NumeroMascara])
                         VALUES
                             (?,?,?,?,?,?,?,?,?,?,?,?,?)''',
-                       (pgto.id, pgto.description, pgto.item_type, pgto.customer_id, pgto.data['brand'], pgto.data['holder_name'], pgto.data['display_number'], pgto.data['bin'], pgto.data['year'], pgto.data['month'], pgto.data['last_digits'], pgto.data['first_digits'], pgto.data['masked_number']))
+                       (pgto.id, pgto.description, pgto.item_type, pgto.customer_id, pgto.data['brand'], pgto.data['holder_name'], pgto.data['display_number'], pgto.data['bin'], pgto.data['year'], pgto.data['month'], '', '', pgto.data['display_number']))
         cursor.commit()
         cursor.execute("SELECT @@IDENTITY AS ID;")
         Id = cursor.fetchone()[0]
@@ -84,11 +84,11 @@ def BuscarFormasPagamento(IdUsuarioIugu: str):
     return result
 
 
-def GravaTransacaoAutorizadaDb(subconta: SubContaResponseModel, IdUsuarioIugu: str):
+def GravaTransacaoAutorizadaDb(subconta: ResponsePagamentoModel, IdUsuarioIugu: str, Valor:str):
     try:
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
-
+        
         cursor.execute('''INSERT INTO [dbo].[transacao]
                             ([status]
                             ,[info_message]
@@ -103,10 +103,11 @@ def GravaTransacaoAutorizadaDb(subconta: SubContaResponseModel, IdUsuarioIugu: s
                             ,[invoice_id]
                             ,[LR]
                             ,[idUsuarioIugu]
-                            ,[DataTransacao])
+                            ,[DataTransacao]
+                            ,[Valor])
                         VALUES
-                            (?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
-                       (pgto.status, pgto.info_message, pgto.reversible, pgto.token, pgto.brand, pgto.bin, pgto.success, pgto.url, pgto.pdf, pgto.identification, pgto.invoice_id, pgto.lr, IdUsuarioIugu, datetime.now()))
+                            (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
+                       (subconta.status, subconta.info_message, subconta.reversible, subconta.token, subconta.brand, subconta.bin, subconta.success, subconta.url, subconta.pdf, subconta.identification, subconta.invoice_id, subconta.lr, IdUsuarioIugu, datetime.now(), Valor))
         cursor.commit()
         cursor.execute("SELECT @@IDENTITY AS ID;")
         Id = cursor.fetchone()[0]

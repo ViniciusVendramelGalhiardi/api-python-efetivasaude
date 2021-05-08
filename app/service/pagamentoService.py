@@ -34,10 +34,11 @@ def CriarFormaPagamentoService(formapgto: FormaDePagamentoIugu):
     response = requests.request(
         "POST", url, json=payload, headers=headers, params=querystring)
 
-    metodoPagamentoUsuario = FormaPagamentoModel(response.json()['id'], response.json()['description'], response.json()['item_type'],
-                                                 response.json()['customer_id'], response.json()['data'])
+    if response.status_code == 200:
+        metodoPagamentoUsuario = FormaPagamentoModel(response.json()['id'], response.json()['description'], response.json()['item_type'],
+                                                    response.json()['customer_id'], response.json()['data'])
+        CadastraFormaPgtoUsuario(metodoPagamentoUsuario)
 
-    CadastraFormaPgtoUsuario(metodoPagamentoUsuario)
     return response.json()
 
 def BuscarFormasPagamentoService(IdUsuarioIugu: str):
@@ -57,7 +58,7 @@ def EfetuarPagamentoService(pgto: RequestPagamentoModel):
         ],
         "customer_payment_method_id": pgto.IdFormaPagtoIugu,  # id da forma de pagamento
         # id do cliente na base da iugu, cliente q vai pagar
-        "customer_id": pgto.IdUsuarioIugu,
+        "customer_id": pgto.IdUsuarioSubConta,
         "email": pgto.EmailUsuario,
         "bank_slip_extra_days": 3,
         "keep_dunning": True
@@ -72,9 +73,9 @@ def EfetuarPagamentoService(pgto: RequestPagamentoModel):
             result = ResponsePagamentoModel(response.json()['status'],response.json()['info_message'],response.json()['reversible'], response.json()['token'],
                                             response.json()['brand'], response.json()['bin'], response.json()['success'],
                                             response.json()['url'], response.json()['pdf'],response.json()['identification'], response.json()['invoice_id'], 
-                                            response.json()['LR'])
+                                            response.json()['LR'], pgto.Valor)
 
-            GravaTransacaoAutorizadaDb(result,pgto.IdUsuarioIugu)
+            GravaTransacaoAutorizadaDb(result,pgto.IdUsuarioSubConta,pgto.Valor)
 
             return result
         else:
@@ -196,5 +197,20 @@ def SolicitaSaqueSubConta(TokenSubContaPrd:str,IdSubConta:str, ValorSaque:str, I
                                     IdUsuario, datetime.now(), response.json()['id'])
         GravaSolicitacaoSaque(result)
         return response.json()
+    return response.json()
+
+
+def VincularASubConta(IdUsuarioSubConta:str,IdUsuarioContaMaster:str, UserTokenDaSubConta:str):
+    url = "https://api.iugu.com/v1/customers/" + IdUsuarioSubConta #id do cliente cadastrado na subconta
+    querystring = {"api_token":UserTokenDaSubConta} #user_token da sub conta
+
+    payload = {
+        "proxy_payments_from_customer_id": IdUsuarioContaMaster  #customer_id cadastrado na conta master
+    }
+
+    headers = {"Content-Type": "application/json"}
+
+    response = requests.request("PUT", url, json=payload, headers=headers, params=querystring)
+    print(response.text)
 
     return response.json()

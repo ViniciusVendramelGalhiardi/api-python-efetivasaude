@@ -6,7 +6,7 @@ class RequestPagamentoModel(BaseModel):
    DescricaoProduto: Optional[str]
    Valor: Optional[str]
    IdFormaPagtoIugu:Optional[str]
-   IdUsuarioIugu:Optional[str]
+   IdUsuarioSubConta:Optional[str]
    EmailUsuario: Optional[str]
    tokenSubConta: Optional[str]
 
