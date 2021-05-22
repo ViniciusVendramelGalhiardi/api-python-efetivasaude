@@ -17,17 +17,16 @@ router_tokbox = APIRouter(
 
 @router_tokbox.get("/gerarSessao/")
 async def geraSessaoTokBox():
-    api_key = TOK_BOX_API_KEY #Replace with your OpenTok API key.
-    api_secret = API_SECRET_TOK_BOX  #Replace with your OpenTok API secret.
+    api_key = TOK_BOX_API_KEY 
+    api_secret = API_SECRET_TOK_BOX 
     opentok_sdk = OpenTok(api_key, api_secret)
     session = opentok_sdk.create_session(media_mode=MediaModes.routed)
     return session.session_id
 
-@router_tokbox.get("/gerarTokenParaSessao/{session_id}/{session_address}")
-async def gerarTokenChamada(session_id:str , session_address: str):
+@router_tokbox.get("/gerarTokenParaSessao/{session_id}")
+async def gerarTokenChamada(session_id:str):
     api_key = TOK_BOX_API_KEY 
     api_secret = API_SECRET_TOK_BOX
     opentok_sdk = OpenTok(api_key, api_secret)
-    #session = opentok_sdk.create_session(session_address)
     token = opentok_sdk.generate_token(session_id)
     return token
