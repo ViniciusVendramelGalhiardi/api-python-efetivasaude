@@ -4,7 +4,7 @@ from pydantic import BaseModel
 import requests
 import json
 from fastapi.openapi.utils import get_openapi 
-from app.router import web, pgtoIugu
+from app.router import web, pgtoIugu, tokbox
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
 
@@ -39,3 +39,4 @@ def custom_openapi():
 app.openapi = custom_openapi
 app.include_router(web.router_web)
 app.include_router(pgtoIugu.router_pgto)
+app.include_router(tokbox.router_tokbox)
