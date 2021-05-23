@@ -24,5 +24,9 @@ watchgod==0.6
 websockets==8.1
 win32-setctime==1.0.3
 python-dotenv==0.15.0
+google_translator==0.2
+google_trans_new==1.1.9
+pyodbc==4.0.30
+opentok==3.1.0
 #uvicorn main:app --reload --env-file .env
 #https://adyenpayment-api-dev-5tx5aqryhq-ue.a.run.app/docs#/
