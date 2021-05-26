@@ -21,7 +21,8 @@ async def geraSessaoTokBox():
     api_secret = API_SECRET_TOK_BOX 
     opentok_sdk = OpenTok(api_key, api_secret)
     session = opentok_sdk.create_session(media_mode=MediaModes.routed)
-    return session.session_id
+    return '{sessionId:"' + session.session_id + '"}'
+     
 
 @router_tokbox.get("/gerarTokenParaSessao/{session_id}")
 async def gerarTokenChamada(session_id:str):
@@ -29,4 +30,4 @@ async def gerarTokenChamada(session_id:str):
     api_secret = API_SECRET_TOK_BOX
     opentok_sdk = OpenTok(api_key, api_secret)
     token = opentok_sdk.generate_token(session_id)
-    return token
+    return '{token:"' + token + '"}'
