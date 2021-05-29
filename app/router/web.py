@@ -6,7 +6,11 @@ from app.model.response import getResponse
 from app.service.ListagemService import listaPerfil, listaAbordagem, listaHobbies, listaCRP, listaHorarioTrabalho, listaIdiomas, listaNosConheceu, listaPlanos, listaProfissao, listaSintomas, listaUsarPlataforma
 from app.model.usuarioModel import UsuarioModel
 from fastapi.responses import JSONResponse
-from app.service.usuarioService import CadastrarUsuario, BuscaUsuarioService
+from app.service.usuarioService import CadastrarUsuario, BuscaUsuarioService, CadastraExpedienteProfissional, ListarExpedienteProfissional
+from app.model.expedienteProfissionalModel import ExpedienteProfissionalModel
+from app.service.agendaService import efetuaAgendamentoService, listarAgendamentosProfissional,atualizaStatusService, cadastraAvaliacaoService, buscarAvaliacaoProfissionalService
+from app.model.agendamentoConsultaModel import AgendamentoConsultaModel
+from app.model.avaliacaoefModel import AvaliacaoEfModel
 
 router_web = APIRouter(
     prefix="/web",
@@ -19,6 +23,44 @@ async def cadastrar(IdPerfil:int, UsuarioModel: UsuarioModel):
     tt = response
     return response
 
+@router_web.post("/cadastraExpediente/")
+async def CadastraEspedienteProfissional(expediente: ExpedienteProfissionalModel):
+    response = CadastraExpedienteProfissional(expediente)
+    return response
+
+
+@router_web.post("/efetuaAgendamento/")
+async def EfetuaAgendamento(ag: AgendamentoConsultaModel):
+    response = efetuaAgendamentoService(ag)
+    return response
+
+
+@router_web.post("/atualizarStatusAgendamento/")
+async def atualizarStatusAgendamento(IdAgenda:int , StatusAgendamento: str):
+    response = atualizaStatusService(IdAgenda,StatusAgendamento )
+    return response
+
+@router_web.post("/cadastraAvaliacaoService/")
+async def CadastraAvaliacaoService(av:AvaliacaoEfModel):
+    response = cadastraAvaliacaoService(av)
+    return response
+    
+    
+
+@router_web.get("/BuscarAvaliacaoProfissionalService/{IdUsuario}")
+def BuscarAvaliacaoProfissionalService(IdUsuario:int):
+    return buscarAvaliacaoProfissionalService(IdUsuario)
+
+
+@router_web.get("/ListarAgendamentosProfissional/{IdUsuario}")
+def listarAgendamentoProf(IdUsuario:int):
+    return listarAgendamentosProfissional(IdUsuario)
+
+
+@router_web.get("/ListarExpedienteProfissional/{IdProfissional}")
+def ListarExpProfissional(IdProfissional: int,  Status: Optional[str] = None, DataAtendimento: Optional[str] = None, IdExpediente: Optional[str] = None):
+    return ListarExpedienteProfissional(IdProfissional, Status, DataAtendimento, IdExpediente)
+
 @router_web.get("/ListarPerfis/")
 def ListarPerfil():
     return listaPerfil()
@@ -30,7 +72,6 @@ def BuscarUsuario(idUsuario: str, idPerfil: int):
         response = BuscaUsuarioService(idUsuario, idPerfil)
     except Exception as mensagemErro: 
             return mensagemErro
-
     return response
 
 @router_web.get("/ListarAbordagem/")

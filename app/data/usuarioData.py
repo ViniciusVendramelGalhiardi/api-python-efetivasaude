@@ -6,7 +6,8 @@ from app.entity.profissionalEntity import ProfissionalEntity
 from app.entity.empresaEntity import EmpresaEntity
 from app.factory.clienteFactory import UsuarioFactory
 from app.entity.usuarioEntity import UsuarioEntity
-
+from app.model.expedienteProfissionalModel import ExpedienteProfissionalModel
+from typing import List
 
 def CadastraUsuario(uEntity: UsuarioEntity, IdPerfil: int):
 
@@ -253,7 +254,7 @@ def BuscarProfissionalData(idUsuario: int):
     listIdiomas = []
     if len(idiomas) > 0:
         listIdiomas = UsuarioFactory.IdiomasEntityToModel(idiomas)
-
+    
     #Formacao Academica
     cursor.execute(''' SELECT IdFormacao,IdUsuario,InstituicaoEnsino,NomeCurso,NivelAcademico,AnoInicio,AnoTermino,DescricaoCurso,Anexo FROM formacaoAcademica
                        WHERE idUsuario = ?''', (idUsuario))
@@ -266,9 +267,96 @@ def BuscarProfissionalData(idUsuario: int):
     #Objeto completo
     entity = UsuarioFactory.ProfEntityToModel(
          records, listCC, listAtp, listIdiomas, listFormacoes, listexperiencias)
+    return entity   
 
-    return entity
+def CadastraExpProfissional(expediente: ExpedienteProfissionalModel):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
 
+        for i in expediente.Expediente:
+            print(i.Data)
+            for j in i.Horas:
+                print(j.start) 
+                print(j.end)
+                cursor.execute('''INSERT INTO [dbo].[expedienteProfissional]
+                                ([IdUsuarioProfissional]
+                                ,[DataAtendimento]
+                                ,[HorarioStart]
+                                ,[HorarioEnd]
+                                ,[Status])
+                                    VALUES
+                                        (?
+                                        ,?
+                                        ,?
+                                        ,?
+                                        ,?)''',
+                                (expediente.IdUsuarioProfissional, i.Data, 
+                                j.start, j.end, False))
+                cursor.commit()
+                cursor.execute("SELECT @@IDENTITY AS ID;")
+                idExpediente = cursor.fetchone()[0]
+
+
+        if (idExpediente < 0 or idExpediente is None):
+            return False
+
+    except Exception as mensagemErro:
+        return mensagemErro
+
+    return True
+
+
+def BuscarDataDisponivelProfissional(IdProfissional: int):
+
+    vlrconexao = CONNECTION_STRING_DB
+    conn = pyodbc.connect(CONNECTION_STRING_DB)
+    cursor = conn.cursor()
+
+    cursor.execute('''SELECT DataAtendimento  FROM [dbo].[expedienteProfissional] 
+                      WHERE IdUsuarioProfissional = ? group by DataAtendimento''', (IdProfissional))
+    records = cursor.fetchall()
+    return records
+
+
+def BuscarExpedienteProfissional(IdProfissional: int,  Status: str, DataAtendimento: str, IdExpediente: str):
+    conn = pyodbc.connect(CONNECTION_STRING_DB)
+    cursor = conn.cursor()
+    
+    if (DataAtendimento is not None):
+        DataAtendimento = "'" + str(DataAtendimento.replace('-','')) + "'"
+    
+    if (DataAtendimento is None):
+        DataAtendimento = 'NULL'
+
+    if (Status is None):
+        Status = 'NULL'
+
+    if (IdExpediente is None):
+        IdExpediente = 'NULL'
+
+    if (DataAtendimento is None):
+        DataAtendimento = 'NULL'
+    
+    _sql = '''SELECT [Id]
+                            ,[IdUsuarioProfissional]
+                            ,[DataAtendimento]
+                            ,[HorarioStart]
+                            ,[HorarioEnd]
+                            ,[Status]
+                        FROM [dbo].[expedienteProfissional] EX WHERE  EX.IdUsuarioProfissional = ''' + str(IdProfissional) + ''' AND EX.Status = ISNULL(''' + str(Status) + ''', EX.Status) AND EX.DataAtendimento = ISNULL(''' + DataAtendimento + ''', EX.DataAtendimento) AND EX.Id = ISNULL(''' + IdExpediente + ''', EX.Id)'''                    
+
+    cursor.execute(_sql)
+
+    records = cursor.fetchall()
+
+    if len(records) > 0:
+        exp = UsuarioFactory.ExpedientesModel(records)
+        return exp
+
+    return None
+
+    
 def BuscarEmpresaData(idUsuario: int):
 
     vlrconexao = CONNECTION_STRING_DB

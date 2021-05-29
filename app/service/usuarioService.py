@@ -7,10 +7,12 @@ from fastapi import logger
 import requests
 from settings import API_TOKEN_IUGU, URL_API_IUGU_CUSTOMERS
 from app.model.usuarioModel import UsuarioModel
-from app.data.usuarioData import CadastraUsuario, CadastraProfissional, CadastraEmpresa, BuscarUsuarioData, BuscarProfissionalData, BuscarEmpresaData, AtualizaIdUsuarioIugu
+from app.data.usuarioData import CadastraUsuario, CadastraProfissional, CadastraEmpresa, BuscarUsuarioData, BuscarProfissionalData, BuscarEmpresaData, AtualizaIdUsuarioIugu,CadastraExpProfissional,BuscarExpedienteProfissional
 from app.factory.clienteFactory import UsuarioFactory
 from app.data.usuarioData import CadastraUsuario
 from app.model.usuarioVinculadoSubConta import UsuarioVinculadoSubConta
+from app.model.expedienteProfissionalModel import ExpedienteProfissionalModel
+
 
 
 def CadastrarUsuario(IdPerfil, User: UsuarioModel):
@@ -111,7 +113,11 @@ def CadastraUsuarioSubConta(usuario, IdPerfil, TokenSubContaPrd):
   headers = {"Content-Type": "application/json"}
   response = requests.request("POST", URL_API_IUGU_CUSTOMERS, json=payload, headers=headers, params=querystring)
   print(response.text)
-  
   return response.json()['id']
 
+def CadastraExpedienteProfissional(expediente: ExpedienteProfissionalModel):
+  return CadastraExpProfissional(expediente)
+
+def ListarExpedienteProfissional(IdProfissional: int,  Status: str, DataAtendimento: str, IdExpediente: str):
+  return BuscarExpedienteProfissional(IdProfissional, Status, DataAtendimento, IdExpediente)
 

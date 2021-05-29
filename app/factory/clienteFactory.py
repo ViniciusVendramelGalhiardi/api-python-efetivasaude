@@ -9,9 +9,33 @@ from app.entity.atendimentoPresencialEntity import AtendimentoPresencialEntity
 from app.entity.idiomasAtendidosEntity import IdiomasAtendidosEntity
 from app.entity.formacaoAcademicaEntity import FormacaoAcademicaEntity
 from app.entity.planoSaudeEmpresaUsuarioEntity import PlanodeSaudeEmpresaUsuarioEntity
+from app.model.expedienteProfissionalModel import ExpedienteProfissionalModel, ExpedienteItem,Hora
+from typing import List
 
 
 class UsuarioFactory():
+    
+    def ExpedientesModel(expedientes):
+        try:
+            listexp = []
+        
+            for row in expedientes:
+                dep = ExpedienteProfissionalModel(IdUsuarioProfissional = row[1])
+                exp = ExpedienteItem()
+                exp.Idexpediente = row[0]
+                exp.Data = row[2]
+                hr = Hora()
+                hr.start = row[3]
+                hr.end = row[4]
+                dep.Expediente = exp
+                dep.Expediente.Horas = hr
+                listexp.append(dep)
+
+        except Exception as e:
+                print(e)
+                return e
+
+        return listexp
 
     def UsuarioModelToEntity(uModel: UsuarioModel):
         user = UsuarioEntity(
