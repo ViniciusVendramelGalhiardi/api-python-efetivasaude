@@ -9,18 +9,22 @@ from app.entity.atendimentoPresencialEntity import AtendimentoPresencialEntity
 from app.entity.idiomasAtendidosEntity import IdiomasAtendidosEntity
 from app.entity.formacaoAcademicaEntity import FormacaoAcademicaEntity
 from app.entity.planoSaudeEmpresaUsuarioEntity import PlanodeSaudeEmpresaUsuarioEntity
-from app.model.expedienteProfissionalModel import ExpedienteProfissionalModel, ExpedienteItem,Hora
+from app.model.expedienteProfissionalModel import ExpedienteProfissionalModel, ExpedienteItem, Hora
 from typing import List
+from app.model.abordagemProfissionalModel import AbordagemProfissionalModel
+from app.model.publicoAtendidoProfissionalModel import PublicoAtendidoProfissionalModel
+from app.model.sintomasVinculadosModel import SintomasVinculadosModel
+from app.model.cartaoModel import CartaoModel
 
 
 class UsuarioFactory():
-    
+
     def ExpedientesModel(expedientes):
         try:
             listexp = []
-        
+
             for row in expedientes:
-                dep = ExpedienteProfissionalModel(IdUsuarioProfissional = row[1])
+                dep = ExpedienteProfissionalModel(IdUsuarioProfissional=row[1])
                 exp = ExpedienteItem()
                 exp.Idexpediente = row[0]
                 exp.Data = row[2]
@@ -32,8 +36,8 @@ class UsuarioFactory():
                 listexp.append(dep)
 
         except Exception as e:
-                print(e)
-                return e
+            print(e)
+            return e
 
         return listexp
 
@@ -85,16 +89,16 @@ class UsuarioFactory():
             idUsuario=records[0][16],
             Dependente=records[0][17],
             Dependentes=_dependentes,
-            Cep=records[0][18], 
-			Endereco=records[0][19],
-			IdUsuarioIugu=records[0][20],
-			IdPerfil=records[0][21]
+            Cep=records[0][18],
+            Endereco=records[0][19],
+            IdUsuarioIugu=records[0][20],
+            IdPerfil=records[0][21]
         )
 
         return user
 
-    #NomeEmpresaEmp, TelefoneCorporativoEmp, EmailCorporativoEmp,SiteEmpr,LinkedinEmpr, InstagramEmp,CargoFuncaoEmp,NumeroColaboradoresEmp,Cnpj
-    def EmpresaEntityToModel(records, _planos,_contacorrente ):
+    # NomeEmpresaEmp, TelefoneCorporativoEmp, EmailCorporativoEmp,SiteEmpr,LinkedinEmpr, InstagramEmp,CargoFuncaoEmp,NumeroColaboradoresEmp,Cnpj
+    def EmpresaEntityToModel(records, _planos, _contacorrente):
 
         empr = EmpresaEntity(
             Nome=records[0][0],
@@ -115,10 +119,10 @@ class UsuarioFactory():
             CargoFuncaoEmp=records[0][15],
             NumeroColaboradoresEmp=records[0][16],
             Cnpj=records[0][17],
-            idUsuario = records[0][18],
-            idUsuarioIugu = records[0][19],
-            Cep = records[0][20],
-            Endereco=records[0][21], 
+            idUsuario=records[0][18],
+            idUsuarioIugu=records[0][19],
+            Cep=records[0][20],
+            Endereco=records[0][21],
             PlanodeSaudeEmpresa=_planos,
             ContasCorrente=_contacorrente
         )
@@ -215,8 +219,29 @@ class UsuarioFactory():
                 Anexo=row[8]
             )
             listformacoes.append(formacao)
-
         return listformacoes
+
+    def AbordagemEntityToModel(abordagens):
+        listabordagens = []
+
+        for row in abordagens:
+            abordagem = AbordagemProfissionalModel(
+                IdAbordagemAdotada=row[0]
+            )
+            listabordagens.append(abordagem)
+
+        return listabordagens
+
+    def PublicoAlvoEntityToModel(publicoalvo):
+        listapublicoalvo = []
+
+        for row in publicoalvo:
+            palvo = PublicoAtendidoProfissionalModel(
+                IdPublicoAtendido=row[0]
+            )
+            listapublicoalvo.append(palvo)
+
+        return listapublicoalvo
 
     def ExperienciasEntityToModel(experiencias):
         listdep = []
@@ -237,7 +262,7 @@ class UsuarioFactory():
         return listdep
 
     def ProfissionalModelToEntity(uModel: UsuarioModel):
-        
+
         try:
             prof = ProfissionalEntity(
                 Nome=uModel.Nome,
@@ -268,7 +293,10 @@ class UsuarioFactory():
                 TrabalharComCNPJProf=uModel.TrabalharComCNPJProf,
                 Cnpj=uModel.Cnpj,
                 CartaApresentacaoProf=uModel.CartaApresentacaoProf,
+
+                OutraAbordagemProf=uModel.OutraAbordagemProf,
                 IdAbordagemProf=uModel.IdAbordagemProf,
+
                 DuracaoAtendimentoProf=uModel.DuracaoAtendimentoProf,
                 AtendePlanoDeSaudeProf=uModel.AtendePlanoDeSaudeProf,
                 ReciboReembolsavelProf=uModel.ReciboReembolsavelProf,
@@ -281,7 +309,12 @@ class UsuarioFactory():
                 FormacoesProf=uModel.FormacoesProf,
                 IdiomasAtendidosProf=uModel.IdiomasAtendidosProf,
                 AtendimentoPresencialProf=uModel.AtendimentoPresencialProf,
-                ContasCorrente=uModel.ContasCorrente
+                ContasCorrente=uModel.ContasCorrente,
+                RegistroCRPePsi=uModel.RegistroCRPePsi,
+                RegistroePsiValidado=uModel.RegistroePsiValidado,
+                IdsPublicoAtendido=uModel.IdsPublicoAtendido,
+                OutroPublicoProf=uModel.OutroPublicoProf,
+                OutroIdiomaProf=uModel.OutroIdiomaProf
             )
 
         except Exception as e:
@@ -292,7 +325,7 @@ class UsuarioFactory():
     # records, listCC, listAtp, listIdiomas, listFormacoes, listexperiencias)
 
     def ProfEntityToModel(records, _contacorrente,
-                          _atendimentospresenciais, _idiomasAtendidos, _formacoesProf, _experienciasPraticaProf):
+                          _atendimentospresenciais, _idiomasAtendidos, _formacoesProf, _experienciasPraticaProf, _listabordagem, _idspublicoAtendido):
 
         try:
             prof = ProfissionalEntity(
@@ -319,7 +352,7 @@ class UsuarioFactory():
                 TrabalharComCNPJProf=records[0][20],
                 Cnpj=records[0][21],
                 CartaApresentacaoProf=records[0][22],
-                IdAbordagemProf=records[0][23],
+                OutraAbordagemProf=records[0][23],
                 DuracaoAtendimentoProf=records[0][24],
                 AtendePlanoDeSaudeProf=records[0][25],
                 ReciboReembolsavelProf=records[0][26],
@@ -329,16 +362,21 @@ class UsuarioFactory():
                 EmpresasParceirasDescontoProf=records[0][30],
                 ValorPorSessaoProf=records[0][31],
                 idUsuario=records[0][32],
-                Cep=records[0][33], 
-				Endereco=records[0][34],
-				idUsuarioIugu=records[0][35],
-				IdPerfil=records[0][36],
-
+                Cep=records[0][33],
+                Endereco=records[0][34],
+                idUsuarioIugu=records[0][35],
+                IdPerfil=records[0][36],
+                RegistroCRPePsi=records[0][37],
+                RegistroePsiValidado=records[0][38],
+                OutroPublicoProf=records[0][39],
+                OutroIdiomaProf=records[0][40],
                 ExperienciasPraticaProf=_experienciasPraticaProf,
                 FormacoesProf=_formacoesProf,
                 IdiomasAtendidosProf=_idiomasAtendidos,
                 AtendimentoPresencialProf=_atendimentospresenciais,
-                ContasCorrente=_contacorrente
+                ContasCorrente=_contacorrente,
+                IdAbordagemProf=_listabordagem,
+                IdsPublicoAtendido=_idspublicoAtendido
             )
 
         except Exception as mensagemErro:
@@ -380,3 +418,28 @@ class UsuarioFactory():
             return e
 
         return empr
+
+    def SintomasEntityToModel(sintomas):
+        listsin = []
+
+        for row in sintomas:
+
+            sinn = SintomasVinculadosModel(
+                Id=row[0],
+                IdSintomaAtendido=row[1],
+                IdUsuario=row[2]
+            )
+
+            listsin.append(sinn)
+
+        return listsin
+
+
+    def CartaoEntityToModel(card):
+        cartao = CartaoModel(
+            Nome=card[0][1],
+            Numero=card[0][2],
+            Validade=card[0][3],
+            IdUsuario=card[0][4]
+        )
+        return cartao

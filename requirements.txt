@@ -31,5 +31,6 @@ google_translator==0.2
 google_trans_new==1.1.9
 pyodbc==4.0.30
 opentok==3.1.0
+twilio
 #uvicorn main:app --reload --env-file .env
 #https://adyenpayment-api-dev-5tx5aqryhq-ue.a.run.app/docs#/

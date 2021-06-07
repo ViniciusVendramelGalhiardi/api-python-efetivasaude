@@ -28,7 +28,7 @@ def custom_openapi():
         return app.openapi_schema
 
     openapi_schema = get_openapi(
-        title="Efetiva Saúde V.10",
+        title="Efetiva Saúde V.11",
         version="2.5.0",
         description="",
         routes=app.routes,

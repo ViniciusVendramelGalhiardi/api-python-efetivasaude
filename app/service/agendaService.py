@@ -26,7 +26,6 @@ def listarAgendamentosProfissional(IdUsuario: int):
 def atualizaStatusService(IdAgenda:int , StatusAgendamento: str):
     return atualizarAgendamento(IdAgenda,StatusAgendamento)
 
-
 def cadastraAvaliacaoService(av: AvaliacaoEfModel):
     return CadastraAvaliacaoEF(av)
 

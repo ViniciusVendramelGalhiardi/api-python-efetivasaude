@@ -75,7 +75,7 @@ def EfetuarPagamentoService(pgto: RequestPagamentoModel):
                                             response.json()['url'], response.json()['pdf'],response.json()['identification'], response.json()['invoice_id'], 
                                             response.json()['LR'], pgto.Valor)
 
-            GravaTransacaoAutorizadaDb(result,pgto.IdUsuarioSubConta,pgto.Valor)
+            result.IdTransacao = GravaTransacaoAutorizadaDb(result,pgto.IdUsuarioSubConta,pgto.Valor)
 
             return result
         else:
@@ -121,7 +121,6 @@ def EnviaVerificacaoSubConta(IdUsuario:int,IdSubConta:str,TokenSubContaPrd:str, 
     headers = {"Content-Type": "application/json"}
 
     url = URL_ENVIA_CONTA_VERIFICACAO + IdSubConta + "/request_verification" #ID da sub-conta
-
     querystring = {"api_token":TokenSubContaPrd} #Token de Produção que vem no response da criação da subconta;
 
     if IdPerfil == 2:

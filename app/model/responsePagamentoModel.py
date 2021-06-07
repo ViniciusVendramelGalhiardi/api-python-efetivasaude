@@ -19,10 +19,11 @@ class ResponsePagamentoModel:
     invoice_id: Optional[str]
     lr: Optional[str]
     Valor: Optional[str]
+    IdTransacao: Optional[int]
 
     def __init__(self, status: Optional[str],  info_message: Optional[str], reversible: Optional[str], token: Optional[str],
          brand: Optional[str], bin: Optional[str], success: Optional[str], url: Optional[str], pdf: Optional[str], identification: Optional[str], 
-         invoice_id: Optional[str], lr: Optional[str], Valor:Optional[str]) -> None:
+         invoice_id: Optional[str], lr: Optional[str], Valor:Optional[str], IdTransacao: Optional[int]) -> None:
         self.status = status
         self.info_message = info_message
         self.reversible = reversible
@@ -36,3 +37,4 @@ class ResponsePagamentoModel:
         self.invoice_id = invoice_id
         self.lr = lr
         self.Valor = Valor
+        self.IdTransacao = IdTransacao

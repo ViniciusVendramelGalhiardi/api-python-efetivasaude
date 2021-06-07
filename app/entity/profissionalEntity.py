@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import List, Optional
 from pydantic import BaseModel, ValidationError, validator
 
+
 class ProfissionalEntity(BaseModel):
     Nome: str
     Telefone: str
@@ -29,7 +30,10 @@ class ProfissionalEntity(BaseModel):
     TrabalharComCNPJProf: Optional[bool] 
     Cnpj: Optional[str] 
     CartaApresentacaoProf: Optional[str] 
-    IdAbordagemProf: Optional[int]
+
+    OutraAbordagemProf: Optional[str] 
+    IdAbordagemProf: Optional[List]
+    
     DuracaoAtendimentoProf:Optional[str] = ''
     AtendePlanoDeSaudeProf:Optional[bool] = False
     ReciboReembolsavelProf: Optional[bool] = False
@@ -50,4 +54,12 @@ class ProfissionalEntity(BaseModel):
     
     idUsuarioIugu:Optional[str]
     IdPerfil: Optional[str]
-    
+
+    #ePsi
+    RegistroCRPePsi: Optional[str]
+    RegistroePsiValidado: Optional[bool]
+
+    IdsPublicoAtendido:Optional[List]
+    OutroPublicoProf:Optional[str]
+
+    OutroIdiomaProf: Optional[str]

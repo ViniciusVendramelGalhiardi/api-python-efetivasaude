@@ -10,7 +10,8 @@ from typing import List
 from .atendimentoPresencialModel import AtendimentoPresencialModel
 from .planodeSaudeEmpresaUsuario import PlanodeSaudeEmpresaUsuario
 from .perfilUsuarioModel import PerfilUsuarioModel
-
+from .abordagemProfissionalModel import AbordagemProfissionalModel
+from .publicoAtendidoProfissionalModel import PublicoAtendidoProfissionalModel
 
 class UsuarioModel(BaseModel):
     IdUsuario: Optional[int] = 0
@@ -44,7 +45,10 @@ class UsuarioModel(BaseModel):
     TrabalharComCNPJProf: Optional[bool] 
     Cnpj: Optional[str] 
     CartaApresentacaoProf: Optional[str] 
-    IdAbordagemProf: Optional[int] 
+
+    OutraAbordagemProf: Optional[str] 
+    IdAbordagemProf: Optional[List[AbordagemProfissionalModel]] 
+
     DuracaoAtendimentoProf:Optional[str] = ''
     AtendePlanoDeSaudeProf:Optional[bool] = False
     ReciboReembolsavelProf: Optional[bool] = False
@@ -69,11 +73,17 @@ class UsuarioModel(BaseModel):
     NumeroColaboradoresEmp: Optional[int] 
     PlanodeSaudeEmpresa: Optional[List[PlanodeSaudeEmpresaUsuario]]  
     ContasCorrente: Optional[List[ContaCorrenteModel]]
-
-
+    OutroIdiomaProf: Optional[str]
     #iugu
     IdUsuarioIugu: Optional[str]
 
+    #ePsi
+    RegistroCRPePsi: Optional[str]
+    RegistroePsiValidado: Optional[bool]
+
+    #Publico Atendido
+    IdsPublicoAtendido: Optional[List[PublicoAtendidoProfissionalModel]]
+    OutroPublicoProf:Optional[str]
 
     @validator('Senha_Confirmar')
     def passwords_match(cls, v, values, **kwargs):
