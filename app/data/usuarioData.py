@@ -356,11 +356,9 @@ def CadastraExpProfissional(expediente: ExpedienteProfissionalModel):
 
 
 def BuscarDataDisponivelProfissional(IdProfissional: int):
-
     vlrconexao = CONNECTION_STRING_DB
     conn = pyodbc.connect(CONNECTION_STRING_DB)
     cursor = conn.cursor()
-
     cursor.execute('''SELECT DataAtendimento  FROM [dbo].[expedienteProfissional] 
                       WHERE IdUsuarioProfissional = ? group by DataAtendimento''', (IdProfissional))
     records = cursor.fetchall()
@@ -395,14 +393,19 @@ def BuscarExpedienteProfissional(IdProfissional: int,  Status: str, DataAtendime
                         FROM [dbo].[expedienteProfissional] EX WHERE  EX.IdUsuarioProfissional = ''' + str(IdProfissional) + ''' AND EX.Status = ISNULL(''' + str(Status) + ''', EX.Status) AND EX.DataAtendimento = ISNULL(''' + DataAtendimento + ''', EX.DataAtendimento) AND EX.Id = ISNULL(''' + IdExpediente + ''', EX.Id)'''
 
     cursor.execute(_sql)
-
     records = cursor.fetchall()
 
     if len(records) > 0:
         exp = UsuarioFactory.ExpedientesModel(records)
         return exp
-
     return None
+
+def BuscarExpedienteById(IdExpediente):
+    conn = pyodbc.connect(CONNECTION_STRING_DB)
+    cursor = conn.cursor()
+    cursor.execute('''SELECT DataAtendimento,HorarioStart FROM [dbo].[expedienteProfissional] WHERE Id = ?''', (IdExpediente))      
+    records = cursor.fetchall()
+    return records
 
 
 def BuscarEmpresaData(idUsuario: int):
@@ -540,6 +543,73 @@ def BuscarCartaoUsuarioData(idUsuario: int):
     except Exception as mensagemErro:
         return mensagemErro
 
+    return entity
+
+
+
+def BuscarProfissionalPorPesquisaData(IdProfissao, AtendePresencialmenteProf, DataAtendimento):
+
+    try:
+        vlrconexao = CONNECTION_STRING_DB
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+
+        cursor.execute('''SELECT 
+                            Nome, 
+                            Telefone, 
+                            Email, 
+                            Cidade, 
+                            Estado, 
+                            IdConheceu, 
+                            TermosCondicoes, 
+                            PoliticaPrivacidade, 
+                            Apelido, 
+                            EstadoCivil, 
+                            PossuiFilhosQtd, 
+                            IdHobbie, 
+                            DataNascimento, 
+                            Genero, 
+                            IdProfissao, 
+                            Cpf,
+                            IdHorarioTrabalhoProf, 
+                            IdUsarPlataformaProf, 
+                            IdConselhoRegionalProf, 
+                            PossuiCNPJProf, 
+                            TrabalharComCNPJProf, 
+                            Cnpj, 
+                            CartaApresentacaoProf, 
+                            OutraAbordagemProf, 
+                            DuracaoAtendimentoProf, 
+                            AtendePlanoDeSaudeProf,
+                            ReciboReembolsavelProf, 
+                            AtendePresencialmenteProf, 
+                            PrimeiroClienteCobraProf, 
+                            PrimeiroClienteValorFixoProf, 
+                            EmpresasParceirasDescontoProf, 
+                            ValorPorSessaoProf, 
+                            idUsuario,
+                            Cep, 
+                            Endereco,
+                            IdUsuarioIugu,
+                            IdPerfil,
+                            RegistroCRPePsi,
+                            RegistroePsiValidado,
+                            OutroPublicoProf,
+                            OutroIdiomaProf
+                            FROM usuario 
+							U INNER JOIN  [dbo].[expedienteProfissional] E
+							ON U.IdUsuario = E.IdUsuarioProfissional
+							WHERE 
+							u.IdProfissao = ?
+							AND U.AtendePresencialmenteProf = ?
+							AND E.DataAtendimento = ? ''', (IdProfissao,AtendePresencialmenteProf, DataAtendimento))
+        
+        records = cursor.fetchall()
+
+        entity = UsuarioFactory.profissionalEntity(records)
+
+    except Exception as mensagemErro:
+        return mensagemErro
     return entity
 
 
