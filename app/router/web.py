@@ -79,9 +79,9 @@ def BuscarSintomaPorUsuario(IdUsuario: int):
 def BuscarAvaliacaoProfissionalService(IdUsuario: int):
     return buscarAvaliacaoProfissionalService(IdUsuario)
 
-@router_web.get("/ListarAgendamentosProfissional/{IdUsuario}")
-def listarAgendamentoProf(IdUsuario: int):
-    return listarAgendamentosProfissional(IdUsuario)
+@router_web.get("/ListarAgendamentosProfissional/{IdUsuarioProfissional}")
+def listarAgendamentoProf(IdUsuarioProfissional: int):
+    return listarAgendamentosProfissional(IdUsuarioProfissional)
 
 @router_web.get("/ListarExpedienteProfissional/{IdProfissional}")
 def ListarExpProfissional(IdProfissional: int,  Status: Optional[str] = None, DataAtendimento: Optional[str] = None, IdExpediente: Optional[str] = None):

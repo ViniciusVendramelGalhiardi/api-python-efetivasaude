@@ -73,7 +73,7 @@ def EfetuarPagamentoService(pgto: RequestPagamentoModel):
             result = ResponsePagamentoModel(response.json()['status'],response.json()['info_message'],response.json()['reversible'], response.json()['token'],
                                             response.json()['brand'], response.json()['bin'], response.json()['success'],
                                             response.json()['url'], response.json()['pdf'],response.json()['identification'], response.json()['invoice_id'], 
-                                            response.json()['LR'], pgto.Valor)
+                                            response.json()['LR'], pgto.Valor,0)
 
             result.IdTransacao = GravaTransacaoAutorizadaDb(result,pgto.IdUsuarioSubConta,pgto.Valor)
 

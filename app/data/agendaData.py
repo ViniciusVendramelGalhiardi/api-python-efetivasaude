@@ -24,11 +24,12 @@ def efetuaAgendamento(agenda: AgendamentoConsultaModel):
                         ,[StatusPagamento]
                         ,[IdTransacao]
                         ,[statusAgendamento]
-                        ,[IDSessao])
+                        ,[IDSessao]
+                        ,[IdUsuarioProfissional])
                     VALUES
                         (?,?,?,?,?,?,?)''',
                        (agenda.Idexpediente, agenda.IdUsuario, agenda.IdDependente,
-                        agenda.StatusPagamento, agenda.IdTransacao, agenda.statusAgendamento, agenda.IDSessao))
+                        agenda.StatusPagamento, agenda.IdTransacao, agenda.statusAgendamento, agenda.IDSessao, agenda.IdUsuarioProfissional))
 
         cursor.commit()
         cursor.execute("SELECT @@IDENTITY AS ID;")
@@ -40,12 +41,12 @@ def efetuaAgendamento(agenda: AgendamentoConsultaModel):
     return agenda
 
 
-def buscarAgendamentoProfissional(IdUsuario: int):
+def buscarAgendamentoProfissional(IdUsuarioProfissional: int):
     vlrconexao = CONNECTION_STRING_DB
     conn = pyodbc.connect(CONNECTION_STRING_DB)
     cursor = conn.cursor()
     lista = cursor.execute(
-        "SELECT * FROM [dbo].[agendamento] WHERE IdUsuario = ?;", (IdUsuario))
+        "SELECT * FROM [dbo].[agendamento] WHERE IdUsuario = ?;", (IdUsuarioProfissional))
 
     listcc = []
     for row in lista:

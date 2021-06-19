@@ -6,6 +6,7 @@ class AgendamentoConsultaModel(BaseModel):
     IdAgendamento: Optional[int]
     Idexpediente: int
     IdUsuario: int
+    IdUsuarioProfissional: int
     IdDependente: Optional[str] = 'NULL'
     StatusPagamento: str
     IdTransacao: int

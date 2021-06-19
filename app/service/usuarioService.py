@@ -170,7 +170,7 @@ def EnviarSmsUsuarioService(Numero: str, nome: str):
 
         client = Client(account_sid, auth_token)
 
-        message = client.messages \
+        mess  = client.messages \
                         .create(
                             body="Olá, " +nome+ " confirme o código: '"+ str(number)+"' em seu cadastro.",
                             from_='+18317099856',

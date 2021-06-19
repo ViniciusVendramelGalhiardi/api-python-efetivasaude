@@ -12,15 +12,23 @@ from app.service.usuarioService import BuscaUsuarioService
 from app.entity.profissionalEntity import ProfissionalEntity
 from app.model.listaAgendamento import ListarAgendamentosProfissionalModel
 from app.model.avaliacaoefModel import AvaliacaoEfModel
-
+from app.model.listargendamentoModel import ListarAgendamentoModel
 
 def efetuaAgendamentoService(agenda: AgendamentoConsultaModel):
     return efetuaAgendamento(agenda)
 
-def listarAgendamentosProfissional(IdUsuario: int):
-    ag = ListarAgendamentosProfissionalModel()
-    ag.profissional = BuscaUsuarioService(IdUsuario, 2) # id 2 representa um profissional
-    ag.Agendamentos = buscarAgendamentoProfissional(IdUsuario)
+def listarAgendamentosProfissional(IdUsuarioProfissional: int):
+    agendametoList = buscarAgendamentoProfissional(IdUsuarioProfissional)
+
+    ag = ListarAgendamentoModel()
+    for agenda in agendametoList:
+        ag.IdAgendamento = agenda.IdAgendamento
+        print(ag.IdAgendamento)
+
+    
+    
+    #ag.profissional = BuscaUsuarioService(IdUsuario, 2) # id 2 representa um profissional
+    #ag.Agendamentos = 
     return ag
 
 def atualizaStatusService(IdAgenda:int , StatusAgendamento: str):
