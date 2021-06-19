@@ -383,6 +383,60 @@ class UsuarioFactory():
             return mensagemErro
 
         return prof
+    
+    
+    def profissionalEntity(records):
+        lst = []
+        for row in records:
+            try:
+                prof = ProfissionalEntity(
+                    Nome=row[0][0],
+                    Telefone=row[0][1],
+                    Email=row[0][2],
+                    Cidade=row[0][3],
+                    Estado=row[0][4],
+                    IdConheceu=row[0][5],
+                    TermosCondicoes=row[0][6],
+                    PoliticaPrivacidade=row[0][7],
+                    Apelido=row[0][8],
+                    EstadoCivil=row[0][9],
+                    PossuiFilhosQtd=row[0][10],
+                    IdHobbie=row[0][11],
+                    DataNascimento=row[0][12],
+                    Genero=row[0][13],
+                    IdProfissao=row[0][14],
+                    Cpf=row[0][15],
+                    IdHorarioTrabalhoProf=row[0][16],
+                    IdUsarPlataformaProf=row[0][17],
+                    IdConselhoRegionalProf=row[0][18],
+                    PossuiCNPJProf=row[0][19],
+                    TrabalharComCNPJProf=row[0][20],
+                    Cnpj=row[0][21],
+                    CartaApresentacaoProf=row[0][22],
+                    OutraAbordagemProf=row[0][23],
+                    DuracaoAtendimentoProf=row[0][24],
+                    AtendePlanoDeSaudeProf=row[0][25],
+                    ReciboReembolsavelProf=row[0][26],
+                    AtendePresencialmenteProf=row[0][27],
+                    PrimeiroClienteCobraProf=row[0][28],
+                    PrimeiroClienteValorFixoProf=row[0][29],
+                    EmpresasParceirasDescontoProf=row[0][30],
+                    ValorPorSessaoProf=row[0][31],
+                    idUsuario=row[0][32],
+                    Cep=row[0][33],
+                    Endereco=row[0][34],
+                    idUsuarioIugu=row[0][35],
+                    IdPerfil=row[0][36],
+                    RegistroCRPePsi=row[0][37],
+                    RegistroePsiValidado=row[0][38],
+                    OutroPublicoProf=row[0][39],
+                    OutroIdiomaProf=row[0][40]
+                )
+                lst.append(prof)
+            except Exception as mensagemErro:
+                return mensagemErro
+
+        return lst
 
     def EmpresaModelToEntity(uModel: UsuarioModel):
 

@@ -4,11 +4,11 @@ from pydantic import BaseModel, ValidationError, validator
 
 class AgendamentoConsultaModel(BaseModel):
     IdAgendamento: Optional[int]
-    Idexpediente: int
-    IdUsuario: int
-    IdUsuarioProfissional: int
+    Idexpediente: Optional[int]
+    IdUsuario: Optional[int]
+    IdUsuarioProfissional: Optional[int]
     IdDependente: Optional[str] = 'NULL'
-    StatusPagamento: str
-    IdTransacao: int
-    statusAgendamento: int
+    StatusPagamento: Optional[str]
+    IdTransacao: Optional[int]
+    statusAgendamento: Optional[int]
     IDSessao: Optional[str]

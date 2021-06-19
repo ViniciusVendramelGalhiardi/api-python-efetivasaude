@@ -1,35 +1,38 @@
 from __future__ import annotations
 from typing import List
 from pydantic import BaseModel
+from typing import List, Optional
 
 class Profissional(BaseModel):
-    Id: int
-    Nome: str
-    Imagem: str
-    Profissao: str
-    Crp: str
+    Id: Optional[int]
+    Nome: Optional[str]
+    Imagem: Optional[str]
+    Profissao: Optional[str]
+    Crp: Optional[str]
+
 
 class Paciente(BaseModel):
-    Id: int
-    Nome: str
-    Imagem: str
-    Cpf: str
-    DataNascimento: str
+    Id: Optional[int]
+    Nome: Optional[str]
+    Imagem: Optional[str]
+    Cpf: Optional[str]
+    DataNascimento: Optional[str]
+
 
 class ListarAgendamentoModel(BaseModel):
-    IdAgendamento: int
-    IdExpediente: int
-    IdTransacao: int
-    StatusAgendamento: int
-    StatusPagamento: str
-    IdSessao: str
-    
-    Data: str
-    Hora: str
-    TempoEstimado: str
-    Preco: float
-    Profissional: Profissional
-    Paciente: Paciente
+    IdAgendamento: Optional[int]
+    IdExpediente: Optional[int]
+    IdTransacao: Optional[int]
+    StatusAgendamento: Optional[int]
+    StatusPagamento: Optional[str]
+    IdSessao: Optional[str]
+    Data: Optional[str]
+    Hora: Optional[str]
+    # TempoEstimado: Optional[str]
+    # Preco: Optional[float]
+    Profissional: Optional[Profissional]
+    Paciente: Optional[Paciente]
+
 
 class Model(BaseModel):
     __root__: List[ListarAgendamentoModel]

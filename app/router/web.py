@@ -7,7 +7,7 @@ from app.model.response import getResponse
 from app.service.ListagemService import listaPerfil, listaAbordagem, listaHobbies, listaCRP, listaHorarioTrabalho, listaIdiomas, listaNosConheceu, listaPlanos, listaProfissao, listaSintomas, listaUsarPlataforma
 from app.model.usuarioModel import UsuarioModel
 from fastapi.responses import JSONResponse
-from app.service.usuarioService import CadastrarUsuario, BuscaUsuarioService, CadastraExpedienteProfissional, ListarExpedienteProfissional, VincularSintomaProfissionalService, BuscarSintomaPorUsuarioDataService, CadastrarCartaoService, BuscarCartaoUsuarioService, ExcluirCartaoService, EnviarSmsUsuarioService, CadastraExperienciaService, AtualizaExperienciaService, ExcluirExperienciaService, CadastraFormacaoService, AtualizaFormacaoService, ExcluirFormacaoService, CadastraDependenteService, AtualizaDependenteService, ExcluirDependenteService
+from app.service.usuarioService import CadastrarUsuario, BuscaUsuarioService, CadastraExpedienteProfissional, ListarExpedienteProfissional, VincularSintomaProfissionalService, BuscarSintomaPorUsuarioDataService, CadastrarCartaoService, BuscarCartaoUsuarioService, ExcluirCartaoService, EnviarSmsUsuarioService, BuscarProfissionalPorPesquisa, CadastraExperienciaService, AtualizaExperienciaService, ExcluirExperienciaService, CadastraFormacaoService, AtualizaFormacaoService, ExcluirFormacaoService, CadastraDependenteService, AtualizaDependenteService, ExcluirDependenteService
 from app.model.expedienteProfissionalModel import ExpedienteProfissionalModel
 from app.service.agendaService import efetuaAgendamentoService, listarAgendamentosProfissional, atualizaStatusService, cadastraAvaliacaoService, buscarAvaliacaoProfissionalService
 from app.model.agendamentoConsultaModel import AgendamentoConsultaModel
@@ -172,6 +172,17 @@ def BuscarUsuario(idUsuario: str, idPerfil: int):
     except Exception as mensagemErro:
         return mensagemErro
     return response
+
+
+@router_web.get("/BuscarProfissionalPorPesq/{IdProfissao}/{AtendePresencialmenteProf}/{DataAtendimento}")
+def BuscarProfissional(IdProfissao: str, AtendePresencialmenteProf: str, DataAtendimento: str):
+    try:
+        response = BuscarProfissionalPorPesquisa(
+            IdProfissao, AtendePresencialmenteProf, DataAtendimento)
+    except Exception as mensagemErro:
+        return mensagemErro
+    return response
+
 
 
 @router_web.get("/ListarAbordagem/")

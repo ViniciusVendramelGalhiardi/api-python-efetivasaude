@@ -11,6 +11,7 @@ from typing import List
 from app.model.agendamentoConsultaModel import AgendamentoConsultaModel
 from app.model.avaliacaoefModel import AvaliacaoEfModel
 
+
 def efetuaAgendamento(agenda: AgendamentoConsultaModel):
 
     try:
@@ -42,31 +43,36 @@ def efetuaAgendamento(agenda: AgendamentoConsultaModel):
 
 
 def buscarAgendamentoProfissional(IdUsuarioProfissional: int):
-    vlrconexao = CONNECTION_STRING_DB
-    conn = pyodbc.connect(CONNECTION_STRING_DB)
-    cursor = conn.cursor()
-    lista = cursor.execute(
-        "SELECT * FROM [dbo].[agendamento] WHERE IdUsuario = ?;", (IdUsuarioProfissional))
+    try:
+        vlrconexao = CONNECTION_STRING_DB
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+        lista = cursor.execute(
+            "SELECT * FROM [dbo].[agendamento] WHERE IdUsuario = ?;", (IdUsuarioProfissional))
 
-    listcc = []
-    for row in lista:
-        cc = AgendamentoConsultaModel(
-            IdAgendamento = row[0],
-            Idexpediente = row[1],
-            IdUsuario = row[2],
-            IdDependente = row[3],
-            StatusPagamento = row[4],
-            IdTransacao = row[5],
-            statusAgendamento = row[6],
-            IDSessao = row[7]
-        )
-        listcc.append(cc)
+        listcc = []
+        for row in lista:
+            cc = AgendamentoConsultaModel(
+                IdAgendamento=row[0],
+                Idexpediente=row[1],
+                IdUsuario=row[2],
+                IdDependente=row[3],
+                StatusPagamento=row[4],
+                IdTransacao=row[5],
+                statusAgendamento=row[6],
+                IDSessao=row[7]
+            )
+            listcc.append(cc)
 
-    cursor.close()
-    conn.close()
+        cursor.close()
+        conn.close()
+    except Exception as ms:
+        return ''
+
     return listcc
 
-def atualizarAgendamento(IdAgenda:int , StatusAgendamento: str):
+
+def atualizarAgendamento(IdAgenda: int, StatusAgendamento: str):
     try:
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
@@ -80,10 +86,11 @@ def atualizarAgendamento(IdAgenda:int , StatusAgendamento: str):
         #agenda.IdAgendamento = cursor.fetchone()[0]
 
     except Exception as mensagemErro:
-         return '{retorno:"' + 'Erro, verifique o IdAgenda e o Status passados como parametro.' + '"}'
+        return '{retorno:"' + 'Erro, verifique o IdAgenda e o Status passados como parametro.' + '"}'
     cursor.close()
     conn.close()
     return '{retorno:"' + 'Atualização efetuada com sucesso' + '"}'
+
 
 def CadastraAvaliacaoEF(avaliacao: AvaliacaoEfModel):
     try:
@@ -107,7 +114,7 @@ def CadastraAvaliacaoEF(avaliacao: AvaliacaoEfModel):
                             ,?
                             ,?)''',
                        (avaliacao.IdProfissional, avaliacao.IdUsuario, avaliacao.NotaEfetivaSaude,
-                        avaliacao.NotaProfissional, avaliacao.DarContinuidade, avaliacao.Descricao_atendimento, 
+                        avaliacao.NotaProfissional, avaliacao.DarContinuidade, avaliacao.Descricao_atendimento,
                         avaliacao.Sugestoes))
 
         cursor.commit()
@@ -119,6 +126,7 @@ def CadastraAvaliacaoEF(avaliacao: AvaliacaoEfModel):
         return mensagemErro
     return avaliacao
 
+
 def buscarAvaliacaoProfissional(IdProfissional: int):
     vlrconexao = CONNECTION_STRING_DB
     conn = pyodbc.connect(CONNECTION_STRING_DB)
@@ -129,14 +137,14 @@ def buscarAvaliacaoProfissional(IdProfissional: int):
     list = []
     for row in lista:
         cc = AvaliacaoEfModel(
-            IdAvaliacao = row[0],
-            IdProfissional = row[1],
-            IdUsuario = row[2],
-            NotaEfetivaSaude = row[3],
-            NotaProfissional = row[4],
-            DarContinuidade = row[5],
-            Descricao_atendimento = row[6],
-            Sugestoes = row[7],
+            IdAvaliacao=row[0],
+            IdProfissional=row[1],
+            IdUsuario=row[2],
+            NotaEfetivaSaude=row[3],
+            NotaProfissional=row[4],
+            DarContinuidade=row[5],
+            Descricao_atendimento=row[6],
+            Sugestoes=row[7],
         )
         list.append(cc)
 

@@ -8,7 +8,7 @@ from fastapi import logger
 import requests
 from settings import API_TOKEN_IUGU, URL_API_IUGU_CUSTOMERS
 from app.model.usuarioModel import UsuarioModel
-from app.data.usuarioData import CadastraUsuario, CadastraProfissional, CadastraEmpresa, BuscarUsuarioData, BuscarProfissionalData, BuscarEmpresaData, AtualizaIdUsuarioIugu, CadastraExpProfissional, BuscarExpedienteProfissional, VincularSintomaProfissional, BuscarSintomaPorUsuarioData, CadastrarCartao, BuscarCartaoUsuarioData, ExcluirCartao, CadastraExperiencia, AtualizaExperiencia, ExcluirExperiencia, CadastraFormacao, AtualizaFormacao, ExcluirFormacao, CadastraDependente, AtualizaDependente, ExcluirDependente
+from app.data.usuarioData import CadastraUsuario, CadastraProfissional, CadastraEmpresa, BuscarUsuarioData, BuscarProfissionalData, BuscarEmpresaData, AtualizaIdUsuarioIugu, CadastraExpProfissional, BuscarExpedienteProfissional, VincularSintomaProfissional, BuscarSintomaPorUsuarioData, CadastrarCartao, BuscarCartaoUsuarioData, ExcluirCartao, BuscarProfissionalPorPesquisaData, CadastraExperiencia, AtualizaExperiencia, ExcluirExperiencia, CadastraFormacao, AtualizaFormacao, ExcluirFormacao, CadastraDependente, AtualizaDependente, ExcluirDependente
 from app.factory.clienteFactory import UsuarioFactory
 from app.data.usuarioData import CadastraUsuario
 from app.model.usuarioVinculadoSubConta import UsuarioVinculadoSubConta
@@ -168,7 +168,7 @@ def EnviarSmsUsuarioService(Numero: str, nome: str):
     try:
         number = randrange(5000)
         account_sid = "AC02f71138043bb8e7abe86c5f927494ea"
-        auth_token = "c8a9fa953e68107ff2eead132e66f1c8"
+        auth_token = "1aecc1565c84585800b533934f79437e"
 
         client = Client(account_sid, auth_token)
 
@@ -214,6 +214,10 @@ def ExcluirExperienciaService(id):
 
 def CadastraFormacaoService(formacao):
     return CadastraFormacao(formacao)
+
+
+def BuscarProfissionalPorPesquisa(IdProfissao, AtendePresencialmenteProf, DataAtendimento):
+    return BuscarProfissionalPorPesquisaData(IdProfissao, AtendePresencialmenteProf, DataAtendimento.replace('-', '/'))
 
 
 def AtualizaFormacaoService(id, formacao):
