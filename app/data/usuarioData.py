@@ -484,6 +484,205 @@ def VincularSintomaProfissional(sintomas):
     return True
 
 
+def CadastraDependente(dependente):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+
+        cursor.execute('''INSERT INTO [dbo].[dependente]
+           ([Nome]
+           ,[Imagem]
+           ,[Apelido]
+           ,[DataNascimento]
+           ,[Genero]
+           ,[Telefone]
+           ,[Email]
+           ,[Cpf]
+           ,[IdUsuario])
+     VALUES
+           (?
+           ,?
+           ,?
+           ,?
+           ,?
+           ,?
+           ,?
+           ,?
+           ,?)''',
+                       (dependente.Nome, dependente.Imagem, dependente.Apelido, dependente.DataNascimento, dependente.Genero, dependente.Telefone, dependente.Email, dependente.Cpf, dependente.IdUsuario))
+        cursor.commit()
+        cursor.execute("SELECT @@IDENTITY AS ID;")
+        idDependente = cursor.fetchone()[0]
+
+    except Exception as mensagemErro:
+        return False
+
+    if (idDependente < 0 or idDependente is None):
+        return False
+
+    return idDependente
+
+
+def AtualizaDependente(id, dependente):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+
+        cursor.execute('UPDATE [dbo].[dependente] SET [Nome] = ?, [Imagem] = ?, [Apelido] = ?, [DataNascimento] = ?, [Genero] = ?, [Telefone] = ?, [Email] = ?, [Cpf] = ?, [IdUsuario] = ? WHERE IdDependente = ?',
+                       (dependente.Nome, dependente.Imagem, dependente.Apelido, dependente.DataNascimento, dependente.Genero, dependente.Telefone, dependente.Email, dependente.Cpf, dependente.IdUsuario, id))
+        cursor.commit()
+
+    except Exception as mensagemErro:
+        return False
+
+    return True
+
+
+def ExcluirDependente(id):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+
+        cursor.execute('''DELETE FROM [dbo].[dependente] WHERE IdDependente = ?''',
+                       (id))
+        cursor.commit()
+
+    except Exception as mensagemErro:
+        return False
+
+    return True
+
+
+def CadastraExperiencia(experiencia):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+
+        cursor.execute('''INSERT INTO [dbo].[experienciaPratica]
+           ([IdUsuario]
+           ,[TipoExperiencia]
+           ,[AtividadePrincipal]
+           ,[Descricao]
+           ,[DataInicio]
+           ,[DataTermino])
+     VALUES
+           (?
+           ,?
+           ,?
+           ,?
+           ,?
+           ,?)''',
+                       (experiencia.IdUsuario, experiencia.TipoExperiencia, experiencia.AtividadePrincipal, experiencia.Descricao, experiencia.DataInicio, experiencia.DataTermino))
+        cursor.commit()
+        cursor.execute("SELECT @@IDENTITY AS ID;")
+        idExperiencia = cursor.fetchone()[0]
+
+    except Exception as mensagemErro:
+        return False
+
+    if (idExperiencia < 0 or idExperiencia is None):
+        return False
+
+    return idExperiencia
+
+
+def AtualizaExperiencia(id, experiencia):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+
+        cursor.execute('UPDATE [dbo].[experienciaPratica] SET [IdUsuario] = ?, [TipoExperiencia] = ?, [AtividadePrincipal] = ?, [Descricao] = ?, [DataInicio] = ?, [DataTermino] = ? WHERE IdExperiencia = ?',
+                       (experiencia.IdUsuario, experiencia.TipoExperiencia, experiencia.AtividadePrincipal, experiencia.Descricao, experiencia.DataInicio, experiencia.DataTermino, id))
+        cursor.commit()
+
+    except Exception as mensagemErro:
+        return False
+
+    return True
+
+
+def ExcluirExperiencia(id):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+
+        cursor.execute('''DELETE FROM [dbo].[experienciaPratica] WHERE IdExperiencia = ?''',
+                       (id))
+        cursor.commit()
+
+    except Exception as mensagemErro:
+        return False
+
+    return True
+
+
+def CadastraFormacao(formacao):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+
+        cursor.execute('''INSERT INTO [dbo].[formacaoAcademica]
+           ([IdUsuario]
+           ,[InstituicaoEnsino]
+           ,[NomeCurso]
+           ,[NivelAcademico]
+           ,[AnoInicio]
+           ,[AnoTermino]
+           ,[DescricaoCurso]
+           ,[Anexo])
+     VALUES
+           (?
+           ,?
+           ,?
+           ,?
+           ,?
+           ,?
+           ,?
+           ,?)''',
+                       (formacao.IdUsuario, formacao.InstituicaoEnsino, formacao.NomeCurso, formacao.NivelAcademico, formacao.AnoInicio, formacao.AnoTermino, formacao.DescricaoCurso, formacao.Anexo))
+        cursor.commit()
+        cursor.execute("SELECT @@IDENTITY AS ID;")
+        idFormacao = cursor.fetchone()[0]
+
+    except Exception as mensagemErro:
+        return False
+
+    if (idFormacao < 0 or idFormacao is None):
+        return False
+
+    return idFormacao
+
+
+def AtualizaFormacao(id, formacao):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+
+        cursor.execute('UPDATE [dbo].[formacaoAcademica] SET [IdUsuario] = ?, [InstituicaoEnsino] = ?, [NomeCurso] = ?, [NivelAcademico] = ?, [AnoInicio] = ?, [AnoTermino] = ?, [DescricaoCurso] = ?, [Anexo] = ? WHERE IdFormacao = ?',
+                       (formacao.IdUsuario, formacao.InstituicaoEnsino, formacao.NomeCurso, formacao.NivelAcademico, formacao.AnoInicio, formacao.AnoTermino, formacao.DescricaoCurso, formacao.Anexo, id))
+        cursor.commit()
+
+    except Exception as mensagemErro:
+        return False
+
+    return True
+
+
+def ExcluirFormacao(id):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+
+        cursor.execute('''DELETE FROM [dbo].[formacaoAcademica] WHERE IdFormacao = ?''',
+                       (id))
+        cursor.commit()
+
+    except Exception as mensagemErro:
+        return False
+
+    return True
+
+
 def BuscarSintomaPorUsuarioData(idUsuario: int):
 
     try:
@@ -523,6 +722,7 @@ def CadastrarCartao(card: CartaoModel):
     except Exception as mensagemErro:
         return mensagemErro
     return True
+
 
 def BuscarCartaoUsuarioData(idUsuario: int):
 
