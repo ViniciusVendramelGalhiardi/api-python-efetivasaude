@@ -8,9 +8,9 @@ from fastapi import logger
 import requests
 from settings import API_TOKEN_IUGU, URL_API_IUGU_CUSTOMERS
 from app.model.usuarioModel import UsuarioModel
-from app.data.usuarioData import CadastraUsuario, CadastraProfissional, CadastraEmpresa, BuscarUsuarioData, BuscarProfissionalData, BuscarEmpresaData, AtualizaIdUsuarioIugu, CadastraExpProfissional, BuscarExpedienteProfissional, VincularSintomaProfissional, BuscarSintomaPorUsuarioData, CadastrarCartao, BuscarCartaoUsuarioData, ExcluirCartao, BuscarProfissionalPorPesquisaData, CadastraExperiencia, AtualizaExperiencia, ExcluirExperiencia, CadastraFormacao, AtualizaFormacao, ExcluirFormacao, CadastraDependente, AtualizaDependente, ExcluirDependente
+from app.data.usuarioData import CadastraUsuario, CadastraProfissional, CadastraEmpresa, BuscarUsuarioData, BuscarProfissionalData, BuscarEmpresaData, AtualizaIdUsuarioIugu, CadastraExpProfissional, BuscarExpedienteProfissional, VincularSintomaProfissional, BuscarSintomaPorUsuarioData, CadastrarCartao, BuscarCartaoUsuarioData, ExcluirCartao, BuscarProfissionalPorPesquisaData, CadastraExperiencia, AtualizaExperiencia, ExcluirExperiencia, CadastraFormacao, AtualizaFormacao, ExcluirFormacao, CadastraDependente, AtualizaDependente, ExcluirDependente,EditarUsuarioData
 from app.factory.clienteFactory import UsuarioFactory
-from app.data.usuarioData import CadastraUsuario
+# from app.data.usuarioData import CadastraUsuario
 from app.model.usuarioVinculadoSubConta import UsuarioVinculadoSubConta
 from app.model.expedienteProfissionalModel import ExpedienteProfissionalModel
 from app.model.sintomasVinculadosModel import SintomasVinculadosModel
@@ -45,6 +45,21 @@ def CadastrarUsuario(IdPerfil, User: UsuarioModel):
         response.idUsuarioIugu = CadastraUsuarioIugu(response, 3)
         AtualizaIdUsuarioIugu(response.idUsuarioIugu, response.idUsuario)
         response.idUsuario = IdPerfil
+        return response
+    
+
+def EditarUsuario(IdPerfil, User: UsuarioModel, IdUsuario: int):
+    if IdPerfil == 1:
+        uEntity = UsuarioFactory.UsuarioModelToEntity(User)
+        response = EditarUsuarioData(uEntity, IdPerfil, IdUsuario)
+        return response
+    elif IdPerfil == 2:
+        pEntity = UsuarioFactory.ProfissionalModelToEntity(User)
+        response = CadastraProfissional(pEntity, IdPerfil)
+        return response
+    else:
+        eEntity = UsuarioFactory.EmpresaModelToEntity(User)
+        response = CadastraEmpresa(eEntity, IdPerfil)
         return response
 
 

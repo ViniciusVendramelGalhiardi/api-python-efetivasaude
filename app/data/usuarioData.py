@@ -40,6 +40,61 @@ def CadastraUsuario(uEntity: UsuarioEntity, IdPerfil: int):
     return uEntity
 
 
+def EditarUsuarioData(uEntity: UsuarioEntity, IdPerfil: int, IdUsuario: int):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+        cursor.execute('''UPDATE [dbo].[usuario]
+                            SET 
+                            Nome = ?, 
+                            Telefone = ?,
+                            Email = ?,
+                            Cidade = ?, 
+                            Estado = ?, 
+                            Cep = ?, 
+                            Endereco = ?, 
+                            IdConheceu = ?, 
+                            Senha = ?, 
+                            TermosCondicoes = ?,
+                            PoliticaPrivacidade = ?, 
+                            Apelido = ?, 
+                            EstadoCivil = ?, 
+                            PossuiFilhosQtd = ?, 
+                            IdHobbie = ?,
+                            DataNascimento = ?, 
+                            Genero = ?, 
+                            IdProfissao= ?,
+                            Cpf = ?, 
+                            Dependente = ?, 
+                            IdPerfil = ?
+                            FROM usuario
+                            WHERE IdUsuario = ?''',
+                       (uEntity.Nome, uEntity.Telefone, uEntity.Email, uEntity.Cidade, uEntity.Estado, uEntity.Cep, uEntity.Endereco, uEntity.IdConheceu, uEntity.Senha, uEntity.TermosCondicoes,
+                        uEntity.PoliticaPrivacidade, uEntity.Apelido, uEntity.EstadoCivil, uEntity.PossuiFilhosQtd, uEntity.IdHobbie, uEntity.DataNascimento,
+                        uEntity.Genero, uEntity.IdConheceu, uEntity.Cpf, uEntity.Dependente, IdPerfil, IdUsuario))
+        cursor.commit()
+
+        if uEntity.Dependente and uEntity.Dependentes is not None:
+            for item in uEntity.Dependentes:
+                cursor.execute('''UPDATE [dbo].[dependente]
+                                    SET  [Nome] = ?
+                                        ,[Apelido] = ?
+                                        ,[DataNascimento] = ?
+                                        ,[Genero] = ?
+                                        ,[Telefone] = ?
+                                        ,[Email] = ?
+                                        ,[CPF] = ?
+                                    WHERE IdUsuario = ?''',
+                               (item.Nome, item.Apelido, item.DataNascimento, item.Genero, item.Telefone, item.Email, item.Cpf, item.IdUsuario))
+                cursor.commit()
+
+
+    except Exception as mensagemErro:
+        return mensagemErro
+    return uEntity
+
+
+
 def CadastraProfissional(pEntity: ProfissionalEntity, IdPerfil: int):
 
     try:

@@ -7,7 +7,7 @@ from app.model.response import getResponse
 from app.service.ListagemService import listaPerfil, listaAbordagem, listaHobbies, listaCRP, listaHorarioTrabalho, listaIdiomas, listaNosConheceu, listaPlanos, listaProfissao, listaSintomas, listaUsarPlataforma
 from app.model.usuarioModel import UsuarioModel
 from fastapi.responses import JSONResponse
-from app.service.usuarioService import CadastrarUsuario, BuscaUsuarioService, CadastraExpedienteProfissional, ListarExpedienteProfissional, VincularSintomaProfissionalService, BuscarSintomaPorUsuarioDataService, CadastrarCartaoService, BuscarCartaoUsuarioService, ExcluirCartaoService, EnviarSmsUsuarioService, BuscarProfissionalPorPesquisa, CadastraExperienciaService, AtualizaExperienciaService, ExcluirExperienciaService, CadastraFormacaoService, AtualizaFormacaoService, ExcluirFormacaoService, CadastraDependenteService, AtualizaDependenteService, ExcluirDependenteService
+from app.service.usuarioService import EditarUsuario,CadastrarUsuario, BuscaUsuarioService, CadastraExpedienteProfissional, ListarExpedienteProfissional, VincularSintomaProfissionalService, BuscarSintomaPorUsuarioDataService, CadastrarCartaoService, BuscarCartaoUsuarioService, ExcluirCartaoService, EnviarSmsUsuarioService, BuscarProfissionalPorPesquisa, CadastraExperienciaService, AtualizaExperienciaService, ExcluirExperienciaService, CadastraFormacaoService, AtualizaFormacaoService, ExcluirFormacaoService, CadastraDependenteService, AtualizaDependenteService, ExcluirDependenteService
 from app.model.expedienteProfissionalModel import ExpedienteProfissionalModel
 from app.service.agendaService import efetuaAgendamentoService, listarAgendamentosProfissional, atualizaStatusService, cadastraAvaliacaoService, buscarAvaliacaoProfissionalService
 from app.model.agendamentoConsultaModel import AgendamentoConsultaModel
@@ -30,6 +30,14 @@ async def cadastrar(IdPerfil: int, UsuarioModel: UsuarioModel):
     response = CadastrarUsuario(IdPerfil, UsuarioModel)
     tt = response
     return response
+
+
+@router_web.post("/editarUsuario/{IdPerfil}")
+async def edit(IdPerfil: int, UsuarioModel: UsuarioModel):
+    response = EditarUsuario(IdPerfil, UsuarioModel, UsuarioModel.IdUsuario)
+    tt = response
+    return response
+
 
 
 @router_web.post("/cadastraExpediente/")
