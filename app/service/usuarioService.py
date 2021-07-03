@@ -8,7 +8,7 @@ from fastapi import logger
 import requests
 from settings import API_TOKEN_IUGU, URL_API_IUGU_CUSTOMERS
 from app.model.usuarioModel import UsuarioModel
-from app.data.usuarioData import CadastraUsuario, CadastraProfissional, CadastraEmpresa, BuscarUsuarioData, BuscarProfissionalData, BuscarEmpresaData, AtualizaIdUsuarioIugu, CadastraExpProfissional, BuscarExpedienteProfissional, VincularSintomaProfissional, BuscarSintomaPorUsuarioData, CadastrarCartao, BuscarCartaoUsuarioData, ExcluirCartao, BuscarProfissionalPorPesquisaData, CadastraExperiencia, AtualizaExperiencia, ExcluirExperiencia, CadastraFormacao, AtualizaFormacao, ExcluirFormacao, CadastraDependente, AtualizaDependente, ExcluirDependente,EditarUsuarioData
+from app.data.usuarioData import CadastraUsuario, CadastraProfissional, CadastraEmpresa, BuscarUsuarioData, BuscarProfissionalData, BuscarEmpresaData, AtualizaIdUsuarioIugu, CadastraExpProfissional, BuscarExpedienteProfissional, VincularSintomaProfissional, BuscarSintomaPorUsuarioData, CadastrarCartao, BuscarCartaoUsuarioData, ExcluirCartao, BuscarProfissionalPorPesquisaData, CadastraExperiencia, AtualizaExperiencia, ExcluirExperiencia, CadastraFormacao, AtualizaFormacao, ExcluirFormacao, CadastraDependente, AtualizaDependente, ExcluirDependente,EditarUsuarioData,EditarProfissional
 from app.factory.clienteFactory import UsuarioFactory
 # from app.data.usuarioData import CadastraUsuario
 from app.model.usuarioVinculadoSubConta import UsuarioVinculadoSubConta
@@ -55,7 +55,7 @@ def EditarUsuario(IdPerfil, User: UsuarioModel, IdUsuario: int):
         return response
     elif IdPerfil == 2:
         pEntity = UsuarioFactory.ProfissionalModelToEntity(User)
-        response = CadastraProfissional(pEntity, IdPerfil)
+        response = EditarProfissional(pEntity, IdPerfil, IdUsuario)
         return response
     else:
         eEntity = UsuarioFactory.EmpresaModelToEntity(User)

@@ -54,7 +54,6 @@ def EditarUsuarioData(uEntity: UsuarioEntity, IdPerfil: int, IdUsuario: int):
                             Cep = ?, 
                             Endereco = ?, 
                             IdConheceu = ?, 
-                            Senha = ?, 
                             TermosCondicoes = ?,
                             PoliticaPrivacidade = ?, 
                             Apelido = ?, 
@@ -69,7 +68,7 @@ def EditarUsuarioData(uEntity: UsuarioEntity, IdPerfil: int, IdUsuario: int):
                             IdPerfil = ?
                             FROM usuario
                             WHERE IdUsuario = ?''',
-                       (uEntity.Nome, uEntity.Telefone, uEntity.Email, uEntity.Cidade, uEntity.Estado, uEntity.Cep, uEntity.Endereco, uEntity.IdConheceu, uEntity.Senha, uEntity.TermosCondicoes,
+                       (uEntity.Nome, uEntity.Telefone, uEntity.Email, uEntity.Cidade, uEntity.Estado, uEntity.Cep, uEntity.Endereco, uEntity.IdConheceu, uEntity.TermosCondicoes,
                         uEntity.PoliticaPrivacidade, uEntity.Apelido, uEntity.EstadoCivil, uEntity.PossuiFilhosQtd, uEntity.IdHobbie, uEntity.DataNascimento,
                         uEntity.Genero, uEntity.IdConheceu, uEntity.Cpf, uEntity.Dependente, IdPerfil, IdUsuario))
         cursor.commit()
@@ -92,7 +91,6 @@ def EditarUsuarioData(uEntity: UsuarioEntity, IdPerfil: int, IdUsuario: int):
     except Exception as mensagemErro:
         return mensagemErro
     return uEntity
-
 
 
 def CadastraProfissional(pEntity: ProfissionalEntity, IdPerfil: int):
@@ -164,6 +162,118 @@ def CadastraProfissional(pEntity: ProfissionalEntity, IdPerfil: int):
                 cursor.commit()
 
         pEntity.idUsuario = idUsuario
+
+    except Exception as mensagemErro:
+        return mensagemErro
+
+    return pEntity
+
+
+def EditarProfissional(pEntity: ProfissionalEntity, IdPerfil: int, IdUsuario: int):
+
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+        cursor.execute('''UPDATE usuario SET
+                            Nome = ?
+                            ,Telefone= ?
+                            ,Email= ?
+                            ,Cidade= ?
+                            ,Estado= ?
+                            ,Cep=?
+                            ,Endereco= ?
+                            ,IdConheceu= ?
+                            ,TermosCondicoes= ?
+                            ,PoliticaPrivacidade= ?
+                            ,Apelido= ?
+                            ,EstadoCivil= ?
+                            ,PossuiFilhosQtd= ?
+                            ,IdHobbie= ?
+                            ,DataNascimento= ?
+                            ,Genero= ?
+                            ,IdProfissao=?
+                            ,Cpf= ?
+                            ,IdPerfil= ?
+                            ,IdHorarioTrabalhoProf= ?
+                            ,IdUsarPlataformaProf= ?
+                            ,IdConselhoRegionalProf= ?
+                            ,PossuiCNPJProf= ?
+                            ,TrabalharComCNPJProf= ?
+                            ,Cnpj= ?
+                            ,CartaApresentacaoProf= ?
+                            ,OutraAbordagemProf= ?
+                            ,idUsuarioIugu= ?
+                            ,RegistroCRPePsi= ?
+                            ,RegistroePsiValidado= ?
+                            ,OutroPublicoProf= ?
+                            ,OutroIdiomaProf= ?
+                            ,DuracaoAtendimentoProf= ?
+                            ,AtendePlanoDeSaudeProf= ?
+                            ,ReciboReembolsavelProf= ?
+                            ,AtendePresencialmenteProf= ?
+                            ,PrimeiroClienteCobraProf= ?
+                            ,PrimeiroClienteValorFixoProf= ?
+                            ,EmpresasParceirasDescontoProf= ?
+                            ,ValorPorSessaoProf=?
+                            ,Dependente= ?
+                            WHERE IdUsuario = ?''',
+                            (pEntity.Nome, pEntity.Telefone, pEntity.Email, pEntity.Cidade, pEntity.Estado, pEntity.Cep, pEntity.Endereco, pEntity.IdConheceu, pEntity.TermosCondicoes,
+                                pEntity.PoliticaPrivacidade, pEntity.Apelido, pEntity.EstadoCivil, pEntity.PossuiFilhosQtd, pEntity.IdHobbie, pEntity.DataNascimento,
+                                pEntity.Genero,pEntity.IdProfissao, pEntity.Cpf, IdPerfil, pEntity.IdHorarioTrabalhoProf, pEntity.IdUsarPlataformaProf, 
+                                pEntity.IdConselhoRegionalProf,
+                                pEntity.PossuiCNPJProf,
+                                pEntity.TrabalharComCNPJProf,
+                                pEntity.Cnpj,
+                                pEntity.CartaApresentacaoProf,
+                                pEntity.OutraAbordagemProf,
+                                pEntity.idUsuarioIugu,
+                                pEntity.RegistroCRPePsi,
+                                pEntity.RegistroePsiValidado,
+                                pEntity.OutroPublicoProf,
+                                pEntity.OutroIdiomaProf,
+                                pEntity.DuracaoAtendimentoProf,
+                                pEntity.AtendePlanoDeSaudeProf,
+                                pEntity.ReciboReembolsavelProf,
+                                pEntity.AtendePresencialmenteProf,
+                                pEntity.PrimeiroClienteCobraProf,
+                                pEntity.PrimeiroClienteValorFixoProf,
+                                pEntity.EmpresasParceirasDescontoProf,
+                                pEntity.ValorPorSessaoProf,
+                                pEntity.Dependente, IdUsuario))
+        cursor.commit()
+
+        if pEntity.IdAbordagemProf is not None:
+            for item in pEntity.IdAbordagemProf:
+                cursor.execute('''UPDATE [abordagemProfissional] SET IdAbordagemAdotada = ? WHERE IdUsuarioProfissional = ?''',
+                               (item.IdAbordagemAdotada,  IdUsuario))
+                cursor.commit()
+
+        if pEntity.IdiomasAtendidosProf is not None:
+            for item in pEntity.IdiomasAtendidosProf:
+                cursor.execute('UPDATE [idiomasAtendidos] SET Ididioma = ? WHERE IdUsuario = ?',
+                               (item.Ididioma, IdUsuario))
+                cursor.commit()
+
+        #BIEL DISSE QUE NAO TEM ESSA TELA NO DITE
+        # if pEntity.AtendimentoPresencialProf is not None:
+        #     for item in pEntity.AtendimentoPresencialProf:
+        #         cursor.execute('INSERT INTO atendimentoPresencial (Endereco,Numero,Conjunto,Bairro,Cidade,Estado,Cep,IdUsuario) VALUES (?, ?,?,?,?,?,?,?)',
+        #                        (item.Endereco, item.Numero, item.Conjunto, item.Bairro, item.Cidade, item.Estado, item.Cep, idUsuario))
+        #         cursor.commit()
+
+        if pEntity.ContasCorrente is not None:
+            for item in pEntity.ContasCorrente:
+                cursor.execute('UPDATE ContaCorrente SET Banco = ?, Agencia = ?, ContaCorrente = ?, DigitoVerificador = ?  WHERE IdUsuario = ?',
+                               (item.Banco, item.Agencia, item.ContaCorrente, item.DigitoVerificador, IdUsuario))
+                cursor.commit()
+
+        if pEntity.IdsPublicoAtendido is not None:
+            for item in pEntity.IdsPublicoAtendido:
+                cursor.execute('''UPDATE publicoAtendidoProfissional SET IdPublicoAtendindo = ? WHERE IdUsuarioProfissional = ?''',
+                               (item.IdPublicoAtendido, IdUsuario))
+                cursor.commit()
+
+        #pEntity.idUsuario = idUsuario
 
     except Exception as mensagemErro:
         return mensagemErro

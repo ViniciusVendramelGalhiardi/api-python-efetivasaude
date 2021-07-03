@@ -30,9 +30,17 @@ class ProfissionalEntity(BaseModel):
     TrabalharComCNPJProf: Optional[bool] 
     Cnpj: Optional[str] 
     CartaApresentacaoProf: Optional[str] 
-
     OutraAbordagemProf: Optional[str] 
-    IdAbordagemProf: Optional[List]
+    idUsuario: Optional[int]
+    idUsuarioIugu:Optional[str]
+    IdPerfil: Optional[str]
+
+    #ePsi
+    RegistroCRPePsi: Optional[str]
+    RegistroePsiValidado: Optional[bool]
+ 
+    OutroPublicoProf:Optional[str]
+    OutroIdiomaProf: Optional[str]
     
     DuracaoAtendimentoProf:Optional[str] = ''
     AtendePlanoDeSaudeProf:Optional[bool] = False
@@ -50,16 +58,6 @@ class ProfissionalEntity(BaseModel):
     IdiomasAtendidosProf: Optional[List]
     AtendimentoPresencialProf: Optional[List]
     ContasCorrente: Optional[List]
-    idUsuario: Optional[int]
-    
-    idUsuarioIugu:Optional[str]
-    IdPerfil: Optional[str]
-
-    #ePsi
-    RegistroCRPePsi: Optional[str]
-    RegistroePsiValidado: Optional[bool]
-
+    IdAbordagemProf: Optional[List]
     IdsPublicoAtendido:Optional[List]
-    OutroPublicoProf:Optional[str]
-
-    OutroIdiomaProf: Optional[str]
+  
