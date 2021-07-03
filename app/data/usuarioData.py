@@ -989,3 +989,6 @@ def ExcluirCartao(idUsuario: int):
     except Exception as mensagemErro:
         return mensagemErro
     return True
+
+
+def senhaUsuario()

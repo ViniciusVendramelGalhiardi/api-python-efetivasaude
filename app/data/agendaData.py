@@ -77,7 +77,7 @@ def atualizarAgendamento(IdAgenda: int, StatusAgendamento: str):
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
 
-        cursor.execute('''UPDATE [dbo].[agendamento] SET StatusPagamento = ? WHERE IdAgendamento = ?''',
+        cursor.execute('''UPDATE [dbo].[agendamento] SET statusAgendamento = ? WHERE IdAgendamento = ?''',
                        (StatusAgendamento, IdAgenda))
 
         cursor.commit()
