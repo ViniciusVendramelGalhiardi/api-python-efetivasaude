@@ -28,7 +28,7 @@ def efetuaAgendamento(agenda: AgendamentoConsultaModel):
                         ,[IDSessao]
                         ,[IdUsuarioProfissional])
                     VALUES
-                        (?,?,?,?,?,?,?)''',
+                        (?,?,?,?,?,?,?,?)''',
                        (agenda.Idexpediente, agenda.IdUsuario, agenda.IdDependente,
                         agenda.StatusPagamento, agenda.IdTransacao, agenda.statusAgendamento, agenda.IDSessao, agenda.IdUsuarioProfissional))
 
@@ -48,7 +48,7 @@ def buscarAgendamentoProfissional(IdUsuarioProfissional: int):
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
         lista = cursor.execute(
-            "SELECT * FROM [dbo].[agendamento] WHERE IdUsuario = ?;", (IdUsuarioProfissional))
+            "SELECT * FROM [dbo].[agendamento] WHERE IdUsuario = ? order by IdAgendamento desc", (IdUsuarioProfissional))
 
         listcc = []
         for row in lista:

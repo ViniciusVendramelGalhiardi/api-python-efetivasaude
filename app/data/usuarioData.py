@@ -11,7 +11,9 @@ from app.model.expedienteProfissionalModel import ExpedienteProfissionalModel
 from typing import List
 from app.model.sintomasVinculadosModel import SintomasVinculadosModel
 from app.model.cartaoModel import CartaoModel
-
+from app.model.historicoAtendimentoModel import HistoricoAtendimentoModel
+from app.model.usuarioPronturioModel import UsuarioProntuarioModel
+from app.model.colaboradoresEmpresa import ColaboradoresEmpresa
 
 def CadastraUsuario(uEntity: UsuarioEntity, IdPerfil: int):
 
@@ -19,10 +21,10 @@ def CadastraUsuario(uEntity: UsuarioEntity, IdPerfil: int):
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
 
-        cursor.execute('INSERT INTO usuario (Nome, Telefone,Email,Cidade, Estado, Cep, Endereco, IdConheceu, Senha, TermosCondicoes,PoliticaPrivacidade, Apelido, EstadoCivil, PossuiFilhosQtd, IdHobbie,DataNascimento, Genero, IdProfissao,Cpf , Dependente, IdPerfil) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        cursor.execute('INSERT INTO usuario (Nome, Telefone,Email,Cidade, Estado, Cep, Endereco, IdConheceu, Senha, TermosCondicoes,PoliticaPrivacidade, Apelido, EstadoCivil, PossuiFilhosQtd, IdHobbie,DataNascimento, Genero, IdProfissao,Cpf , Dependente, IdPerfil, BaseImage, DataCadastro) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
                        (uEntity.Nome, uEntity.Telefone, uEntity.Email, uEntity.Cidade, uEntity.Estado, uEntity.Cep, uEntity.Endereco, uEntity.IdConheceu, uEntity.Senha, uEntity.TermosCondicoes,
                         uEntity.PoliticaPrivacidade, uEntity.Apelido, uEntity.EstadoCivil, uEntity.PossuiFilhosQtd, uEntity.IdHobbie, uEntity.DataNascimento,
-                        uEntity.Genero, uEntity.IdConheceu, uEntity.Cpf, uEntity.Dependente, IdPerfil))
+                        uEntity.Genero, uEntity.IdConheceu, uEntity.Cpf, uEntity.Dependente, IdPerfil, uEntity.BaseImage, uEntity.DataCadastro))
         cursor.commit()
         cursor.execute("SELECT @@IDENTITY AS ID;")
         idUsuario = cursor.fetchone()[0]
@@ -98,11 +100,11 @@ def CadastraProfissional(pEntity: ProfissionalEntity, IdPerfil: int):
     try:
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO usuario (Nome, Telefone,Email,Cidade, Estado, Cep, Endereco, IdConheceu, Senha, TermosCondicoes,PoliticaPrivacidade, Apelido, EstadoCivil, PossuiFilhosQtd, IdHobbie,DataNascimento, Genero, IdProfissao,Cpf , Dependente,IdHorarioTrabalhoProf,IdUsarPlataformaProf,IdConselhoRegionalProf,PossuiCNPJProf,TrabalharComCNPJProf,Cnpj,CartaApresentacaoProf, OutraAbordagemProf, DuracaoAtendimentoProf, AtendePlanoDeSaudeProf,ReciboReembolsavelProf,AtendePresencialmenteProf,PrimeiroClienteCobraProf,PrimeiroClienteValorFixoProf,EmpresasParceirasDescontoProf,ValorPorSessaoProf, IdPerfil,RegistroCRPePsi,RegistroePsiValidado, OutroPublicoProf, OutroIdiomaProf) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        cursor.execute('INSERT INTO usuario (Nome, Telefone,Email,Cidade, Estado, Cep, Endereco, IdConheceu, Senha, TermosCondicoes,PoliticaPrivacidade, Apelido, EstadoCivil, PossuiFilhosQtd, IdHobbie,DataNascimento, Genero, IdProfissao,Cpf , Dependente,IdHorarioTrabalhoProf,IdUsarPlataformaProf,IdConselhoRegionalProf,PossuiCNPJProf,TrabalharComCNPJProf,Cnpj,CartaApresentacaoProf, OutraAbordagemProf, DuracaoAtendimentoProf, AtendePlanoDeSaudeProf,ReciboReembolsavelProf,AtendePresencialmenteProf,PrimeiroClienteCobraProf,PrimeiroClienteValorFixoProf,EmpresasParceirasDescontoProf,ValorPorSessaoProf, IdPerfil,RegistroCRPePsi,RegistroePsiValidado, OutroPublicoProf, OutroIdiomaProf, BaseImage, DataCadastro) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
                        (pEntity.Nome, pEntity.Telefone, pEntity.Email, pEntity.Cidade, pEntity.Estado, pEntity.Cep, pEntity.Endereco, pEntity.IdConheceu, pEntity.Senha, pEntity.TermosCondicoes, pEntity.PoliticaPrivacidade,
                         pEntity.Apelido, pEntity.EstadoCivil, pEntity.PossuiFilhosQtd, pEntity.IdHobbie, pEntity.DataNascimento, pEntity.Genero, pEntity.IdProfissao, pEntity.Cpf, pEntity.Dependente, pEntity.IdHorarioTrabalhoProf,
                         pEntity.IdUsarPlataformaProf, pEntity.IdConselhoRegionalProf, pEntity.PossuiCNPJProf, pEntity.TrabalharComCNPJProf, pEntity.Cnpj, pEntity.CartaApresentacaoProf, pEntity.OutraAbordagemProf, pEntity.DuracaoAtendimentoProf,
-                        pEntity.AtendePlanoDeSaudeProf, pEntity.ReciboReembolsavelProf, pEntity.AtendePresencialmenteProf, pEntity.PrimeiroClienteCobraProf, pEntity.PrimeiroClienteValorFixoProf, pEntity.EmpresasParceirasDescontoProf, pEntity.ValorPorSessaoProf, IdPerfil, pEntity.RegistroCRPePsi, pEntity.RegistroePsiValidado, pEntity.OutroPublicoProf, pEntity.OutroIdiomaProf))
+                        pEntity.AtendePlanoDeSaudeProf, pEntity.ReciboReembolsavelProf, pEntity.AtendePresencialmenteProf, pEntity.PrimeiroClienteCobraProf, pEntity.PrimeiroClienteValorFixoProf, pEntity.EmpresasParceirasDescontoProf, pEntity.ValorPorSessaoProf, IdPerfil, pEntity.RegistroCRPePsi, pEntity.RegistroePsiValidado, pEntity.OutroPublicoProf, pEntity.OutroIdiomaProf, pEntity.BaseImage, pEntity.DataCadastro))
         cursor.commit()
         cursor.execute("SELECT @@IDENTITY AS ID;")
         idUsuario = cursor.fetchone()[0]
@@ -286,8 +288,8 @@ def CadastraEmpresa(eEntity: EmpresaEntity, IdPerfil: int):
     try:
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO [dbo].[usuario] (Nome, Telefone, Email, Cidade, Estado, Cep, Endereco, IdConheceu, Senha, TermosCondicoes, PoliticaPrivacidade, Apelido, NomeEmpresaEmp, TelefoneCorporativoEmp, EmailCorporativoEmp,SiteEmpr,LinkedinEmpr, InstagramEmp,CargoFuncaoEmp,NumeroColaboradoresEmp,Cnpj, IdPerfil) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                       (eEntity.Nome, eEntity.Telefone, eEntity.Email, eEntity.Cidade, eEntity.Estado, eEntity.Cep, eEntity.Endereco, eEntity.IdConheceu, eEntity.Senha, eEntity.TermosCondicoes, eEntity.PoliticaPrivacidade, eEntity.Apelido, eEntity.NomeEmpresaEmp, eEntity.TelefoneCorporativoEmp, eEntity.EmailCorporativoEmp, eEntity.SiteEmpr, eEntity.LinkedinEmpr, eEntity.InstagramEmp, eEntity.CargoFuncaoEmp, eEntity.NumeroColaboradoresEmp, eEntity.Cnpj, IdPerfil))
+        cursor.execute('INSERT INTO [dbo].[usuario] (Nome, Telefone, Email, Cidade, Estado, Cep, Endereco, IdConheceu, Senha, TermosCondicoes, PoliticaPrivacidade, Apelido, NomeEmpresaEmp, TelefoneCorporativoEmp, EmailCorporativoEmp,SiteEmpr,LinkedinEmpr, InstagramEmp,CargoFuncaoEmp,NumeroColaboradoresEmp,Cnpj, IdPerfil, BaseImage, DataCadastro, BaseImageCompany) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                       (eEntity.Nome, eEntity.Telefone, eEntity.Email, eEntity.Cidade, eEntity.Estado, eEntity.Cep, eEntity.Endereco, eEntity.IdConheceu, eEntity.Senha, eEntity.TermosCondicoes, eEntity.PoliticaPrivacidade, eEntity.Apelido, eEntity.NomeEmpresaEmp, eEntity.TelefoneCorporativoEmp, eEntity.EmailCorporativoEmp, eEntity.SiteEmpr, eEntity.LinkedinEmpr, eEntity.InstagramEmp, eEntity.CargoFuncaoEmp, eEntity.NumeroColaboradoresEmp, eEntity.Cnpj, IdPerfil, eEntity.BaseImage, eEntity.DataCadastro, eEntity.BaseImageCompany))
         cursor.commit()
         cursor.execute("SELECT @@IDENTITY AS ID;")
         idUsuario = cursor.fetchone()[0]
@@ -636,6 +638,9 @@ def VincularSintomaProfissional(sintomas):
     try:
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
+        
+        cursor.execute('DELETE FROM sintomasVinculados WHERE IdUsuario = ?',(sintomas[0].IdUsuario))
+        cursor.commit()
 
         for item in sintomas:
             cursor.execute('''INSERT INTO [dbo].[sintomasVinculados]
@@ -991,4 +996,189 @@ def ExcluirCartao(idUsuario: int):
     return True
 
 
-def senhaUsuario()
+
+def EfetuaLoginUsuarioData(email:str, senha: str, idperfil:int):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+        cursor.execute('''SELECT top 1 idusuario, email, senha FROM usuario WHERE Email = ? AND senha = ? AND idperfil = ? ''',
+                       (email, senha, idperfil))
+        registros = cursor.fetchall()
+
+        listabordagem = []
+        if len(registros) > 0:
+            user = BuscarUsuarioData(registros[0].idusuario)
+            return user
+        
+        return None
+    except Exception as mensagemErro:
+        return mensagemErro
+    return True
+
+
+def ListarHistoricoAtendimento(IdProfissional:int):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+        cursor.execute('''SELECT U.IdUsuario, U.Nome, U.BaseImage , U.DataCadastro  FROM usuario U 
+                            INNER JOIN agendamento A ON U.IdUsuario = A.IdUsuario
+                            WHERE A.IdUsuarioProfissional = ?
+                            GROUP BY U.IdUsuario,U.Nome, U.BaseImage, U.DataCadastro ''', (IdProfissional))
+        
+        registros = cursor.fetchall()
+
+        if len(registros) > 0:
+            list = []
+            for row in registros:
+                dep = HistoricoAtendimentoModel(
+                    IdUsuario =  row[0],
+                    Nome = row[1],
+                    BaseImage = row[2],
+                    DataCadastro = row[3]
+                )
+                list.append(dep)
+            return list
+        
+        return None
+    except Exception as mensagemErro:
+        return mensagemErro
+    return True
+
+def CadastrarProntuarioData(pront:UsuarioProntuarioModel):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+        cursor.execute('''INSERT INTO [dbo].[usuarioProntuario]
+                                ([IdUsuario]
+                                ,[Prontuario])
+                            VALUES
+                                (?
+                                ,?)''', (pront.IdUsuario, pront.Prontuario))
+        cursor.commit()
+        cursor.execute("SELECT @@IDENTITY AS ID;")
+        idUsuario = cursor.fetchone()[0]
+        return True
+    except Exception as mensagemErro:
+        return False
+    
+def CadastrarColaboradoreEmpresaData(col:ColaboradoresEmpresa):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+        cursor.execute('''INSERT INTO [dbo].[colaboradoresEmpresa]
+                            ([IDUSUARIOEMPRESA]
+                            ,[REGISTRO]
+                            ,[NOME]
+                            ,[CPF]
+                            ,[DATANASCIMENTO]
+                            ,[VINCULO]
+                            ,[CARGO]
+                            ,[PLANODESAUDE]
+                            ,[SUBSIDIOCORP]
+                            ,[VALOR])
+                        VALUES
+                            (?
+                            ,?
+                            ,?
+                            ,?
+                            ,?
+                            ,?
+                            ,?
+                            ,?
+                            ,?
+                            ,?)''', (col.IDUSUARIOEMPRESA, col.REGISTRO,col.NOME,col.CPF,col.DATANASCIMENTO, col.VINCULO, col.CARGO, col.PLANODESAUDE,col.SUBSIDIOCORP,col.VALOR))
+        cursor.commit()
+        cursor.execute("SELECT @@IDENTITY AS ID;")
+        col.Id = cursor.fetchone()[0]
+        return True
+    except Exception as mensagemErro:
+        return False
+    
+    
+def AtualizaProntuarioData(pront:UsuarioProntuarioModel):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+        cursor.execute('''UPDATE [dbo].[usuarioProntuario] SET Prontuario = ? WHERE IdUsuario = ? ''', (pront.Prontuario, pront.IdUsuario))
+        cursor.commit()
+        return True
+    except Exception as mensagemErro:
+        return False
+    
+def AtualizaSenhaUsuarioData(email:str, senhaatual:str, novasenha:str, IdUsuario:int):
+    try:
+
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+        cursor.execute('''SELECT top 1 idusuario, email, senha FROM usuario WHERE Email = ? AND senha = ?''',
+                       (email, senhaatual))
+        registros = cursor.fetchall()
+
+        if len(registros) > 0:
+            cursor = conn.cursor()
+            cursor.execute('''UPDATE usuario SET Senha = ? WHERE Email = ? AND Senha = ? AND IdUsuario = ? ''', (novasenha,email,senhaatual, IdUsuario))
+            cursor.commit()
+            return True
+        
+        return False
+    except Exception as mensagemErro:
+        return False
+
+
+def ListaProntuarioPacienteData(IdUsuario:int):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+        cursor.execute('''SELECT * FROM [dbo].[usuarioProntuario] WHERE IdUsuario = ?''', (IdUsuario))
+        
+        registros = cursor.fetchall()
+
+        if len(registros) > 0:
+            list = []
+            for row in registros:
+                dep = UsuarioProntuarioModel(
+                    Id =  row[0],
+                    IdUsuario = row[1],
+                    Prontuario = row[2]
+                )
+                list.append(dep)
+            return list
+        
+        return None
+    except Exception as mensagemErro:
+        return mensagemErro
+    return True
+
+
+
+def ListaColaboradoresEmpresaData(IdUsuarioEmpresa:int):
+    try:
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+        cursor.execute('''SELECT * FROM [dbo].[colaboradoresEmpresa] WHERE IDUSUARIOEMPRESA = ?''', (IdUsuarioEmpresa))
+        
+        registros = cursor.fetchall()
+
+        if len(registros) > 0:
+            list = []
+            for row in registros:
+                dep = ColaboradoresEmpresa(
+                    Id =  row[0],
+                    IDUSUARIOEMPRESA = row[1],
+                    REGISTRO = row[2],
+                    NOME = row[3],
+                    CPF = row[4],
+                    DATANASCIMENTO = row[5],
+                    VINCULO = row[6],
+                    CARGO = row[7],
+                    PLANODESAUDE = row[8],
+                    SUBSIDIOCORP  = row[9],
+                    VALOR = row[10]
+                )
+                list.append(dep)
+            return list
+        
+        return None
+    except Exception as mensagemErro:
+        return mensagemErro
+    return True

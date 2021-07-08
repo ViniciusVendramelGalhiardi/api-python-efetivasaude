@@ -60,4 +60,8 @@ class ProfissionalEntity(BaseModel):
     ContasCorrente: Optional[List]
     IdAbordagemProf: Optional[List]
     IdsPublicoAtendido:Optional[List]
+    
+    
+    BaseImage:Optional[str]
+    DataCadastro:Optional[str]  
   

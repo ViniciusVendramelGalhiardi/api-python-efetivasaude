@@ -31,3 +31,9 @@ class EmpresaEntity(BaseModel):
 
     idUsuarioIugu:Optional[str]
     IdPerfil: Optional[str]
+    
+    BaseImage:Optional[str]
+    DataCadastro:Optional[str]  
+    BaseImageCompany:Optional[str]
+    
+    

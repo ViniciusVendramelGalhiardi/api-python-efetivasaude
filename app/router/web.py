@@ -7,7 +7,7 @@ from app.model.response import getResponse
 from app.service.ListagemService import listaPerfil, listaAbordagem, listaHobbies, listaCRP, listaHorarioTrabalho, listaIdiomas, listaNosConheceu, listaPlanos, listaProfissao, listaSintomas, listaUsarPlataforma
 from app.model.usuarioModel import UsuarioModel
 from fastapi.responses import JSONResponse
-from app.service.usuarioService import EditarUsuario,CadastrarUsuario, BuscaUsuarioService, CadastraExpedienteProfissional, ListarExpedienteProfissional, VincularSintomaProfissionalService, BuscarSintomaPorUsuarioDataService, CadastrarCartaoService, BuscarCartaoUsuarioService, ExcluirCartaoService, EnviarSmsUsuarioService, BuscarProfissionalPorPesquisa, CadastraExperienciaService, AtualizaExperienciaService, ExcluirExperienciaService, CadastraFormacaoService, AtualizaFormacaoService, ExcluirFormacaoService, CadastraDependenteService, AtualizaDependenteService, ExcluirDependenteService
+from app.service.usuarioService import EfetuaLoginUsuarioService, EditarUsuario,CadastrarUsuario, BuscaUsuarioService, CadastraExpedienteProfissional, ListarExpedienteProfissional, VincularSintomaProfissionalService, BuscarSintomaPorUsuarioDataService, CadastrarCartaoService, BuscarCartaoUsuarioService, ExcluirCartaoService, EnviarSmsUsuarioService, BuscarProfissionalPorPesquisa, CadastraExperienciaService, AtualizaExperienciaService, ExcluirExperienciaService, CadastraFormacaoService, AtualizaFormacaoService, ExcluirFormacaoService, CadastraDependenteService, AtualizaDependenteService, ExcluirDependenteService, ListarHistoricoAtendimentoService,CadastrarProntuarioService,ListaProntuarioPacienteService, AtualizaProntuarioService, AtualizaSenhaUsuarioService,CadastrarColaboradoreEmpresaService, ListaColaboradoresEmpresaService
 from app.model.expedienteProfissionalModel import ExpedienteProfissionalModel
 from app.service.agendaService import efetuaAgendamentoService, listarAgendamentosProfissional, atualizaStatusService, cadastraAvaliacaoService, buscarAvaliacaoProfissionalService
 from app.model.agendamentoConsultaModel import AgendamentoConsultaModel
@@ -18,12 +18,13 @@ from app.model.cartaoModel import CartaoModel
 from app.model.experienciaPraticaModel import ExperienciaPraticaModel
 from app.model.formacaoAcademiaModel import FormacaoAcademicaModel
 from app.model.dependenteModel import DependenteModel
+from app.model.usuarioPronturioModel import UsuarioProntuarioModel
+from app.model.colaboradoresEmpresa import ColaboradoresEmpresa
 
 router_web = APIRouter(
     prefix="/web",
     tags=["web"]
 )
-
 
 @router_web.post("/cadastrarUsuario/{IdPerfil}")
 async def cadastrar(IdPerfil: int, UsuarioModel: UsuarioModel):
@@ -31,19 +32,32 @@ async def cadastrar(IdPerfil: int, UsuarioModel: UsuarioModel):
     tt = response
     return response
 
-
 @router_web.post("/editarUsuario/{IdPerfil}")
 async def edit(IdPerfil: int, UsuarioModel: UsuarioModel):
     response = EditarUsuario(IdPerfil, UsuarioModel, UsuarioModel.IdUsuario)
     tt = response
     return response
 
+@router_web.post("/EfetuaLogin/")
+async def EfetuaLoginUsuario(email:str, senha: str, idperfil:int):
+    response = EfetuaLoginUsuarioService(email, senha, idperfil)
+    return response
 
+@router_web.post("/CadastrarProntuarioMedico/")
+async def CadastrarProntuario(pront:UsuarioProntuarioModel):
+    response = CadastrarProntuarioService(pront)
+    return response
 
 @router_web.post("/cadastraExpediente/")
 async def CadastraEspedienteProfissional(expediente: ExpedienteProfissionalModel):
     response = CadastraExpedienteProfissional(expediente)
     return response
+
+@router_web.post("/CadastrarColaborador/")
+async def CadastrarColaboradorEmp(col:ColaboradoresEmpresa):
+    response = CadastrarColaboradoreEmpresaService(col)
+    return response
+
 
 
 @router_web.post("/efetuaAgendamento/")
@@ -51,42 +65,40 @@ async def EfetuaAgendamento(ag: AgendamentoConsultaModel):
     response = efetuaAgendamentoService(ag)
     return response
 
-
 @router_web.post("/atualizarStatusAgendamento/")
 async def atualizarStatusAgendamento(IdAgenda: int, StatusAgendamento: str):
     response = atualizaStatusService(IdAgenda, StatusAgendamento)
     return response
 
+@router_web.post("/AtualizaProntuarioMedico/")
+async def AtualizaProntuario(pront:UsuarioProntuarioModel):
+    response = AtualizaProntuarioService(pront)
+    return response
 
 @router_web.post("/cadastraAvaliacaoService/")
 async def CadastraAvaliacaoService(av: AvaliacaoEfModel):
     response = cadastraAvaliacaoService(av)
     return response
 
-
 @router_web.post("/cadastraSintomas/")
 async def VinculaSintomasAtendidosProf(sin: List[SintomasVinculadosModel]):
     response = VincularSintomaProfissionalService(sin)
     return response
-
 
 @router_web.post("/cadastraDependente/")
 async def CadastraDepend(dep: DependenteModel):
     response = CadastraDependenteService(dep)
     return response
 
-
 @router_web.put("/atualizaDependente/{IdDependente}")
 async def AtualizaDepend(IdDependente: int, dep: DependenteModel):
     response = AtualizaDependenteService(IdDependente, dep)
     return response
 
-
 @router_web.delete("/excluirDependente/{IdDependente}")
 async def ExcluirDepend(IdDependente: int):
     response = ExcluirDependenteService(IdDependente)
     return response
-
 
 @router_web.post("/cadastraExperienciaProf/")
 async def CadastraExperiencia(exp: ExperienciaPraticaModel):
@@ -100,11 +112,16 @@ async def AtualizaExperiencia(IdExperiencia: int, exp: ExperienciaPraticaModel):
     return response
 
 
+@router_web.put("/AtualizaSenhaUsuario/{email}")
+async def AtualizaSenhaUsuarioCadastrado(email:str, senhaatual:str, novasenha:str, IdUsuario:int):
+    response = AtualizaSenhaUsuarioService(email, senhaatual,novasenha,IdUsuario)
+    return response
+
+
 @router_web.delete("/excluirExperienciaProf/{IdExperiencia}")
 async def ExcluirExperiencia(IdExperiencia: int):
     response = ExcluirExperienciaService(IdExperiencia)
     return response
-
 
 @router_web.post("/cadastraFormacaoProf/")
 async def CadastraFormacao(formacao: FormacaoAcademicaModel):
@@ -142,9 +159,24 @@ async def EnviarSMSUsuario(DDNumeroCelular: str, NomeCliente: str):
     return response
 
 
+@router_web.get("/ListarHistorico/{IdProfissional}")
+def ListarHistoricoAtendimento(IdProfissional: int):
+    return ListarHistoricoAtendimentoService(IdProfissional)
+
+
+@router_web.get("/ListaColaboradoresEmpresa/{IdProfissional}")
+def ListaColaboradoresEmpresa(IdProfissional: int):
+    return ListaColaboradoresEmpresaService(IdProfissional)
+
+
 @router_web.get("/BuscarCartaoUsuario/{IdUsuario}")
 def BuscarCartaoUsuario(IdUsuario: int):
     return BuscarCartaoUsuarioService(IdUsuario)
+
+
+@router_web.get("/ListaProntuario/{IdUsuario}")
+def ListaProntuarioPaciente(IdUsuario: int):
+    return ListaProntuarioPacienteService(IdUsuario)
 
 
 @router_web.get("/BuscarSintomaPorUsuario/{IdUsuario}")
@@ -157,9 +189,9 @@ def BuscarAvaliacaoProfissionalService(IdUsuario: int):
     return buscarAvaliacaoProfissionalService(IdUsuario)
 
 
-@router_web.get("/ListarAgendamentosProfissional/{IdUsuarioProfissional}")
-def listarAgendamentoProf(IdUsuarioProfissional: int):
-    return listarAgendamentosProfissional(IdUsuarioProfissional)
+@router_web.get("/ListarAgendamentosProfissional/{IdUsuario}")
+def listarAgendamentoProf(IdUsuario: int):
+    return listarAgendamentosProfissional(IdUsuario)
 
 
 @router_web.get("/ListarExpedienteProfissional/{IdProfissional}")

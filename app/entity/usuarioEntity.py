@@ -30,3 +30,5 @@ class UsuarioEntity(BaseModel):
     IdUsuarioIugu: Optional[str]
     IdPerfil: Optional[str]
 
+    BaseImage:Optional[str]
+    DataCadastro:Optional[str]  

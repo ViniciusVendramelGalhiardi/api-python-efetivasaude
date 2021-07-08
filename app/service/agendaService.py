@@ -35,8 +35,9 @@ def listarAgendamentosProfissional(IdUsuarioProfissional: int):
         # statusAgendamento: Optional[int]
         # IDSessao: Optional[str]
     
-        ag = ListarAgendamentoModel()
+   
         for agenda in agendametoList:
+            ag = ListarAgendamentoModel()
             ag.IdAgendamento = agenda.IdAgendamento
             ag.IdExpediente = agenda.Idexpediente
             ag.IdTransacao = agenda.IdTransacao

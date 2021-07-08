@@ -84,7 +84,12 @@ class UsuarioModel(BaseModel):
     #Publico Atendido
     IdsPublicoAtendido: Optional[List[PublicoAtendidoProfissionalModel]]
     OutroPublicoProf:Optional[str]
-
+    
+    BaseImage:Optional[str]
+    DataCadastro:Optional[str]  
+    
+    BaseImageCompany:Optional[str]
+    
     @validator('Senha_Confirmar')
     def passwords_match(cls, v, values, **kwargs):
         if 'Senha' in values and v != values['Senha']:
