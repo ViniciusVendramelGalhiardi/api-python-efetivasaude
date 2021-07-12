@@ -63,7 +63,8 @@ class UsuarioFactory():
             IdProfissao=uModel.IdProfissao,
             Cpf=uModel.Cpf,
             Dependente=uModel.Dependente,
-            Dependentes=uModel.Dependentes
+            Dependentes=uModel.Dependentes,
+            BaseImage=uModel.BaseImage
         )
 
         return user
@@ -314,7 +315,8 @@ class UsuarioFactory():
                 RegistroePsiValidado=uModel.RegistroePsiValidado,
                 IdsPublicoAtendido=uModel.IdsPublicoAtendido,
                 OutroPublicoProf=uModel.OutroPublicoProf,
-                OutroIdiomaProf=uModel.OutroIdiomaProf
+                OutroIdiomaProf=uModel.OutroIdiomaProf,
+                BaseImage=uModel.BaseImage
             )
 
         except Exception as e:
@@ -383,8 +385,7 @@ class UsuarioFactory():
             return mensagemErro
 
         return prof
-    
-    
+
     def profissionalEntity(records):
         lst = []
         for row in records:
@@ -464,7 +465,9 @@ class UsuarioFactory():
                 NumeroColaboradoresEmp=uModel.NumeroColaboradoresEmp,
                 Cnpj=uModel.Cnpj,
                 PlanodeSaudeEmpresa=uModel.PlanodeSaudeEmpresa,
-                ContasCorrente=uModel.ContasCorrente
+                ContasCorrente=uModel.ContasCorrente,
+                BaseImage=uModel.BaseImage,
+                BaseImageCompany=uModel.BaseImageCompany
             )
 
             testtt = empr
@@ -487,7 +490,6 @@ class UsuarioFactory():
             listsin.append(sinn)
 
         return listsin
-
 
     def CartaoEntityToModel(card):
         cartao = CartaoModel(

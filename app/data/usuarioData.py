@@ -15,6 +15,7 @@ from app.model.historicoAtendimentoModel import HistoricoAtendimentoModel
 from app.model.usuarioPronturioModel import UsuarioProntuarioModel
 from app.model.colaboradoresEmpresa import ColaboradoresEmpresa
 
+
 def CadastraUsuario(uEntity: UsuarioEntity, IdPerfil: int):
 
     try:
@@ -88,7 +89,6 @@ def EditarUsuarioData(uEntity: UsuarioEntity, IdPerfil: int, IdUsuario: int):
                                     WHERE IdUsuario = ?''',
                                (item.Nome, item.Apelido, item.DataNascimento, item.Genero, item.Telefone, item.Email, item.Cpf, item.IdUsuario))
                 cursor.commit()
-
 
     except Exception as mensagemErro:
         return mensagemErro
@@ -219,29 +219,29 @@ def EditarProfissional(pEntity: ProfissionalEntity, IdPerfil: int, IdUsuario: in
                             ,ValorPorSessaoProf=?
                             ,Dependente= ?
                             WHERE IdUsuario = ?''',
-                            (pEntity.Nome, pEntity.Telefone, pEntity.Email, pEntity.Cidade, pEntity.Estado, pEntity.Cep, pEntity.Endereco, pEntity.IdConheceu, pEntity.TermosCondicoes,
-                                pEntity.PoliticaPrivacidade, pEntity.Apelido, pEntity.EstadoCivil, pEntity.PossuiFilhosQtd, pEntity.IdHobbie, pEntity.DataNascimento,
-                                pEntity.Genero,pEntity.IdProfissao, pEntity.Cpf, IdPerfil, pEntity.IdHorarioTrabalhoProf, pEntity.IdUsarPlataformaProf, 
-                                pEntity.IdConselhoRegionalProf,
-                                pEntity.PossuiCNPJProf,
-                                pEntity.TrabalharComCNPJProf,
-                                pEntity.Cnpj,
-                                pEntity.CartaApresentacaoProf,
-                                pEntity.OutraAbordagemProf,
-                                pEntity.idUsuarioIugu,
-                                pEntity.RegistroCRPePsi,
-                                pEntity.RegistroePsiValidado,
-                                pEntity.OutroPublicoProf,
-                                pEntity.OutroIdiomaProf,
-                                pEntity.DuracaoAtendimentoProf,
-                                pEntity.AtendePlanoDeSaudeProf,
-                                pEntity.ReciboReembolsavelProf,
-                                pEntity.AtendePresencialmenteProf,
-                                pEntity.PrimeiroClienteCobraProf,
-                                pEntity.PrimeiroClienteValorFixoProf,
-                                pEntity.EmpresasParceirasDescontoProf,
-                                pEntity.ValorPorSessaoProf,
-                                pEntity.Dependente, IdUsuario))
+                       (pEntity.Nome, pEntity.Telefone, pEntity.Email, pEntity.Cidade, pEntity.Estado, pEntity.Cep, pEntity.Endereco, pEntity.IdConheceu, pEntity.TermosCondicoes,
+                        pEntity.PoliticaPrivacidade, pEntity.Apelido, pEntity.EstadoCivil, pEntity.PossuiFilhosQtd, pEntity.IdHobbie, pEntity.DataNascimento,
+                        pEntity.Genero, pEntity.IdProfissao, pEntity.Cpf, IdPerfil, pEntity.IdHorarioTrabalhoProf, pEntity.IdUsarPlataformaProf,
+                        pEntity.IdConselhoRegionalProf,
+                        pEntity.PossuiCNPJProf,
+                        pEntity.TrabalharComCNPJProf,
+                        pEntity.Cnpj,
+                        pEntity.CartaApresentacaoProf,
+                        pEntity.OutraAbordagemProf,
+                        pEntity.idUsuarioIugu,
+                        pEntity.RegistroCRPePsi,
+                        pEntity.RegistroePsiValidado,
+                        pEntity.OutroPublicoProf,
+                        pEntity.OutroIdiomaProf,
+                        pEntity.DuracaoAtendimentoProf,
+                        pEntity.AtendePlanoDeSaudeProf,
+                        pEntity.ReciboReembolsavelProf,
+                        pEntity.AtendePresencialmenteProf,
+                        pEntity.PrimeiroClienteCobraProf,
+                        pEntity.PrimeiroClienteValorFixoProf,
+                        pEntity.EmpresasParceirasDescontoProf,
+                        pEntity.ValorPorSessaoProf,
+                        pEntity.Dependente, IdUsuario))
         cursor.commit()
 
         if pEntity.IdAbordagemProf is not None:
@@ -256,7 +256,7 @@ def EditarProfissional(pEntity: ProfissionalEntity, IdPerfil: int, IdUsuario: in
                                (item.Ididioma, IdUsuario))
                 cursor.commit()
 
-        #BIEL DISSE QUE NAO TEM ESSA TELA NO DITE
+        # BIEL DISSE QUE NAO TEM ESSA TELA NO DITE
         # if pEntity.AtendimentoPresencialProf is not None:
         #     for item in pEntity.AtendimentoPresencialProf:
         #         cursor.execute('INSERT INTO atendimentoPresencial (Endereco,Numero,Conjunto,Bairro,Cidade,Estado,Cep,IdUsuario) VALUES (?, ?,?,?,?,?,?,?)',
@@ -567,10 +567,12 @@ def BuscarExpedienteProfissional(IdProfissional: int,  Status: str, DataAtendime
         return exp
     return None
 
+
 def BuscarExpedienteById(IdExpediente):
     conn = pyodbc.connect(CONNECTION_STRING_DB)
     cursor = conn.cursor()
-    cursor.execute('''SELECT DataAtendimento,HorarioStart FROM [dbo].[expedienteProfissional] WHERE Id = ?''', (IdExpediente))      
+    cursor.execute(
+        '''SELECT DataAtendimento,HorarioStart FROM [dbo].[expedienteProfissional] WHERE Id = ?''', (IdExpediente))
     records = cursor.fetchall()
     return records
 
@@ -638,8 +640,9 @@ def VincularSintomaProfissional(sintomas):
     try:
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
-        
-        cursor.execute('DELETE FROM sintomasVinculados WHERE IdUsuario = ?',(sintomas[0].IdUsuario))
+
+        cursor.execute(
+            'DELETE FROM sintomasVinculados WHERE IdUsuario = ?', (sintomas[0].IdUsuario))
         cursor.commit()
 
         for item in sintomas:
@@ -916,7 +919,6 @@ def BuscarCartaoUsuarioData(idUsuario: int):
     return entity
 
 
-
 def BuscarProfissionalPorPesquisaData(IdProfissao, AtendePresencialmenteProf, DataAtendimento):
 
     try:
@@ -972,8 +974,8 @@ def BuscarProfissionalPorPesquisaData(IdProfissao, AtendePresencialmenteProf, Da
 							WHERE 
 							u.IdProfissao = ?
 							AND U.AtendePresencialmenteProf = ?
-							AND E.DataAtendimento = ? ''', (IdProfissao,AtendePresencialmenteProf, DataAtendimento))
-        
+							AND E.DataAtendimento = ? ''', (IdProfissao, AtendePresencialmenteProf, DataAtendimento))
+
         records = cursor.fetchall()
 
         entity = UsuarioFactory.profissionalEntity(records)
@@ -996,8 +998,7 @@ def ExcluirCartao(idUsuario: int):
     return True
 
 
-
-def EfetuaLoginUsuarioData(email:str, senha: str, idperfil:int):
+def EfetuaLoginUsuarioData(email: str, senha: str, idperfil: int):
     try:
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
@@ -1009,14 +1010,14 @@ def EfetuaLoginUsuarioData(email:str, senha: str, idperfil:int):
         if len(registros) > 0:
             user = BuscarUsuarioData(registros[0].idusuario)
             return user
-        
+
         return None
     except Exception as mensagemErro:
         return mensagemErro
     return True
 
 
-def ListarHistoricoAtendimento(IdProfissional:int):
+def ListarHistoricoAtendimento(IdProfissional: int):
     try:
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
@@ -1024,27 +1025,28 @@ def ListarHistoricoAtendimento(IdProfissional:int):
                             INNER JOIN agendamento A ON U.IdUsuario = A.IdUsuario
                             WHERE A.IdUsuarioProfissional = ?
                             GROUP BY U.IdUsuario,U.Nome, U.BaseImage, U.DataCadastro ''', (IdProfissional))
-        
+
         registros = cursor.fetchall()
 
         if len(registros) > 0:
             list = []
             for row in registros:
                 dep = HistoricoAtendimentoModel(
-                    IdUsuario =  row[0],
-                    Nome = row[1],
-                    BaseImage = row[2],
-                    DataCadastro = row[3]
+                    IdUsuario=row[0],
+                    Nome=row[1],
+                    BaseImage=row[2],
+                    DataCadastro=row[3]
                 )
                 list.append(dep)
             return list
-        
+
         return None
     except Exception as mensagemErro:
         return mensagemErro
     return True
 
-def CadastrarProntuarioData(pront:UsuarioProntuarioModel):
+
+def CadastrarProntuarioData(pront: UsuarioProntuarioModel):
     try:
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
@@ -1060,8 +1062,9 @@ def CadastrarProntuarioData(pront:UsuarioProntuarioModel):
         return True
     except Exception as mensagemErro:
         return False
-    
-def CadastrarColaboradoreEmpresaData(col:ColaboradoresEmpresa):
+
+
+def CadastrarColaboradoreEmpresaData(col: ColaboradoresEmpresa):
     try:
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
@@ -1086,98 +1089,102 @@ def CadastrarColaboradoreEmpresaData(col:ColaboradoresEmpresa):
                             ,?
                             ,?
                             ,?
-                            ,?)''', (col.IDUSUARIOEMPRESA, col.REGISTRO,col.NOME,col.CPF,col.DATANASCIMENTO, col.VINCULO, col.CARGO, col.PLANODESAUDE,col.SUBSIDIOCORP,col.VALOR))
+                            ,?)''', (col.IDUSUARIOEMPRESA, col.REGISTRO, col.NOME, col.CPF, col.DATANASCIMENTO, col.VINCULO, col.CARGO, col.PLANODESAUDE, col.SUBSIDIOCORP, col.VALOR))
         cursor.commit()
         cursor.execute("SELECT @@IDENTITY AS ID;")
         col.Id = cursor.fetchone()[0]
         return True
     except Exception as mensagemErro:
         return False
-    
-    
-def AtualizaProntuarioData(pront:UsuarioProntuarioModel):
+
+
+def AtualizaProntuarioData(pront: UsuarioProntuarioModel):
     try:
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
-        cursor.execute('''UPDATE [dbo].[usuarioProntuario] SET Prontuario = ? WHERE IdUsuario = ? ''', (pront.Prontuario, pront.IdUsuario))
+        cursor.execute('''UPDATE [dbo].[usuarioProntuario] SET Prontuario = ? WHERE IdUsuario = ? ''', (
+            pront.Prontuario, pront.IdUsuario))
         cursor.commit()
         return True
     except Exception as mensagemErro:
         return False
-    
-def AtualizaSenhaUsuarioData(email:str, senhaatual:str, novasenha:str, IdUsuario:int):
+
+
+def AtualizaSenhaUsuarioData(email: str, senhaatual: str, novasenha: str, IdUsuario: int):
     try:
 
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
-        cursor.execute('''SELECT top 1 idusuario, email, senha FROM usuario WHERE Email = ? AND senha = ?''',
+        cursor.execute('''SELECT top 1 IdUsuario, Email, Senha FROM usuario WHERE Email = ? AND Senha = ?''',
                        (email, senhaatual))
         registros = cursor.fetchall()
 
         if len(registros) > 0:
             cursor = conn.cursor()
-            cursor.execute('''UPDATE usuario SET Senha = ? WHERE Email = ? AND Senha = ? AND IdUsuario = ? ''', (novasenha,email,senhaatual, IdUsuario))
+            cursor.execute('''UPDATE usuario SET Senha = ? WHERE Email = ? AND Senha = ? AND IdUsuario = ? ''',
+                           (novasenha, email, senhaatual, IdUsuario))
             cursor.commit()
             return True
-        
+
         return False
     except Exception as mensagemErro:
         return False
 
 
-def ListaProntuarioPacienteData(IdUsuario:int):
+def ListaProntuarioPacienteData(IdUsuario: int):
     try:
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
-        cursor.execute('''SELECT * FROM [dbo].[usuarioProntuario] WHERE IdUsuario = ?''', (IdUsuario))
-        
+        cursor.execute(
+            '''SELECT * FROM [dbo].[usuarioProntuario] WHERE IdUsuario = ?''', (IdUsuario))
+
         registros = cursor.fetchall()
 
         if len(registros) > 0:
             list = []
             for row in registros:
                 dep = UsuarioProntuarioModel(
-                    Id =  row[0],
-                    IdUsuario = row[1],
-                    Prontuario = row[2]
+                    Id=row[0],
+                    IdUsuario=row[1],
+                    Prontuario=row[2]
                 )
                 list.append(dep)
             return list
-        
+
         return None
     except Exception as mensagemErro:
         return mensagemErro
     return True
 
 
-
-def ListaColaboradoresEmpresaData(IdUsuarioEmpresa:int):
+def ListaColaboradoresEmpresaData(IdUsuarioEmpresa: int):
     try:
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
-        cursor.execute('''SELECT * FROM [dbo].[colaboradoresEmpresa] WHERE IDUSUARIOEMPRESA = ?''', (IdUsuarioEmpresa))
-        
+        cursor.execute(
+            '''SELECT * FROM [dbo].[colaboradoresEmpresa] WHERE IDUSUARIOEMPRESA = ?''', (IdUsuarioEmpresa))
+
         registros = cursor.fetchall()
 
         if len(registros) > 0:
             list = []
             for row in registros:
                 dep = ColaboradoresEmpresa(
-                    Id =  row[0],
-                    IDUSUARIOEMPRESA = row[1],
-                    REGISTRO = row[2],
-                    NOME = row[3],
-                    CPF = row[4],
-                    DATANASCIMENTO = row[5],
-                    VINCULO = row[6],
-                    CARGO = row[7],
-                    PLANODESAUDE = row[8],
-                    SUBSIDIOCORP  = row[9],
-                    VALOR = row[10]
+                    Id=row[0],
+                    IDUSUARIOEMPRESA=row[1],
+                    REGISTRO=row[2],
+                    NOME=row[3],
+                    CPF=row[4],
+                    DATANASCIMENTO=row[5],
+                    VINCULO=row[6],
+                    CARGO=row[7],
+                    PLANODESAUDE=row[8],
+                    SUBSIDIOCORP=row[9],
+                    VALOR=row[10]
                 )
                 list.append(dep)
             return list
-        
+
         return None
     except Exception as mensagemErro:
         return mensagemErro

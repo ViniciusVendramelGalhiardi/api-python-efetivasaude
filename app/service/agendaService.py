@@ -20,11 +20,12 @@ def efetuaAgendamentoService(agenda: AgendamentoConsultaModel):
     return efetuaAgendamento(agenda)
 
 
-def listarAgendamentosProfissional(IdUsuarioProfissional: int):
+def listarAgendamentosProfissional(IdUsuarioProfissional: int, IdPerfil: int):
     try:
         aglst = []
-        agendametoList = buscarAgendamentoProfissional(IdUsuarioProfissional)
-        
+        agendametoList = buscarAgendamentoProfissional(
+            IdUsuarioProfissional, IdPerfil)
+
         # IdAgendamento: Optional[int]
         # Idexpediente: Optional[int]
         # IdUsuario: Optional[int]
@@ -34,8 +35,7 @@ def listarAgendamentosProfissional(IdUsuarioProfissional: int):
         # IdTransacao: Optional[int]
         # statusAgendamento: Optional[int]
         # IDSessao: Optional[str]
-    
-   
+
         for agenda in agendametoList:
             ag = ListarAgendamentoModel()
             ag.IdAgendamento = agenda.IdAgendamento
@@ -48,11 +48,12 @@ def listarAgendamentosProfissional(IdUsuarioProfissional: int):
             # ag.Preco = agenda.Preco
             # ag.IdUsuario = agenda.IdUsuario
             exp = BuscarExpedienteById(agenda.Idexpediente)
-            
+
             ag.Data = exp[0].DataAtendimento
             ag.Hora = exp[0].HorarioStart
-            
-            ag.Profissional = BuscaUsuarioService(IdUsuarioProfissional, 2)
+
+            ag.Profissional = BuscaUsuarioService(
+                agenda.IdUsuarioProfissional, 2)
             ag.Paciente = BuscaUsuarioService(agenda.IdUsuario, 1)
             aglst.append(ag)
 

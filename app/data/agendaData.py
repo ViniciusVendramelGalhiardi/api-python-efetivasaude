@@ -42,13 +42,18 @@ def efetuaAgendamento(agenda: AgendamentoConsultaModel):
     return agenda
 
 
-def buscarAgendamentoProfissional(IdUsuarioProfissional: int):
+def buscarAgendamentoProfissional(IdUsuarioProfissional: int, IdPerfil: int):
     try:
         vlrconexao = CONNECTION_STRING_DB
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
-        lista = cursor.execute(
-            "SELECT * FROM [dbo].[agendamento] WHERE IdUsuario = ? order by IdAgendamento desc", (IdUsuarioProfissional))
+
+        if IdPerfil == 1:
+            lista = cursor.execute(
+                "SELECT * FROM [dbo].[agendamento] WHERE IdUsuario = ? order by IdAgendamento desc", (IdUsuarioProfissional))
+        elif IdPerfil == 2:
+            lista = cursor.execute(
+                "SELECT * FROM [dbo].[agendamento] WHERE IdUsuarioProfissional = ? order by IdAgendamento desc", (IdUsuarioProfissional))
 
         listcc = []
         for row in lista:
@@ -56,11 +61,12 @@ def buscarAgendamentoProfissional(IdUsuarioProfissional: int):
                 IdAgendamento=row[0],
                 Idexpediente=row[1],
                 IdUsuario=row[2],
-                IdDependente=row[3],
-                StatusPagamento=row[4],
-                IdTransacao=row[5],
-                statusAgendamento=row[6],
-                IDSessao=row[7]
+                IdUsuarioProfissional=row[3],
+                IdDependente=row[4],
+                StatusPagamento=row[5],
+                IdTransacao=row[6],
+                statusAgendamento=row[7],
+                IDSessao=row[8]
             )
             listcc.append(cc)
 
