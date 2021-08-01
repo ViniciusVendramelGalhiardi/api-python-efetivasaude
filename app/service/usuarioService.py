@@ -6,7 +6,7 @@ from cacheout import Cache
 from fastapi.exceptions import HTTPException
 from fastapi import logger
 import requests
-from settings import API_TOKEN_IUGU, URL_API_IUGU_CUSTOMERS
+from settings import API_TOKEN_IUGU, URL_API_IUGU_CUSTOMERS, TOKENTWILIO
 from app.model.usuarioModel import UsuarioModel
 from app.data.usuarioData import CadastraUsuario, CadastraProfissional, CadastraEmpresa, BuscarUsuarioData, BuscarProfissionalData, BuscarEmpresaData, AtualizaIdUsuarioIugu, CadastraExpProfissional, BuscarExpedienteProfissional, VincularSintomaProfissional, BuscarSintomaPorUsuarioData, CadastrarCartao, BuscarCartaoUsuarioData, ExcluirCartao, BuscarProfissionalPorPesquisaData, CadastraExperiencia, AtualizaExperiencia, ExcluirExperiencia, CadastraFormacao, AtualizaFormacao, ExcluirFormacao, CadastraDependente, AtualizaDependente, ExcluirDependente,EditarUsuarioData,EditarProfissional, EfetuaLoginUsuarioData, ListarHistoricoAtendimento,CadastrarProntuarioData,ListaProntuarioPacienteData, AtualizaProntuarioData, AtualizaSenhaUsuarioData,CadastrarColaboradoreEmpresaData,ListaColaboradoresEmpresaData
 from app.factory.clienteFactory import UsuarioFactory
@@ -204,7 +204,7 @@ def EnviarSmsUsuarioService(Numero: str, nome: str):
     try:
         number = randrange(5000)
         account_sid = "AC02f71138043bb8e7abe86c5f927494ea"
-        auth_token = "490302d5617547fe92c1af8be8ae8b30"
+        auth_token = TOKENTWILIO
 
         client = Client(account_sid, auth_token)
 

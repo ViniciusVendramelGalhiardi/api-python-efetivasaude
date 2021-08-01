@@ -93,7 +93,8 @@ class UsuarioFactory():
             Cep=records[0][18],
             Endereco=records[0][19],
             IdUsuarioIugu=records[0][20],
-            IdPerfil=records[0][21]
+            IdPerfil=records[0][21],
+            BaseImage=records[0][22]
         )
 
         return user
@@ -372,6 +373,7 @@ class UsuarioFactory():
                 RegistroePsiValidado=records[0][38],
                 OutroPublicoProf=records[0][39],
                 OutroIdiomaProf=records[0][40],
+                BaseImage =records[0][41],
                 ExperienciasPraticaProf=_experienciasPraticaProf,
                 FormacoesProf=_formacoesProf,
                 IdiomasAtendidosProf=_idiomasAtendidos,

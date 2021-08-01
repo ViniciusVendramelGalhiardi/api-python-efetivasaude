@@ -61,12 +61,12 @@ def buscarAgendamentoProfissional(IdUsuarioProfissional: int, IdPerfil: int):
                 IdAgendamento=row[0],
                 Idexpediente=row[1],
                 IdUsuario=row[2],
-                IdUsuarioProfissional=row[3],
-                IdDependente=row[4],
-                StatusPagamento=row[5],
-                IdTransacao=row[6],
-                statusAgendamento=row[7],
-                IDSessao=row[8]
+                IdDependente=row[3],
+                StatusPagamento=row[4],
+                IdTransacao=row[5],
+                statusAgendamento=row[6],
+                IDSessao=row[7],
+                IdUsuarioProfissional=row[8]
             )
             listcc.append(cc)
 

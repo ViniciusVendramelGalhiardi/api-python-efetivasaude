@@ -343,7 +343,8 @@ def BuscarUsuarioData(idUsuario: int):
                            	Cep, 
 							Endereco,
 							IdUsuarioIugu,
-							IdPerfil
+							IdPerfil,
+                            BaseImage
                         FROM usuario WHERE idUsuario = ?''', (idUsuario))
         records = cursor.fetchall()
 
@@ -410,7 +411,8 @@ def BuscarProfissionalData(idUsuario: int):
                         RegistroCRPePsi,
                         RegistroePsiValidado,
                         OutroPublicoProf,
-                        OutroIdiomaProf
+                        OutroIdiomaProf,
+                        BaseImage
                         FROM usuario WHERE idUsuario = ?''', (idUsuario))
 
     records = cursor.fetchall()
