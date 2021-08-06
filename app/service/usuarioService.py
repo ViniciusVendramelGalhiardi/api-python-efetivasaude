@@ -213,7 +213,7 @@ def EnviarSmsUsuarioService(Numero: str, nome: str):
                 body="Olá, " + nome + " confirme o código: '" +
                 str(number)+"' em seu cadastro.",
                 from_='+18317099856',
-                to='+55' + Numero.replace('.', '').replace('-', '')
+                to='+' + Numero.replace('.', '').replace('-', '')
             )
 
     except Exception as mensagemErro:
