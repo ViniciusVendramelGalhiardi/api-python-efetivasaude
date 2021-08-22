@@ -502,15 +502,17 @@ def CadastraExpProfissional(expediente: ExpedienteProfissionalModel):
                                 ,[DataAtendimento]
                                 ,[HorarioStart]
                                 ,[HorarioEnd]
-                                ,[Status])
+                                ,[Status]
+                                ,[Online])
                                     VALUES
                                         (?
                                         ,?
                                         ,?
                                         ,?
+                                        ,?
                                         ,?)''',
                                (expediente.IdUsuarioProfissional, i.Data,
-                                j.start, j.end, False))
+                                j.start, j.end, False, j.online))
                 cursor.commit()
                 cursor.execute("SELECT @@IDENTITY AS ID;")
                 idExpediente = cursor.fetchone()[0]
@@ -559,6 +561,7 @@ def BuscarExpedienteProfissional(IdProfissional: int,  Status: str, DataAtendime
                             ,[HorarioStart]
                             ,[HorarioEnd]
                             ,[Status]
+                            ,[Online]
                         FROM [dbo].[expedienteProfissional] EX WHERE  EX.IdUsuarioProfissional = ''' + str(IdProfissional) + ''' AND EX.Status = ISNULL(''' + str(Status) + ''', EX.Status) AND EX.DataAtendimento = ISNULL(''' + DataAtendimento + ''', EX.DataAtendimento) AND EX.Id = ISNULL(''' + IdExpediente + ''', EX.Id)'''
 
     cursor.execute(_sql)

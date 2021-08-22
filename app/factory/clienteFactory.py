@@ -31,6 +31,8 @@ class UsuarioFactory():
                 hr = Hora()
                 hr.start = row[3]
                 hr.end = row[4]
+                hr.status = row[5]
+                hr.online = row[6]
                 dep.Expediente = exp
                 dep.Expediente.Horas = hr
                 listexp.append(dep)
