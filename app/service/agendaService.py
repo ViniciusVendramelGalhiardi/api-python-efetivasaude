@@ -8,7 +8,7 @@ import requests
 from settings import API_TOKEN_IUGU, URL_API_IUGU_CUSTOMERS
 from app.model.agendamentoConsultaModel import AgendamentoConsultaModel
 from app.data.agendaData import efetuaAgendamento, buscarAgendamentoProfissional, atualizarAgendamento, CadastraAvaliacaoEF, buscarAvaliacaoProfissional
-from app.service.usuarioService import BuscaUsuarioService
+from app.service.usuarioService import BuscaUsuarioService, BuscarValorTransacaoService
 from app.entity.profissionalEntity import ProfissionalEntity
 from app.model.listaAgendamento import ListarAgendamentosProfissionalModel
 from app.model.avaliacaoefModel import AvaliacaoEfModel
@@ -47,6 +47,9 @@ def listarAgendamentosProfissional(IdUsuarioProfissional: int, IdPerfil: int):
             # ag.TempoEstimado = agenda.TempoEstimado
             # ag.Preco = agenda.Preco
             # ag.IdUsuario = agenda.IdUsuario
+            
+            ag.ValorTransacao = BuscarValorTransacaoService(agenda.IdTransacao)
+            
             exp = BuscarExpedienteById(agenda.Idexpediente)
 
             ag.Data = exp[0].DataAtendimento

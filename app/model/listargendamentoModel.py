@@ -32,7 +32,7 @@ class ListarAgendamentoModel(BaseModel):
     # Preco: Optional[float]
     Profissional: Optional[Profissional]
     Paciente: Optional[Paciente]
-
+    ValorTransacao: Optional[str]
 
 class Model(BaseModel):
     __root__: List[ListarAgendamentoModel]

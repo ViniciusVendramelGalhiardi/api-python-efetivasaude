@@ -578,6 +578,14 @@ def BuscarExpedienteById(IdExpediente):
     records = cursor.fetchall()
     return records
 
+def BuscarValorTransacaoData(IdTransacao):
+    conn = pyodbc.connect(CONNECTION_STRING_DB)
+    cursor = conn.cursor()
+    cursor.execute(
+        '''SELECT Valor FROM [dbo].[transacao] WHERE IdTransacao = ?''', (IdTransacao))
+    records = cursor.fetchall()
+    return records
+
 
 def BuscarEmpresaData(idUsuario: int):
 
@@ -917,18 +925,17 @@ def BuscarCartaoUsuarioData(idUsuario: int):
 
     except Exception as mensagemErro:
         return mensagemErro
-
     return entity
 
 
-def BuscarProfissionalPorPesquisaData(IdProfissao, AtendePresencialmenteProf, DataAtendimento):
 
+def BuscarDezUltimosCadastrados():
     try:
         vlrconexao = CONNECTION_STRING_DB
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
 
-        cursor.execute('''SELECT 
+        cursor.execute('''SELECT TOP 10
                             Nome, 
                             Telefone, 
                             Email, 
@@ -971,12 +978,167 @@ def BuscarProfissionalPorPesquisaData(IdProfissao, AtendePresencialmenteProf, Da
                             OutroPublicoProf,
                             OutroIdiomaProf
                             FROM usuario 
+							U LEFT JOIN  [dbo].[expedienteProfissional] E
+							ON U.IdUsuario = E.IdUsuarioProfissional
+							WHERE IdPerfil = 2 
+							GROUP BY 
+							Nome,
+							Telefone, 
+                            Email, 
+                            Cidade, 
+                            Estado, 
+                            IdConheceu, 
+                            TermosCondicoes, 
+                            PoliticaPrivacidade, 
+                            Apelido, 
+                            EstadoCivil, 
+                            PossuiFilhosQtd, 
+                            IdHobbie, 
+                            DataNascimento, 
+                            Genero, 
+                            IdProfissao, 
+                            Cpf,
+                            IdHorarioTrabalhoProf, 
+                            IdUsarPlataformaProf, 
+                            IdConselhoRegionalProf, 
+                            PossuiCNPJProf, 
+                            TrabalharComCNPJProf, 
+                            Cnpj, 
+                            CartaApresentacaoProf, 
+                            OutraAbordagemProf, 
+                            DuracaoAtendimentoProf, 
+                            AtendePlanoDeSaudeProf,
+                            ReciboReembolsavelProf, 
+                            AtendePresencialmenteProf, 
+                            PrimeiroClienteCobraProf, 
+                            PrimeiroClienteValorFixoProf, 
+                            EmpresasParceirasDescontoProf, 
+                            ValorPorSessaoProf, 
+                            idUsuario,
+                            Cep, 
+                            Endereco,
+                            IdUsuarioIugu,
+                            IdPerfil,
+                            RegistroCRPePsi,
+                            RegistroePsiValidado,
+                            OutroPublicoProf,
+                            OutroIdiomaProf
+							ORDER BY IdUsuario DESC''')
+
+        records = cursor.fetchall()
+
+        entity = UsuarioFactory.profissionalEntity(records)
+
+    except Exception as mensagemErro:
+        return mensagemErro
+    return entity
+
+
+def BuscarProfissionalPorPesquisaData(IdProfissao, AtendePresencialmenteProf, DataAtendimento, IdSintomaAtendido, IdAbordagemAdotada, Nome):
+
+    try:
+        vlrconexao = CONNECTION_STRING_DB
+        conn = pyodbc.connect(CONNECTION_STRING_DB)
+        cursor = conn.cursor()
+
+        cursor.execute('''SELECT 
+                            Nome, 
+                            Telefone, 
+                            Email, 
+                            Cidade, 
+                            Estado, 
+                            IdConheceu, 
+                            TermosCondicoes, 
+                            PoliticaPrivacidade, 
+                            Apelido, 
+                            EstadoCivil, 
+                            PossuiFilhosQtd, 
+                            IdHobbie, 
+                            DataNascimento, 
+                            Genero, 
+                            IdProfissao, 
+                            Cpf,
+                            IdHorarioTrabalhoProf, 
+                            IdUsarPlataformaProf, 
+                            IdConselhoRegionalProf, 
+                            PossuiCNPJProf, 
+                            TrabalharComCNPJProf, 
+                            Cnpj, 
+                            CartaApresentacaoProf, 
+                            OutraAbordagemProf, 
+                            DuracaoAtendimentoProf, 
+                            AtendePlanoDeSaudeProf,
+                            ReciboReembolsavelProf, 
+                            AtendePresencialmenteProf, 
+                            PrimeiroClienteCobraProf, 
+                            PrimeiroClienteValorFixoProf, 
+                            EmpresasParceirasDescontoProf, 
+                            ValorPorSessaoProf, 
+                            u.IdUsuario,
+                            Cep, 
+                            Endereco,
+                            IdUsuarioIugu,
+                            IdPerfil,
+                            RegistroCRPePsi,
+                            RegistroePsiValidado,
+                            OutroPublicoProf,
+                            OutroIdiomaProf
+                            FROM usuario 
 							U INNER JOIN  [dbo].[expedienteProfissional] E
 							ON U.IdUsuario = E.IdUsuarioProfissional
+							INNER JOIN [dbo].[sintomasVinculados] SI
+							ON U.IdUsuario = SI.IdUsuario
+							INNER JOIN [dbo].[abordagemProfissional] AB
+							ON U.IdUsuario = AB.IdUsuarioProfissional
 							WHERE 
 							u.IdProfissao = ?
 							AND U.AtendePresencialmenteProf = ?
-							AND E.DataAtendimento = ? ''', (IdProfissao, AtendePresencialmenteProf, DataAtendimento))
+							AND E.DataAtendimento = ?
+							OR SI.IdSintomaAtendido = ? --NOVO
+							OR AB.IdAbordagemAdotada = ? --NOVO
+							OR U.Nome = ? --NOVO
+                            GROUP BY 
+                            Nome, 
+                            Telefone, 
+                            Email, 
+                            Cidade, 
+                            Estado, 
+                            IdConheceu, 
+                            TermosCondicoes, 
+                            PoliticaPrivacidade, 
+                            Apelido, 
+                            EstadoCivil, 
+                            PossuiFilhosQtd, 
+                            IdHobbie, 
+                            DataNascimento, 
+                            Genero, 
+                            IdProfissao, 
+                            Cpf,
+                            IdHorarioTrabalhoProf, 
+                            IdUsarPlataformaProf, 
+                            IdConselhoRegionalProf, 
+                            PossuiCNPJProf, 
+                            TrabalharComCNPJProf, 
+                            Cnpj, 
+                            CartaApresentacaoProf, 
+                            OutraAbordagemProf, 
+                            DuracaoAtendimentoProf, 
+                            AtendePlanoDeSaudeProf,
+                            ReciboReembolsavelProf, 
+                            AtendePresencialmenteProf, 
+                            PrimeiroClienteCobraProf, 
+                            PrimeiroClienteValorFixoProf, 
+                            EmpresasParceirasDescontoProf, 
+                            ValorPorSessaoProf, 
+                            u.IdUsuario,
+                            Cep, 
+                            Endereco,
+                            IdUsuarioIugu,
+                            IdPerfil,
+                            RegistroCRPePsi,
+                            RegistroePsiValidado,
+                            OutroPublicoProf,
+                            OutroIdiomaProf''', (IdProfissao, AtendePresencialmenteProf, DataAtendimento, IdSintomaAtendido, IdAbordagemAdotada, Nome))
 
         records = cursor.fetchall()
 
