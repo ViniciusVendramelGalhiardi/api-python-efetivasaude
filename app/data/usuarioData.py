@@ -68,12 +68,13 @@ def EditarUsuarioData(uEntity: UsuarioEntity, IdPerfil: int, IdUsuario: int):
                             IdProfissao= ?,
                             Cpf = ?, 
                             Dependente = ?, 
-                            IdPerfil = ?
+                            IdPerfil = ?,
+                            BaseImage = ?
                             FROM usuario
                             WHERE IdUsuario = ?''',
                        (uEntity.Nome, uEntity.Telefone, uEntity.Email, uEntity.Cidade, uEntity.Estado, uEntity.Cep, uEntity.Endereco, uEntity.IdConheceu, uEntity.TermosCondicoes,
                         uEntity.PoliticaPrivacidade, uEntity.Apelido, uEntity.EstadoCivil, uEntity.PossuiFilhosQtd, uEntity.IdHobbie, uEntity.DataNascimento,
-                        uEntity.Genero, uEntity.IdConheceu, uEntity.Cpf, uEntity.Dependente, IdPerfil, IdUsuario))
+                        uEntity.Genero, uEntity.IdConheceu, uEntity.Cpf, uEntity.Dependente, IdPerfil, uEntity.BaseImage, IdUsuario))
         cursor.commit()
 
         if uEntity.Dependente and uEntity.Dependentes is not None:
@@ -217,7 +218,8 @@ def EditarProfissional(pEntity: ProfissionalEntity, IdPerfil: int, IdUsuario: in
                             ,PrimeiroClienteValorFixoProf= ?
                             ,EmpresasParceirasDescontoProf= ?
                             ,ValorPorSessaoProf=?
-                            ,Dependente= ?
+                            ,Dependente= ?,
+                            BaseImage = ?
                             WHERE IdUsuario = ?''',
                        (pEntity.Nome, pEntity.Telefone, pEntity.Email, pEntity.Cidade, pEntity.Estado, pEntity.Cep, pEntity.Endereco, pEntity.IdConheceu, pEntity.TermosCondicoes,
                         pEntity.PoliticaPrivacidade, pEntity.Apelido, pEntity.EstadoCivil, pEntity.PossuiFilhosQtd, pEntity.IdHobbie, pEntity.DataNascimento,
@@ -241,7 +243,7 @@ def EditarProfissional(pEntity: ProfissionalEntity, IdPerfil: int, IdUsuario: in
                         pEntity.PrimeiroClienteValorFixoProf,
                         pEntity.EmpresasParceirasDescontoProf,
                         pEntity.ValorPorSessaoProf,
-                        pEntity.Dependente, IdUsuario))
+                        pEntity.Dependente, pEntity.BaseImage, IdUsuario))
         cursor.commit()
 
         if pEntity.IdAbordagemProf is not None:
