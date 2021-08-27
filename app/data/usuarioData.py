@@ -68,12 +68,13 @@ def EditarUsuarioData(uEntity: UsuarioEntity, IdPerfil: int, IdUsuario: int):
                             IdProfissao= ?,
                             Cpf = ?, 
                             Dependente = ?, 
-                            IdPerfil = ?
+                            IdPerfil = ?,
+                            BaseImage = ?
                             FROM usuario
                             WHERE IdUsuario = ?''',
                        (uEntity.Nome, uEntity.Telefone, uEntity.Email, uEntity.Cidade, uEntity.Estado, uEntity.Cep, uEntity.Endereco, uEntity.IdConheceu, uEntity.TermosCondicoes,
                         uEntity.PoliticaPrivacidade, uEntity.Apelido, uEntity.EstadoCivil, uEntity.PossuiFilhosQtd, uEntity.IdHobbie, uEntity.DataNascimento,
-                        uEntity.Genero, uEntity.IdConheceu, uEntity.Cpf, uEntity.Dependente, IdPerfil, IdUsuario))
+                        uEntity.Genero, uEntity.IdConheceu, uEntity.Cpf, uEntity.Dependente, IdPerfil, uEntity.BaseImage, IdUsuario))
         cursor.commit()
 
         if uEntity.Dependente and uEntity.Dependentes is not None:
@@ -218,6 +219,7 @@ def EditarProfissional(pEntity: ProfissionalEntity, IdPerfil: int, IdUsuario: in
                             ,EmpresasParceirasDescontoProf= ?
                             ,ValorPorSessaoProf=?
                             ,Dependente= ?
+                            ,BaseImage= ?
                             WHERE IdUsuario = ?''',
                        (pEntity.Nome, pEntity.Telefone, pEntity.Email, pEntity.Cidade, pEntity.Estado, pEntity.Cep, pEntity.Endereco, pEntity.IdConheceu, pEntity.TermosCondicoes,
                         pEntity.PoliticaPrivacidade, pEntity.Apelido, pEntity.EstadoCivil, pEntity.PossuiFilhosQtd, pEntity.IdHobbie, pEntity.DataNascimento,
@@ -241,7 +243,7 @@ def EditarProfissional(pEntity: ProfissionalEntity, IdPerfil: int, IdUsuario: in
                         pEntity.PrimeiroClienteValorFixoProf,
                         pEntity.EmpresasParceirasDescontoProf,
                         pEntity.ValorPorSessaoProf,
-                        pEntity.Dependente, IdUsuario))
+                        pEntity.Dependente, pEntity.BaseImage, IdUsuario))
         cursor.commit()
 
         if pEntity.IdAbordagemProf is not None:
@@ -581,12 +583,13 @@ def BuscarExpedienteById(IdExpediente):
     records = cursor.fetchall()
     return records
 
+
 def BuscarValorTransacaoData(IdTransacao):
     conn = pyodbc.connect(CONNECTION_STRING_DB)
     cursor = conn.cursor()
     cursor.execute(
         '''SELECT Valor FROM [dbo].[transacao] WHERE IdTransacao = ?''', (IdTransacao))
-    records = cursor.fetchall()
+    records = cursor.fetchone()[0]
     return records
 
 
@@ -931,7 +934,6 @@ def BuscarCartaoUsuarioData(idUsuario: int):
     return entity
 
 
-
 def BuscarDezUltimosCadastrados():
     try:
         vlrconexao = CONNECTION_STRING_DB
@@ -1044,105 +1046,105 @@ def BuscarProfissionalPorPesquisaData(IdProfissao, AtendePresencialmenteProf, Da
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
 
-        cursor.execute('''SELECT 
-                            Nome, 
-                            Telefone, 
-                            Email, 
-                            Cidade, 
-                            Estado, 
-                            IdConheceu, 
-                            TermosCondicoes, 
-                            PoliticaPrivacidade, 
-                            Apelido, 
-                            EstadoCivil, 
-                            PossuiFilhosQtd, 
-                            IdHobbie, 
-                            DataNascimento, 
-                            Genero, 
-                            IdProfissao, 
-                            Cpf,
-                            IdHorarioTrabalhoProf, 
-                            IdUsarPlataformaProf, 
-                            IdConselhoRegionalProf, 
-                            PossuiCNPJProf, 
-                            TrabalharComCNPJProf, 
-                            Cnpj, 
-                            CartaApresentacaoProf, 
-                            OutraAbordagemProf, 
-                            DuracaoAtendimentoProf, 
-                            AtendePlanoDeSaudeProf,
-                            ReciboReembolsavelProf, 
-                            AtendePresencialmenteProf, 
-                            PrimeiroClienteCobraProf, 
-                            PrimeiroClienteValorFixoProf, 
-                            EmpresasParceirasDescontoProf, 
-                            ValorPorSessaoProf, 
-                            u.IdUsuario,
-                            Cep, 
-                            Endereco,
-                            IdUsuarioIugu,
-                            IdPerfil,
-                            RegistroCRPePsi,
-                            RegistroePsiValidado,
-                            OutroPublicoProf,
-                            OutroIdiomaProf
-                            FROM usuario 
-							U INNER JOIN  [dbo].[expedienteProfissional] E
-							ON U.IdUsuario = E.IdUsuarioProfissional
-							INNER JOIN [dbo].[sintomasVinculados] SI
-							ON U.IdUsuario = SI.IdUsuario
-							INNER JOIN [dbo].[abordagemProfissional] AB
-							ON U.IdUsuario = AB.IdUsuarioProfissional
-							WHERE 
-							u.IdProfissao = ?
-							AND U.AtendePresencialmenteProf = ?
-							AND E.DataAtendimento = ?
-							OR SI.IdSintomaAtendido = ? --NOVO
-							OR AB.IdAbordagemAdotada = ? --NOVO
-							OR U.Nome = ? --NOVO
-                            GROUP BY 
-                            Nome, 
-                            Telefone, 
-                            Email, 
-                            Cidade, 
-                            Estado, 
-                            IdConheceu, 
-                            TermosCondicoes, 
-                            PoliticaPrivacidade, 
-                            Apelido, 
-                            EstadoCivil, 
-                            PossuiFilhosQtd, 
-                            IdHobbie, 
-                            DataNascimento, 
-                            Genero, 
-                            IdProfissao, 
-                            Cpf,
-                            IdHorarioTrabalhoProf, 
-                            IdUsarPlataformaProf, 
-                            IdConselhoRegionalProf, 
-                            PossuiCNPJProf, 
-                            TrabalharComCNPJProf, 
-                            Cnpj, 
-                            CartaApresentacaoProf, 
-                            OutraAbordagemProf, 
-                            DuracaoAtendimentoProf, 
-                            AtendePlanoDeSaudeProf,
-                            ReciboReembolsavelProf, 
-                            AtendePresencialmenteProf, 
-                            PrimeiroClienteCobraProf, 
-                            PrimeiroClienteValorFixoProf, 
-                            EmpresasParceirasDescontoProf, 
-                            ValorPorSessaoProf, 
-                            u.IdUsuario,
-                            Cep, 
-                            Endereco,
-                            IdUsuarioIugu,
-                            IdPerfil,
-                            RegistroCRPePsi,
-                            RegistroePsiValidado,
-                            OutroPublicoProf,
-                            OutroIdiomaProf''', (IdProfissao, AtendePresencialmenteProf, DataAtendimento, IdSintomaAtendido, IdAbordagemAdotada, Nome))
+        params = (IdProfissao, AtendePresencialmenteProf, DataAtendimento)
 
+        select = '''SELECT Nome, Telefone, Email, Cidade, Estado, IdConheceu, TermosCondicoes, PoliticaPrivacidade, Apelido, 
+                    EstadoCivil, PossuiFilhosQtd, IdHobbie, DataNascimento, Genero, IdProfissao, Cpf, IdHorarioTrabalhoProf, 
+                    IdUsarPlataformaProf, IdConselhoRegionalProf, PossuiCNPJProf, TrabalharComCNPJProf, Cnpj, 
+                    CartaApresentacaoProf, OutraAbordagemProf, DuracaoAtendimentoProf, AtendePlanoDeSaudeProf,
+                    ReciboReembolsavelProf, AtendePresencialmenteProf, PrimeiroClienteCobraProf, PrimeiroClienteValorFixoProf, 
+                    EmpresasParceirasDescontoProf, ValorPorSessaoProf, u.IdUsuario, Cep, Endereco, IdUsuarioIugu,
+                    IdPerfil, RegistroCRPePsi, RegistroePsiValidado, OutroPublicoProf, OutroIdiomaProf
+                    FROM usuario u
+                    INNER JOIN  [dbo].[expedienteProfissional] E ON U.IdUsuario = E.IdUsuarioProfissional
+                    LEFT JOIN [dbo].[sintomasVinculados] SI ON U.IdUsuario = SI.IdUsuario
+			        LEFT JOIN [dbo].[abordagemProfissional] AB ON U.IdUsuario = AB.IdUsuarioProfissional
+                    WHERE u.IdProfissao = ?
+					AND U.AtendePresencialmenteProf = ?
+					AND E.DataAtendimento = ?
+                    '''
+
+        if (IdSintomaAtendido and IdAbordagemAdotada and Nome):
+            select += 'AND SI.IdSintomaAtendido = ? AND AB.IdAbordagemAdotada = ? AND U.Nome Like ?'
+            params = (IdProfissao, AtendePresencialmenteProf,
+                      DataAtendimento, IdSintomaAtendido, IdAbordagemAdotada, Nome)
+
+        if (IdSintomaAtendido and IdAbordagemAdotada and not Nome):
+            select += 'AND SI.IdSintomaAtendido = ? AND AB.IdAbordagemAdotada = ?'
+            params = (IdProfissao, AtendePresencialmenteProf,
+                      DataAtendimento, IdSintomaAtendido, IdAbordagemAdotada)
+
+        if (IdSintomaAtendido and not IdAbordagemAdotada and Nome):
+            select += 'AND SI.IdSintomaAtendido = ? AND U.Nome Like ?'
+            params = (IdProfissao, AtendePresencialmenteProf,
+                      DataAtendimento, IdSintomaAtendido, Nome)
+
+        if (IdSintomaAtendido and not IdAbordagemAdotada and not Nome):
+            select += 'AND SI.IdSintomaAtendido = ?'
+            params = (IdProfissao, AtendePresencialmenteProf,
+                      DataAtendimento, IdSintomaAtendido)
+
+        if (not IdSintomaAtendido and IdAbordagemAdotada and Nome):
+            select += 'AND AB.IdAbordagemAdotada = ? AND U.Nome Like ?'
+            params = (IdProfissao, AtendePresencialmenteProf,
+                      DataAtendimento, IdAbordagemAdotada, Nome)
+
+        if (not IdSintomaAtendido and IdAbordagemAdotada and not Nome):
+            select += 'AND AB.IdAbordagemAdotada = ?'
+            params = (IdProfissao, AtendePresencialmenteProf,
+                      DataAtendimento, IdAbordagemAdotada)
+
+        if (not IdSintomaAtendido and not IdAbordagemAdotada and Nome):
+            select += 'AND U.Nome Like ?'
+            params = (IdProfissao, AtendePresencialmenteProf,
+                      DataAtendimento, Nome)
+
+        select += '''
+                GROUP BY 
+                Nome, 
+                Telefone, 
+                Email, 
+                Cidade, 
+                Estado, 
+                IdConheceu, 
+                TermosCondicoes, 
+                PoliticaPrivacidade, 
+                Apelido, 
+                EstadoCivil, 
+                PossuiFilhosQtd, 
+                IdHobbie, 
+                DataNascimento, 
+                Genero, 
+                IdProfissao, 
+                Cpf,
+                IdHorarioTrabalhoProf, 
+                IdUsarPlataformaProf, 
+                IdConselhoRegionalProf, 
+                PossuiCNPJProf, 
+                TrabalharComCNPJProf, 
+                Cnpj, 
+                CartaApresentacaoProf, 
+                OutraAbordagemProf, 
+                DuracaoAtendimentoProf, 
+                AtendePlanoDeSaudeProf,
+                ReciboReembolsavelProf, 
+                AtendePresencialmenteProf, 
+                PrimeiroClienteCobraProf, 
+                PrimeiroClienteValorFixoProf, 
+                EmpresasParceirasDescontoProf, 
+                ValorPorSessaoProf, 
+                u.IdUsuario,
+                Cep, 
+                Endereco,
+                IdUsuarioIugu,
+                IdPerfil,
+                RegistroCRPePsi,
+                RegistroePsiValidado,
+                OutroPublicoProf,
+                OutroIdiomaProf
+                '''
+
+        cursor.execute(select, params)
         records = cursor.fetchall()
 
         entity = UsuarioFactory.profissionalEntity(records)
@@ -1279,7 +1281,6 @@ def AtualizaProntuarioData(pront: UsuarioProntuarioModel):
 
 def AtualizaSenhaUsuarioData(email: str, senhaatual: str, novasenha: str, IdUsuario: int):
     try:
-
         conn = pyodbc.connect(CONNECTION_STRING_DB)
         cursor = conn.cursor()
         cursor.execute('''SELECT top 1 IdUsuario, Email, Senha FROM usuario WHERE Email = ? AND Senha = ?''',
