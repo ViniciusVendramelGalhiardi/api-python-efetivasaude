@@ -589,8 +589,11 @@ def BuscarValorTransacaoData(IdTransacao):
     cursor = conn.cursor()
     cursor.execute(
         '''SELECT Valor FROM [dbo].[transacao] WHERE IdTransacao = ?''', (IdTransacao))
-    records = cursor.fetchone()[0]
-    return records
+
+    if len(cursor.fetchall()) > 0:
+        return cursor.fetchone()[0]
+    else:
+        return ''
 
 
 def BuscarEmpresaData(idUsuario: int):
