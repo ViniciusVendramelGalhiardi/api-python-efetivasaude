@@ -8,7 +8,7 @@ from fastapi import logger
 import requests
 from settings import API_TOKEN_IUGU, URL_API_IUGU_CUSTOMERS, TOKENTWILIO
 from app.model.usuarioModel import UsuarioModel
-from app.data.usuarioData import CadastraUsuario, CadastraProfissional, CadastraEmpresa, BuscarUsuarioData, BuscarProfissionalData, BuscarEmpresaData, AtualizaIdUsuarioIugu, CadastraExpProfissional, BuscarExpedienteProfissional, VincularSintomaProfissional, BuscarSintomaPorUsuarioData, CadastrarCartao, BuscarCartaoUsuarioData, ExcluirCartao, BuscarProfissionalPorPesquisaData, CadastraExperiencia, AtualizaExperiencia, ExcluirExperiencia, CadastraFormacao, AtualizaFormacao, ExcluirFormacao, CadastraDependente, AtualizaDependente, ExcluirDependente,EditarUsuarioData,EditarProfissional, EfetuaLoginUsuarioData, ListarHistoricoAtendimento,CadastrarProntuarioData,ListaProntuarioPacienteData, AtualizaProntuarioData, AtualizaSenhaUsuarioData,CadastrarColaboradoreEmpresaData,ListaColaboradoresEmpresaData, BuscarDezUltimosCadastrados, BuscarValorTransacaoData
+from app.data.usuarioData import CadastraUsuario, CadastraProfissional, CadastraEmpresa, BuscarUsuarioData, BuscarProfissionalData, BuscarEmpresaData, AtualizaIdUsuarioIugu, CadastraExpProfissional, BuscarExpedienteProfissional, VincularSintomaProfissional, BuscarSintomaPorUsuarioData, CadastrarCartao, BuscarCartaoUsuarioData, ExcluirCartao, BuscarProfissionalPorPesquisaData, CadastraExperiencia, AtualizaExperiencia, ExcluirExperiencia, CadastraFormacao, AtualizaFormacao, ExcluirFormacao, CadastraDependente, AtualizaDependente, ExcluirDependente, EditarUsuarioData, EditarProfissional, EfetuaLoginUsuarioData, ListarHistoricoAtendimento, CadastrarProntuarioData, ListaProntuarioPacienteData, AtualizaProntuarioData, AtualizaSenhaUsuarioData, CadastrarColaboradoreEmpresaData, ListaColaboradoresEmpresaData, BuscarDezUltimosCadastrados, BuscarValorTransacaoData
 from app.factory.clienteFactory import UsuarioFactory
 # from app.data.usuarioData import CadastraUsuario
 from app.model.usuarioVinculadoSubConta import UsuarioVinculadoSubConta
@@ -21,6 +21,7 @@ from app.model.returdefaultValue import DefaultValueModel
 from app.model.experienciaPraticaModel import ExperienciaPraticaModel
 from app.model.usuarioPronturioModel import UsuarioProntuarioModel
 from app.model.colaboradoresEmpresa import ColaboradoresEmpresa
+
 
 def CadastrarUsuario(IdPerfil, User: UsuarioModel):
     if IdPerfil == 1:
@@ -47,7 +48,7 @@ def CadastrarUsuario(IdPerfil, User: UsuarioModel):
         AtualizaIdUsuarioIugu(response.idUsuarioIugu, response.idUsuario)
         response.idUsuario = IdPerfil
         return response
-    
+
 
 def EditarUsuario(IdPerfil, User: UsuarioModel, IdUsuario: int):
     if IdPerfil == 1:
@@ -80,8 +81,10 @@ def BuscaUsuarioService(idUsuario, IdPerfil):
     else:
         return BuscarEmpresaData(idUsuario)
 
-def EfetuaLoginUsuarioService(email:str, senha: str, idperfil:int):
-    return EfetuaLoginUsuarioData(email,senha,idperfil)
+
+def EfetuaLoginUsuarioService(email: str, senha: str, idperfil: int):
+    return EfetuaLoginUsuarioData(email, senha, idperfil)
+
 
 def BuscarValorTransacaoService(IdTransacao):
     return BuscarValorTransacaoData(IdTransacao)
@@ -116,13 +119,14 @@ def CadastraUsuarioIugu(response, IdPerfil):
 
     return response.json()['id']
 
-def AtualizaSenhaUsuarioService(email:str, senhaatual:str, novasenha:str, IdUsuario:int):
+
+def AtualizaSenhaUsuarioService(email: str, senhaatual: str, novasenha: str, IdUsuario: int):
     try:
-        return AtualizaSenhaUsuarioData(email, senhaatual, novasenha)
+        return AtualizaSenhaUsuarioData(email, senhaatual, novasenha, IdUsuario)
     except Exception as mensagemErro:
         return False
-    
-    
+
+
 def CadastraUsuarioSubConta(usuario, IdPerfil, TokenSubContaPrd):
     querystring = {"api_token": TokenSubContaPrd}
 
@@ -158,13 +162,16 @@ def CadastraUsuarioSubConta(usuario, IdPerfil, TokenSubContaPrd):
 def CadastraExpedienteProfissional(expediente: ExpedienteProfissionalModel):
     return CadastraExpProfissional(expediente)
 
+
 def ListarHistoricoAtendimentoService(expediente: ExpedienteProfissionalModel):
     return ListarHistoricoAtendimento(expediente)
 
-def CadastrarColaboradoreEmpresaService(col:ColaboradoresEmpresa):
+
+def CadastrarColaboradoreEmpresaService(col: ColaboradoresEmpresa):
     return CadastrarColaboradoreEmpresaData(col)
 
-def AtualizaProntuarioService(pront:UsuarioProntuarioModel):
+
+def AtualizaProntuarioService(pront: UsuarioProntuarioModel):
     return AtualizaProntuarioData(pront)
 
 
@@ -193,7 +200,8 @@ def CadastrarCartaoService(card):
 def BuscarCartaoUsuarioService(idUsuario: int):
     return BuscarCartaoUsuarioData(idUsuario)
 
-def ListaColaboradoresEmpresaService(IdUsuarioEmpresa:int):
+
+def ListaColaboradoresEmpresaService(IdUsuarioEmpresa: int):
     return ListaColaboradoresEmpresaData(IdUsuarioEmpresa)
 
 
@@ -228,10 +236,11 @@ def EnviarSmsUsuarioService(Numero: str, nome: str):
     return ret
 
 
-def CadastrarProntuarioService(pront:UsuarioProntuarioModel):
+def CadastrarProntuarioService(pront: UsuarioProntuarioModel):
     return CadastrarProntuarioData(pront)
 
-def ListaProntuarioPacienteService(IdUsuario:int):
+
+def ListaProntuarioPacienteService(IdUsuario: int):
     return ListaProntuarioPacienteData(IdUsuario)
 
 
@@ -266,8 +275,10 @@ def CadastraFormacaoService(formacao):
 def BuscarProfissionalPorPesquisa(IdProfissao, AtendePresencialmenteProf, DataAtendimento, IdSintomaAtendido, IdAbordagemAdotada, Nome):
     return BuscarProfissionalPorPesquisaData(IdProfissao, AtendePresencialmenteProf, DataAtendimento.replace('-', '/'), IdSintomaAtendido, IdAbordagemAdotada, Nome)
 
+
 def BuscarDezUltimosCadastradosService():
     return BuscarDezUltimosCadastrados()
+
 
 def AtualizaFormacaoService(id, formacao):
     return AtualizaFormacao(id, formacao)

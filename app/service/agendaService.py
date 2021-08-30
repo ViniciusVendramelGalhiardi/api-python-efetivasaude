@@ -47,9 +47,10 @@ def listarAgendamentosProfissional(IdUsuarioProfissional: int, IdPerfil: int):
             # ag.TempoEstimado = agenda.TempoEstimado
             # ag.Preco = agenda.Preco
             # ag.IdUsuario = agenda.IdUsuario
-            
-            ag.ValorTransacao = BuscarValorTransacaoService(agenda.IdTransacao)
-            
+
+            ag.ValorTransacao = BuscarValorTransacaoService(
+                agenda.IdTransacao)
+
             exp = BuscarExpedienteById(agenda.Idexpediente)
 
             ag.Data = exp[0].DataAtendimento

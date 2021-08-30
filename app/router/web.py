@@ -7,7 +7,7 @@ from app.model.response import getResponse
 from app.service.ListagemService import listaPerfil, listaAbordagem, listaHobbies, listaCRP, listaHorarioTrabalho, listaIdiomas, listaNosConheceu, listaPlanos, listaProfissao, listaSintomas, listaUsarPlataforma
 from app.model.usuarioModel import UsuarioModel
 from fastapi.responses import JSONResponse
-from app.service.usuarioService import EfetuaLoginUsuarioService, EditarUsuario, CadastrarUsuario, BuscaUsuarioService, CadastraExpedienteProfissional, ListarExpedienteProfissional, VincularSintomaProfissionalService, BuscarSintomaPorUsuarioDataService, CadastrarCartaoService, BuscarCartaoUsuarioService, ExcluirCartaoService, EnviarSmsUsuarioService, BuscarProfissionalPorPesquisa, CadastraExperienciaService, AtualizaExperienciaService, ExcluirExperienciaService, CadastraFormacaoService, AtualizaFormacaoService, ExcluirFormacaoService, CadastraDependenteService, AtualizaDependenteService, ExcluirDependenteService, ListarHistoricoAtendimentoService, CadastrarProntuarioService, ListaProntuarioPacienteService, AtualizaProntuarioService, AtualizaSenhaUsuarioService, CadastrarColaboradoreEmpresaService, ListaColaboradoresEmpresaService,BuscarDezUltimosCadastradosService
+from app.service.usuarioService import EfetuaLoginUsuarioService, EditarUsuario, CadastrarUsuario, BuscaUsuarioService, CadastraExpedienteProfissional, ListarExpedienteProfissional, VincularSintomaProfissionalService, BuscarSintomaPorUsuarioDataService, CadastrarCartaoService, BuscarCartaoUsuarioService, ExcluirCartaoService, EnviarSmsUsuarioService, BuscarProfissionalPorPesquisa, CadastraExperienciaService, AtualizaExperienciaService, ExcluirExperienciaService, CadastraFormacaoService, AtualizaFormacaoService, ExcluirFormacaoService, CadastraDependenteService, AtualizaDependenteService, ExcluirDependenteService, ListarHistoricoAtendimentoService, CadastrarProntuarioService, ListaProntuarioPacienteService, AtualizaProntuarioService, AtualizaSenhaUsuarioService, CadastrarColaboradoreEmpresaService, ListaColaboradoresEmpresaService, BuscarDezUltimosCadastradosService
 from app.model.expedienteProfissionalModel import ExpedienteProfissionalModel
 from app.service.agendaService import efetuaAgendamentoService, listarAgendamentosProfissional, atualizaStatusService, cadastraAvaliacaoService, buscarAvaliacaoProfissionalService
 from app.model.agendamentoConsultaModel import AgendamentoConsultaModel
@@ -20,7 +20,7 @@ from app.model.formacaoAcademiaModel import FormacaoAcademicaModel
 from app.model.dependenteModel import DependenteModel
 from app.model.usuarioPronturioModel import UsuarioProntuarioModel
 from app.model.colaboradoresEmpresa import ColaboradoresEmpresa
-from typing import  Optional
+from typing import Optional
 
 router_web = APIRouter(
     prefix="/web",
@@ -189,10 +189,10 @@ def ListaColaboradoresEmpresa(IdProfissional: int):
 def BuscarCartaoUsuario(IdUsuario: int):
     return BuscarCartaoUsuarioService(IdUsuario)
 
+
 @router_web.get("/BuscarDezUltimosCadastrados/")
 def BuscarDezUltimosCadastrados():
     return BuscarDezUltimosCadastradosService()
-
 
 
 @router_web.get("/ListaProntuario/{IdUsuario}")
@@ -235,10 +235,11 @@ def BuscarUsuario(idUsuario: str, idPerfil: int):
     return response
 
 
-@router_web.get("/BuscarProfissionalPorPesq/{IdProfissao}/{AtendePresencialmenteProf}/{DataAtendimento}/{IdSintomaAtendido}/{IdAbordagemAdotada}/{Nome}")
+@router_web.get("/BuscarProfissionalPorPesq/{IdProfissao}/{AtendePresencialmenteProf}/{DataAtendimento}")
 def BuscarProfissional(IdProfissao: Optional[str], AtendePresencialmenteProf: Optional[str], DataAtendimento: Optional[str], IdSintomaAtendido: Optional[str], IdAbordagemAdotada: Optional[str], Nome: Optional[str]):
     try:
-        response = BuscarProfissionalPorPesquisa(IdProfissao, AtendePresencialmenteProf, DataAtendimento, IdSintomaAtendido, IdAbordagemAdotada, Nome)
+        response = BuscarProfissionalPorPesquisa(
+            IdProfissao, AtendePresencialmenteProf, DataAtendimento, IdSintomaAtendido, IdAbordagemAdotada, Nome)
     except Exception as mensagemErro:
         return mensagemErro
     return response

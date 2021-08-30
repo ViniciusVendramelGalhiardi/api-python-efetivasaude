@@ -3,6 +3,7 @@ from typing import List
 from pydantic import BaseModel
 from typing import List, Optional
 
+
 class Profissional(BaseModel):
     Id: Optional[int]
     Nome: Optional[str]
@@ -33,6 +34,7 @@ class ListarAgendamentoModel(BaseModel):
     Profissional: Optional[Profissional]
     Paciente: Optional[Paciente]
     ValorTransacao: Optional[str]
+
 
 class Model(BaseModel):
     __root__: List[ListarAgendamentoModel]
