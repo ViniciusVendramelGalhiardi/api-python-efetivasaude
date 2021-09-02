@@ -375,7 +375,7 @@ class UsuarioFactory():
                 RegistroePsiValidado=records[0][38],
                 OutroPublicoProf=records[0][39],
                 OutroIdiomaProf=records[0][40],
-                BaseImage =records[0][41],
+                BaseImage=records[0][41],
                 ExperienciasPraticaProf=_experienciasPraticaProf,
                 FormacoesProf=_formacoesProf,
                 IdiomasAtendidosProf=_idiomasAtendidos,
@@ -435,7 +435,8 @@ class UsuarioFactory():
                     RegistroCRPePsi=row[37],
                     RegistroePsiValidado=row[38],
                     OutroPublicoProf=row[39],
-                    OutroIdiomaProf=row[40]
+                    OutroIdiomaProf=row[40],
+                    BaseImage=row[41]
                 )
                 lst.append(prof)
             except Exception as mensagemErro:

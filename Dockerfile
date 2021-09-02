@@ -1,4 +1,5 @@
-FROM python:3.9
+# FROM python:3.9
+FROM --platform=linux/amd64 python:3.9
 
 WORKDIR /app
 
@@ -22,7 +23,7 @@ RUN apt-get update \
   && ACCEPT_EULA=Y apt-get -y install mssql-tools
 
 RUN apt-get update \ 
-    && pip install pyodbc
+  && pip install pyodbc
 
 RUN pip install -r requirements.txt
 

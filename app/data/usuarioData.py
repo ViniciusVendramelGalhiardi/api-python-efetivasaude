@@ -984,7 +984,8 @@ def BuscarDezUltimosCadastrados():
                             RegistroCRPePsi,
                             RegistroePsiValidado,
                             OutroPublicoProf,
-                            OutroIdiomaProf
+                            OutroIdiomaProf,
+                            BaseImage
                             FROM usuario 
 							U LEFT JOIN  [dbo].[expedienteProfissional] E
 							ON U.IdUsuario = E.IdUsuarioProfissional
@@ -1030,7 +1031,8 @@ def BuscarDezUltimosCadastrados():
                             RegistroCRPePsi,
                             RegistroePsiValidado,
                             OutroPublicoProf,
-                            OutroIdiomaProf
+                            OutroIdiomaProf,
+                            BaseImage
 							ORDER BY IdUsuario DESC''')
 
         records = cursor.fetchall()
@@ -1057,7 +1059,7 @@ def BuscarProfissionalPorPesquisaData(IdProfissao, AtendePresencialmenteProf, Da
                     CartaApresentacaoProf, OutraAbordagemProf, DuracaoAtendimentoProf, AtendePlanoDeSaudeProf,
                     ReciboReembolsavelProf, AtendePresencialmenteProf, PrimeiroClienteCobraProf, PrimeiroClienteValorFixoProf, 
                     EmpresasParceirasDescontoProf, ValorPorSessaoProf, u.IdUsuario, Cep, Endereco, IdUsuarioIugu,
-                    IdPerfil, RegistroCRPePsi, RegistroePsiValidado, OutroPublicoProf, OutroIdiomaProf
+                    IdPerfil, RegistroCRPePsi, RegistroePsiValidado, OutroPublicoProf, OutroIdiomaProf, BaseImage
                     FROM usuario u
                     INNER JOIN  [dbo].[expedienteProfissional] E ON U.IdUsuario = E.IdUsuarioProfissional
                     LEFT JOIN [dbo].[sintomasVinculados] SI ON U.IdUsuario = SI.IdUsuario
@@ -1144,7 +1146,8 @@ def BuscarProfissionalPorPesquisaData(IdProfissao, AtendePresencialmenteProf, Da
                 RegistroCRPePsi,
                 RegistroePsiValidado,
                 OutroPublicoProf,
-                OutroIdiomaProf
+                OutroIdiomaProf,
+                BaseImage
                 '''
 
         cursor.execute(select, params)
